@@ -1,0 +1,17 @@
+@extends('front.layout.app')
+@section('title' , 'Home Page')
+@push('style')
+    <style>
+            
+    </style>
+@endpush
+
+@section('content')
+    
+@endsection
+
+@push('script')
+    <script>
+
+    </script>
+@endpush
