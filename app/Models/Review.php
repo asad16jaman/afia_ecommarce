@@ -4,11 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Company extends Model
+class Review extends Model
 {
     //
-    protected $table = 'tbl_company';
-    protected $primaryKey = 'Company_SlNo';
+
+    protected $table = 'tbl_review';
+    protected $primaryKey = 'id';
     public $timestamps = false;
+
     protected $guarded = [];
 }

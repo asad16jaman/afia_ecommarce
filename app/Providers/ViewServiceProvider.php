@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Category;
 use App\Models\Company;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -18,36 +19,38 @@ class ViewServiceProvider extends ServiceProvider
         View::composer('*', function ($view) {
 
                 $defaultSettings = [
-                'name' => 'Sample Company',
+                'Company_Logo_thum' => '',
+                'Company_Logo_org' => '',
+                'Currency_Name' => '৳',
+                'Currency_Symbol' => '৳',
+                'company_fav' => '',
+                'facebook_link' => '',
+                'whatsapp' => '',
                 'address' => '1234 Sample Address',
                 'phone' => '123-456-7890',
-                'hotline' => '123-000-0000',
-                'slogan' => 'We make things better',
+                'hotline_number' => '123-000-0000',
                 'email' => 'info@samplecompany.com',
-
-                'facebook_url' => '',
-                'twitter_url' => '',
-                'linkedin_url' => '',
-                'youtube_url' => '',
-                'website_url' => '',
-                'favicon_image' => '',
-                'logo' => '',
-                'footer_title' => 'Quick Links',
-                'footer_short_description' => 'We’re committed to delivering excellence.',
-                'google_map' => '<iframe src="..."></iframe>',
+                'Company_Name' => 'Sample Company',
+                'instagrame_link' => '',
+                'youtube' => '',
+                // 'footer_short_description' => 'We’re committed to delivering excellence.',
+                // 'google_map' => '<iframe src="..."></iframe>',
             ];
             $setting = Company::first();
+            $nav_category = Category::select('ProductCategory_Name', 'ProductCategory_SlNo')->where('status' , 'a')->take(8)->get();
             if (!$setting) {
                 $setting = (object) $defaultSettings;
             }
             $view->with('setting',$setting);
-               
+            $view->with('currency', $setting->Currency_Symbol);
+            $view->with('nav_categories' , $nav_category);
 
-                
-
-                
-                
+            
             });
+
+        View::share('softUrl', config('app.soft_url'));
+
+
 
     }
 
@@ -57,5 +60,6 @@ class ViewServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
+        
     }
 }

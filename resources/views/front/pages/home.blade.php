@@ -15,20 +15,17 @@
                     <div id="heroSlider" class="carousel slide hero-slider" data-bs-ride="carousel">
 
                         <div class="carousel-indicators">
-                            <button type="button" data-bs-target="#heroSlider" data-bs-slide-to="0" class="active"></button>
-                            <button type="button" data-bs-target="#heroSlider" data-bs-slide-to="1"></button>
-                            <button type="button" data-bs-target="#heroSlider" data-bs-slide-to="2"></button>
+                            @foreach ($sliders as $_slider)
+                                <button type="button" data-bs-target="#heroSlider" data-bs-slide-to="{{ $loop->index }}"
+                                    class="{{ ($loop->index == 0) ? 'active' : ''}}"></button>
+                            @endforeach
                         </div>
                         <div class="carousel-inner">
-                            <div class="carousel-item active">
-                                <img src="{{ asset('assets/images/slider/alider1.jpg') }}" class="d-block w-100" alt="">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="{{ asset('assets/images/slider/alider1.jpg') }}" class="d-block w-100" alt="">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="{{ asset('assets/images/slider/alider1.jpg') }}" class="d-block w-100" alt="">
-                            </div>
+                            @foreach ($sliders as $slider)
+                                <div class="carousel-item  {{ $loop->index == 0 ? 'active' : '' }}">
+                                    <img src="{{ $softUrl . $slider->image}}" class="d-block w-100" alt="">
+                                </div>
+                            @endforeach
                         </div>
                         <button class="carousel-control-prev" type="button" data-bs-target="#heroSlider"
                             data-bs-slide="prev">
@@ -44,13 +41,13 @@
                 <div class="col-12 col-lg-4 mt-lg-0">
                     <div class="row g-3 h-100 ">
                         <div class="col-lg-12 col-6 mt-custom">
-                            <a href="#">
-                                <img src="{{ asset('assets/images/slider/b1.png') }}" class="img-fluid banner-img" alt="">
+                            <a href="{{ $banner->slider_first_link }}">
+                                <img src="{{ $softUrl . $banner->slider_first }}" class="img-fluid banner-img" alt="">
                             </a>
                         </div>
                         <div class="col-lg-12 col-6 mt-custom">
-                            <a href="#">
-                                <img src="{{ asset('assets/images/slider/b2.png') }}" class="img-fluid banner-img" alt="">
+                            <a href="{{ $banner->slider_second_link }}">
+                                <img src="{{ $softUrl . $banner->slider_second }}" class="img-fluid banner-img" alt="">
                             </a>
                         </div>
                     </div>
@@ -125,30 +122,21 @@
             </div>
 
             <div class="row g-4 d-flex justify-content-center">
-                <div class="swiper categorySwiper">
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            @include('front.components.categoryCard', ['img' => 'assets/images/category/cat1.webp', 'name' => 'Party Borka Design'])
-                        </div>
-                        <div class="swiper-slide">
-                            @include('front.components.categoryCard', ['img' => 'assets/images/category/cat2.webp', 'name' => 'Attest Koti Borka'])
-                        </div>
-                        <div class="swiper-slide">
-                            @include('front.components.categoryCard', ['img' => 'assets/images/category/cat3.webp', 'name' => 'Abaya Borka Design'])
-                        </div>
-                        <div class="swiper-slide">
-                            @include('front.components.categoryCard', ['img' => 'assets/images/category/cat4.webp', 'name' => 'Hijab & Khimar'])
-                        </div>
-                        <div class="swiper-slide">
-                            @include('front.components.categoryCard', ['img' => 'assets/images/category/cat-5.webp', 'name' => 'Simple Borka Design'])
-                        </div>
-                        <div class="swiper-slide">
-                            @include('front.components.categoryCard', ['img' => 'assets/images/category/cat2.webp', 'name' => 'Attest Koti Borka'])
-                        </div>
+               <div class="swiper categorySwiper">
+                <div class="swiper-wrapper">
+                    @foreach ($categories as $cat)
+                    <div class="swiper-slide">
+                        @include('front.components.categoryCard', [
+        'img' => $softUrl . $cat->image,
+        'name' =>
+            $cat->ProductCategory_Name
+    ])
                     </div>
-                    <!-- Pagination -->
-                    <div class="swiper-pagination"></div>
+                    @endforeach
                 </div>
+                <!-- Pagination -->
+                <div class="swiper-pagination"></div>
+            </div> 
             </div>
         </div>
     </section>
@@ -164,37 +152,11 @@
                 </div>
                 <div class="row g-3">
                     <!-- Product -->
-                    <div class="col-lg-3 col-md-3 col-6">
-                        @include('front.components.productCard', ['img' => 'assets/images/product/p1.jpg', 'name' => 'One Piece Abaya Collection One Piece Abaya Collection', 'sell_price' => 2300, 'price' => 2100])
-                    </div>
-                    <!-- Product -->
-                    <div class="col-lg-3 col-md-3 col-6">
-                        @include('front.components.productCard', ['img' => 'assets/images/product/p2.jpg', 'name' => 'One Piece Abaya Collection One Piece Abaya Collection', 'sell_price' => 2300, 'price' => 2100])
-                    </div>
-                    <!-- Product -->
-                    <div class="col-lg-3 col-md-3 col-6">
-                        @include('front.components.productCard', ['img' => 'assets/images/product/p1.jpg', 'name' => 'One Piece Abaya Collection One Piece Abaya Collection', 'sell_price' => 2300, 'price' => 2100])
-                    </div>
-                    <!-- Product -->
-                    <div class="col-lg-3 col-md-3 col-6">
-                        @include('front.components.productCard', ['img' => 'assets/images/product/p2.jpg', 'name' => 'One Piece Abaya Collection One Piece Abaya Collection', 'sell_price' => 2300, 'price' => 2100])
-                    </div>
-                    <!-- Product -->
-                    <div class="col-lg-3 col-md-3 col-6">
-                        @include('front.components.productCard', ['img' => 'assets/images/product/p1.jpg', 'name' => 'One Piece Abaya Collection One Piece Abaya Collection', 'sell_price' => 2300, 'price' => 2100])
-                    </div>
-                    <!-- Product -->
-                    <div class="col-lg-3 col-md-3 col-6">
-                        @include('front.components.productCard', ['img' => 'assets/images/product/p2.jpg', 'name' => 'One Piece Abaya Collection One Piece Abaya Collection', 'sell_price' => 2300, 'price' => 2100])
-                    </div>
-                    <!-- Product -->
-                    <div class="col-lg-3 col-md-3 col-6">
-                        @include('front.components.productCard', ['img' => 'assets/images/product/p1.jpg', 'name' => 'One Piece Abaya Collection One Piece Abaya Collection', 'sell_price' => 2300, 'price' => 2100])
-                    </div>
-                    <!-- Product -->
-                    <div class="col-lg-3 col-md-3 col-6">
-                        @include('front.components.productCard', ['img' => 'assets/images/product/p2.jpg', 'name' => 'One Piece Abaya Collection One Piece Abaya Collection', 'sell_price' => 2300, 'price' => 2100])
-                    </div>
+                    @foreach ($newArrivals as $arrival)
+                        <div class="col-lg-3 col-md-3 col-6">
+                            @include('front.components.productCard', ['ob' => $arrival])
+                        </div>
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -208,33 +170,11 @@
                 <h2 class="fw-bold mb-3">Our Premium Modest Collection</h2>
             </div>
             <div class="gallery-slider">
+                @foreach ($popular_roduct as $p_product)
                 <div class="">
-                    @include('front.components.productCard', ['img' => 'assets/images/product/p1.jpg', 'name' => 'One Piece Abaya Collection One Piece Abaya Collection', 'sell_price' => 2300, 'price' => 2100])
+                    @include('front.components.productCard', ['ob' => $p_product])
                 </div>
-                <div class="">
-                    @include('front.components.productCard', ['img' => 'assets/images/product/p2.jpg', 'name' => 'One Piece Abaya Collection One Piece Abaya Collection', 'sell_price' => 2300, 'price' => 2100])
-                </div>
-                <div class="">
-                    @include('front.components.productCard', ['img' => 'assets/images/product/p1.jpg', 'name' => 'One Piece Abaya Collection One Piece Abaya Collection', 'sell_price' => 2300, 'price' => 2100])
-                </div>
-                <div class="">
-                    @include('front.components.productCard', ['img' => 'assets/images/product/p2.jpg', 'name' => 'One Piece Abaya Collection One Piece Abaya Collection', 'sell_price' => 2300, 'price' => 2100])
-                </div>
-                <div class="">
-                    @include('front.components.productCard', ['img' => 'assets/images/product/p1.jpg', 'name' => 'One Piece Abaya Collection One Piece Abaya Collection', 'sell_price' => 2300, 'price' => 2100])
-                </div>
-
-                <div class="">
-                    @include('front.components.productCard', ['img' => 'assets/images/product/p2.jpg', 'name' => 'One Piece Abaya Collection One Piece Abaya Collection', 'sell_price' => 2300, 'price' => 2100])
-                </div>
-                <div class="">
-                    @include('front.components.productCard', ['img' => 'assets/images/product/p1.jpg', 'name' => 'One Piece Abaya Collection One Piece Abaya Collection', 'sell_price' => 2300, 'price' => 2100])
-                </div>
-
-                <div class="">
-                    @include('front.components.productCard', ['img' => 'assets/images/product/p2.jpg', 'name' => 'One Piece Abaya Collection One Piece Abaya Collection', 'sell_price' => 2300, 'price' => 2100])
-                </div>
-
+                @endforeach
             </div>
         </div>
     </section>
@@ -243,16 +183,16 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6 col-12">
-                    <a href="">
+                    <a href="{{ $banner->banner_first_link }}">
                         <div class="banner_container">
-                            <img src="{{ asset('assets/images/banner/1-1.webp') }}" alt="dd">
+                            <img src="{{ $softUrl . $banner->banner_first }}" alt="dd">
                         </div>
                     </a>
                 </div>
                 <div class="col-md-6 col-12">
-                    <a href="">
+                    <a href="{{ $banner->banner_second_link }}">
                         <div class="banner_container">
-                            <img src="{{ asset('assets/images/banner/1-17.webp') }}" alt="dd">
+                            <img src="{{ $softUrl . $banner->banner_second }}" alt="dd">
                         </div>
                     </a>
                 </div>
@@ -271,38 +211,12 @@
                 </p>
             </div>
             <div class="row g-3 g-md-4 justify-content-center">
-                <!-- Product -->
-                <div class="col-lg-3 col-md-3 col-6">
-                    @include('front.components.productCard', ['img' => 'assets/images/product/p1.jpg', 'name' => 'One Piece Abaya Collection One Piece Abaya Collection', 'sell_price' => 2300, 'price' => 2100])
-                </div>
-                <!-- Product -->
-                <div class="col-lg-3 col-md-3 col-6">
-                    @include('front.components.productCard', ['img' => 'assets/images/product/p2.jpg', 'name' => 'One Piece Abaya Collection One Piece Abaya Collection', 'sell_price' => 2300, 'price' => 2100])
-                </div>
-                <!-- Product -->
-                <div class="col-lg-3 col-md-3 col-6">
-                    @include('front.components.productCard', ['img' => 'assets/images/product/p1.jpg', 'name' => 'One Piece Abaya Collection One Piece Abaya Collection', 'sell_price' => 2300, 'price' => 2100])
-                </div>
-                <!-- Product -->
-                <div class="col-lg-3 col-md-3 col-6">
-                    @include('front.components.productCard', ['img' => 'assets/images/product/p2.jpg', 'name' => 'One Piece Abaya Collection One Piece Abaya Collection', 'sell_price' => 2300, 'price' => 2100])
-                </div>
-                <!-- Product -->
-                <div class="col-lg-3 col-md-3 col-6">
-                    @include('front.components.productCard', ['img' => 'assets/images/product/p1.jpg', 'name' => 'One Piece Abaya Collection One Piece Abaya Collection', 'sell_price' => 2300, 'price' => 2100])
-                </div>
-                <!-- Product -->
-                <div class="col-lg-3 col-md-3 col-6">
-                    @include('front.components.productCard', ['img' => 'assets/images/product/p2.jpg', 'name' => 'One Piece Abaya Collection One Piece Abaya Collection', 'sell_price' => 2300, 'price' => 2100])
-                </div>
-                <!-- Product -->
-                <div class="col-lg-3 col-md-3 col-6">
-                    @include('front.components.productCard', ['img' => 'assets/images/product/p1.jpg', 'name' => 'One Piece Abaya Collection One Piece Abaya Collection', 'sell_price' => 2300, 'price' => 2100])
-                </div>
-                <!-- Product -->
-                <div class="col-lg-3 col-md-3 col-6">
-                    @include('front.components.productCard', ['img' => 'assets/images/product/p2.jpg', 'name' => 'One Piece Abaya Collection One Piece Abaya Collection', 'sell_price' => 2300, 'price' => 2100])
-                </div>
+                @foreach ($products as $_product)
+                    <div class="col-lg-3 col-md-3 col-6">
+                        @include('front.components.productCard', ["ob" => $_product])
+                    </div>
+                @endforeach
+
             </div>
             <!-- Button -->
             <div class="text-center mt-4">
@@ -325,28 +239,16 @@
             </div>
             <div class="swiper reviewSwiper p-3">
                 <div class="swiper-wrapper">
+                    @foreach ($reviews as $_review)
                     <div class="swiper-slide">
-                        @include('front.components.reviewCard', ['img' => 'assets/images/review/1-17.jpeg', 'title' => 'review_card'])
+                        @include('front.components.reviewCard', ['img' => $softUrl . $_review->image, 'title' => $_review->title])
                     </div>
-                    <div class="swiper-slide">
-                        @include('front.components.reviewCard', ['img' => 'assets/images/review/1-29.jpeg', 'title' => 'review_card'])
-                    </div>
-                    <div class="swiper-slide">
-                        @include('front.components.reviewCard', ['img' => 'assets/images/review/1-30.jpeg', 'title' => 'review_card'])
-                    </div>
-                    <div class="swiper-slide">
-                        @include('front.components.reviewCard', ['img' => 'assets/images/review/1-17.jpeg', 'title' => 'review_card'])
-                    </div>
-                    <div class="swiper-slide">
-                        @include('front.components.reviewCard', ['img' => 'assets/images/review/1-17.jpeg', 'title' => 'review_card'])
-                    </div>
-                    <div class="swiper-slide">
-                        @include('front.components.reviewCard', ['img' => 'assets/images/review/1-17.jpeg', 'title' => 'review_card'])
-                    </div>
+                    @endforeach
+
                 </div>
                 <!-- চাইলে Pagination -->
                 <!-- <div class="swiper-pagination"></div> -->
-            </div>
+            </div> 
         </div>
     </section>
 @endsection
@@ -354,101 +256,95 @@
 @push('script')
     <script>
         $(document).ready(function () {
-            const slickSettings = {
-                rows: 1,
-                arrows: true,
-                dots: false,
-                infinite: true,
-                speed: 400,
-                autoplay: true,
-                autoplaySpeed: 1000000,
-                pauseOnHover: true,
-                slidesToShow: 5,
-                slidesToScroll: 1,
-                responsive: [
-                    {
-                        breakpoint: 1200,
-                        settings: {
-                            slidesToShow: 5
-                        }
-                    },
-                    {
-                        breakpoint: 992,
-                        settings: {
-                            slidesToShow: 3
-                        }
-                    },
-                    {
-                        breakpoint: 768,
-                        settings: {
-                            slidesToShow: 2
-                        }
-                    }
-                ]
-            };
-            $('.gallery-slider').slick(slickSettings);
+             const slickSettings = {
+                        rows: 1,
+                        arrows: true,
+                        dots: false,
+                        infinite: true,
+                        speed: 400,
+                        autoplay: true,
+                        autoplaySpeed: 1000000,
+                        pauseOnHover: true,
+                        slidesToShow: 5,
+                        slidesToScroll: 1,
+                        responsive: [
+                            {
+                                breakpoint: 1200,
+                                settings: {
+                                    slidesToShow: 5
+                                }
+                            },
+                            {
+                                breakpoint: 992,
+                                settings: {
+                                    slidesToShow: 3
+                                }
+                            },
+                            {
+                                breakpoint: 768,
+                                settings: {
+                                    slidesToShow: 2
+                                }
+                            }
+                        ]
+                    };
+                    $('.gallery-slider').slick(slickSettings);
 
-            const reviewSwiper = new Swiper(".reviewSwiper", {
-                slidesPerView: 5,
-                spaceBetween: 16,
-                loop: true,
-                speed: 400,
-                rtl: true,
-                autoplay: {
-                    delay: 2000,
-                    disableOnInteraction: false,
-                },
-
-                // চাইলে Pagination
-                // pagination: {
-                //     el: ".reviewSwiper .swiper-pagination",
-                //     clickable: true,
-                // },
-                breakpoints: {
-                    0: {
-                        slidesPerView: 1,
-                    },
-                    768: {
-                        slidesPerView: 2,
-                    },
-                    992: {
-                        slidesPerView: 2,
-                    },
-                    1200: {
+                    const reviewSwiper = new Swiper(".reviewSwiper", {
                         slidesPerView: 5,
-                    }
-                }
-            });
-
-
-            const categorySwiper = new Swiper(".categorySwiper", {
-                slidesPerView: 2,
-                spaceBetween: 20,
-                loop: true,
-                speed: 600,
-                autoplay: {
-                    delay: 2500,
-                    disableOnInteraction: false,
-                },
-                pagination: {
-                    el: ".categorySwiper .swiper-pagination",
-                    clickable: true,
-                },
-                breakpoints: {
-                    576: {
+                        spaceBetween: 16,
+                        loop: true,
+                        speed: 400,
+                        rtl: true,
+                        autoplay: {
+                            delay: 2000,
+                            disableOnInteraction: false,
+                        },
+                        breakpoints: {
+                            0: {
+                                slidesPerView: 1,
+                            },
+                            768: {
+                                slidesPerView: 2,
+                            },
+                            992: {
+                                slidesPerView: 2,
+                            },
+                            1200: {
+                                slidesPerView: 5,
+                            }
+                        }
+                    });
+                    const categorySwiper = new Swiper(".categorySwiper", {
                         slidesPerView: 2,
-                    },
-                    768: {
-                        slidesPerView: 3,
-                    },
-                    992: {
-                        slidesPerView: 4,
-                    },
-                    1200: {
-                        slidesPerView: 5,
-                    }
-                }
-            });
+                        spaceBetween: 20,
+                        loop: true,
+                        speed: 600,
+                        autoplay: {
+                            delay: 2500,
+                            disableOnInteraction: false,
+                        },
+                        pagination: {
+                            el: ".categorySwiper .swiper-pagination",
+                            clickable: true,
+                        },
+                        breakpoints: {
+                            576: {
+                                slidesPerView: 2,
+                            },
+                            768: {
+                                slidesPerView: 3,
+                            },
+                            992: {
+                                slidesPerView: 4,
+                            },
+                            1200: {
+                                slidesPerView: 5,
+                            }
+                        }
+                    });
         });
     </script>
+
+    <script src="{{ asset('assets/js/add_to_cart_from_product_card.js') }}"></script>
 @endpush

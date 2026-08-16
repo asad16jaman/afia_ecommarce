@@ -4,11 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Company extends Model
+class Product_images extends Model
 {
     //
-    protected $table = 'tbl_company';
-    protected $primaryKey = 'Company_SlNo';
+
+    protected $table = 'tbl_product_images';
+    protected $primaryKey = 'id';
     public $timestamps = false;
+
+
     protected $guarded = [];
 }

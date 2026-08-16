@@ -15,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
     {
         
         \Illuminate\Auth\Middleware\Authenticate::redirectUsing(function ($request) {
-        return route('admin.login');
+        return route('customer.login');
     });
             
             

@@ -1,9 +1,9 @@
-<!-- header section -->
+ <!-- header section -->
 <section id="header" class="fixed-top">
     <div class="container py-lg-2">
         <div class="d-flex justify-content-between align-items-center">
             <a class="d-flex align-items-center gap-2" href="{{ route('home') }}">
-                <img src="{{ asset('assets/images/logo.webp') }}" alt="Logo" class="topbarLogo">
+                <img src="{{ $softUrl . $setting->Company_Logo_thum }}" alt="Logo" class="topbarLogo">
                 <div class="d-flex flex-column lh-1">
                     <!-- <span class="fw-bold text-black fs-5">KAMRAN</span> -->
                     <!-- <span class="fw-bold" style="font-size:12px; letter-spacing:2px; color:#6f42c1;">HONEY</span> -->
@@ -25,14 +25,16 @@
                     <li class="nav-item d-flex align-items-center">
                         <div class="d-flex align-items-center nav_social_media_container">
                             <div class="nav_social_media_icon">
-                                <a href=""><i class="bi bi-facebook"></i></a>
+                                <a href="{{ $setting->facebook_link }}" target="_blank"><i class="bi bi-facebook"></i></a>
                             </div>
                         </div>
                     </li>
                     <li class="nav-item d-flex align-items-center">
                         <div class="d-flex align-items-center nav_social_media_container">
                             <div class="nav_social_media_icon">
-                                <a href=""><i class="bi bi-whatsapp"></i></a>
+                                <a href="https://wa.me/<?= ltrim($setting->whatsapp, '+') ?>" target="_blank" rel="noopener noreferrer">
+                                    <i class="bi bi-whatsapp"></i>
+                                </a>
                             </div>
                         </div>
                     </li>
@@ -46,14 +48,14 @@
                                     99
                                 </span>
                                 <div class="nav_cart_text d-none d-lg-block">
-                                    <h5>Cart(0)</h5>
+                                    <h5>Cart(<span id="product_count">0</span>)</h5>
                                     <span>Add Item</span>
                                 </div>
                             </div>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-black icon-circle" href="#">
+                        <a class="nav-link text-black icon-circle" href="{{ route('customer.login') }}">
                             <div class="d-flex align-items-center  flex-column flex-md-row gap-lg-2">
                                 <div class="nav_cart_icon"><i class="bi bi-person"></i></div>
                                 <div class="nav_cart_text text-left d-none d-lg-block">
@@ -91,11 +93,9 @@
             </div>
             <div class="collapse navbar-collapse" id="mainNavbar">
                 <ul class="navbar-nav mx-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">Hijab & Khimar</a>
-                    </li>
+                   
                     <!-- Mega Dropdown -->
-                    <li class="nav-item dropdown position-static">
+                    {{-- <li class="nav-item dropdown position-static">
                         <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
                             Abaya Borka Design
                         </a>
@@ -118,22 +118,15 @@
                             <a class="dropdown-item" href="#">Sub Category4</a>
                             <a class="dropdown-item" href="#">Sub Category5</a>
                         </div>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">Koti Borka Design</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">Party Borka Design</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">Attest Koti Borka</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">Simple Borka Design</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">SAREE DESIGN</a>
-                    </li>
+                    </li> --}}
+
+                    @foreach ($nav_categories as $nav_cat)
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#">{{ $nav_cat->ProductCategory_Name }}</a>
+                        </li>
+                    @endforeach
+                    
+                    
                 </ul>
 
             </div>

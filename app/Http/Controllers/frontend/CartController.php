@@ -3,17 +3,8 @@
 namespace App\Http\Controllers\frontend;
 
 use App\Models\Product;
-use App\Models\Wishlist;
-use Exception;
-use App\Models\Order;
-use App\Models\Customer;
-use App\Models\OrderItem;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 
 class CartController extends Controller
@@ -21,10 +12,13 @@ class CartController extends Controller
     public function add(Request $request)
     {
         $productId = $request->product_id;
+        $size = $request->size;
         $price = $request->price;
         $qty = $request->qty;
         $cart = Session::get('cart', []);
-        $key = $productId;
+
+        $key = $productId ."_". $size;
+
         $totalPrice = (float)$price * (float) $qty; 
         
 
@@ -33,11 +27,12 @@ class CartController extends Controller
         } else {
             $cart[$key] = [
                 'product_id' => $productId,
-                'p_slug' => $request->p_slug,
+                'size' => $size,
+                'size_name' => $request->size_name,
                 'price' => $price,
                 'qty' => $qty,
                 'name' => $request->name,
-                'image' => $request->img ?? 'uploads/no_images/no-image.png',
+                'image' => $request->img ? config('app.soft_url'). $request->img : asset('uploads/no_images/no-image.png'),
                 'total_price' => $totalPrice,
             ];
         }
@@ -58,15 +53,33 @@ class CartController extends Controller
         ]);
     }
 
-    public function buyNow(string $slug){
+    public function get_cart_data(){
+        $cart = Session::get('cart', []);
+        $count = count($cart);
+        $subtotal = array_sum(array_map(fn($item) => $item['price'] * $item['qty'], $cart));
+        return response()->json([
+            'success' => true,
+            'count' => $count,
+            'subtotal' => $subtotal,
+            'cart' => $cart
+        ]);
+
+    }
+
+    public function buyNow($request){
+
+
+        $productId = $request->product_id;
+        $size = $request->size;
+
+        $buyProduct = Product::where('Product_SlNo',$productId)->firstOrFail();
 
         
-        $buyProduct = Product::where('slug',$slug)->first();
-        $productId = $buyProduct->id;
-        $price = $buyProduct->price;
+        $price = $buyProduct->Product_MinimumSellingPrice;
         $qty = 1;
+
         $cart = Session::get('cart', []);
-        $key = $productId;
+        $key = $productId . "-" . $size;;
         $totalPrice = (float)$price * (float) $qty; 
         
 
@@ -75,11 +88,11 @@ class CartController extends Controller
         } else {
             $cart[$key] = [
                 'product_id' => $productId,
-                'p_slug' => $buyProduct->slug,
                 'price' => $price,
+                 'size' => $size,
                 'qty' => $qty,
-                'name' => $buyProduct->name,
-                'image' => $buyProduct->thumbnail_image ?? 'uploads/no_images/no-image.png',
+                'name' => $buyProduct->Product_Name,
+                'image' => $buyProduct->thum_image ?? 'uploads/no_images/no-image.png',
                 'total_price' => $totalPrice,
             ];
         }
@@ -89,6 +102,7 @@ class CartController extends Controller
         return redirect()->route('order.checkout');
 
     }
+
 
     public function update(Request $request)
     {
@@ -147,31 +161,43 @@ class CartController extends Controller
         ]);
     }
 
-    public function addWish(int $id){
-        $product = Product::find($id);
-        if($product){
-            $already = Wishlist::where('product_id',$product->id)->first();
-            if(!$already){
-                Wishlist::create([
-                    "customer_id" => Auth::guard('customer')->user()->id,
-                    'product_id' =>  $product->id
-                ]);
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Successfully Added To Wishlist!'
-                ]);
-            }else{
-               return response()->json([
-                    'success' => true,
-                    'message' => 'This Product Already In Your Wishlist!'
-                ]); 
-            }
-            
-        }else{
-            return response()->json([
-                'success' => true,
-                'message' => 'Product Not Found!'
-            ]);
-        }
+    public function clearCart()
+    {
+        session()->forget('cart');
+
+        return response()->json([
+            'success' => true,
+            'count' => 0,
+            'subtotal' => 0,
+            'cart' => []
+        ]);
     }
+
+    // public function addWish(int $id){
+    //     $product = Product::find($id);
+    //     if($product){
+    //         $already = Wishlist::where('product_id',$product->id)->first();
+    //         if(!$already){
+    //             Wishlist::create([
+    //                 "customer_id" => Auth::guard('customer')->user()->id,
+    //                 'product_id' =>  $product->id
+    //             ]);
+    //             return response()->json([
+    //                 'success' => true,
+    //                 'message' => 'Successfully Added To Wishlist!'
+    //             ]);
+    //         }else{
+    //            return response()->json([
+    //                 'success' => true,
+    //                 'message' => 'This Product Already In Your Wishlist!'
+    //             ]); 
+    //         }
+            
+    //     }else{
+    //         return response()->json([
+    //             'success' => true,
+    //             'message' => 'Product Not Found!'
+    //         ]);
+    //     }
+    // }
 }
