@@ -4,6 +4,9 @@ namespace App\Http\Controllers\frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
+use App\Models\Order;
+use App\Models\OrderDetails;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -77,7 +80,19 @@ class CustomerController extends Controller
     }
 
     function dashboard(){
-        return view('front.pages.dashboard');
+        $total_order = Order::where('SalseCustomer_IDNo', Auth::guard('customer')
+            ->user()->Customer_SlNo)->where('sales_from', 'web')->where('DeletedTime', null)
+            ->where('DeletedBy', null)->count();
+        $p_orders = Order::where('SalseCustomer_IDNo', Auth::guard('customer')
+            ->user()->Customer_SlNo)->where('sales_from', 'web')->where('status', 'p')->where('DeletedTime', null)
+            ->where('DeletedBy', null)->count();
+        $a_orders = Order::where('SalseCustomer_IDNo', Auth::guard('customer')
+            ->user()->Customer_SlNo)->where('sales_from', 'web')->where('status', 'a')->where('DeletedTime', null)
+            ->where('DeletedBy', null)->count();
+        $c_orders = Order::where('SalseCustomer_IDNo', Auth::guard('customer')
+            ->user()->Customer_SlNo)->where('sales_from', 'web')->where('status', 'd')->where('DeletedTime', null)
+            ->where('DeletedBy', null)->count();
+        return view('front.pages.dashboard',compact('total_order','p_orders','a_orders','c_orders'));
     }
 
     function updateCustomer(Request $request){
@@ -182,7 +197,43 @@ class CustomerController extends Controller
     }
 
     function allOrders(){
-        return view('front.pages.all_orders');
+        $query = request('status');
+
+        $sql_query = Order::select('SaleMaster_SlNo','SaleMaster_InvoiceNo','SaleMaster_TotalSaleAmount',
+        'SaleMaster_Description', 'AddTime','status')
+        ->where('SalseCustomer_IDNo',Auth::guard('customer')->user()->Customer_SlNo)
+        ->where('sales_from','web')
+        ->where('DeletedTime',null)
+        ->where('DeletedBy',null)
+        ;
+        $status = '';
+        if($query == 'pending'){
+            $status = 'p';
+        }elseif($query == 'confirmed'){
+            $status = 'a';
+        }elseif($query == 'cancel'){
+            $status = 'd';
+        }else {
+          $status = null;
+        };
+        if($status){
+            $sql_query = $sql_query->where('status',$status);
+        }
+        $allorders = $sql_query->latest('SaleMaster_SlNo', 'asc')->simplePaginate(20);
+
+        $total_order = Order::where('SalseCustomer_IDNo', Auth::guard('customer')
+        ->user()->Customer_SlNo)->where('sales_from', 'web')->where('DeletedTime', null)
+            ->where('DeletedBy', null)->count();
+        $p_orders = Order::where('SalseCustomer_IDNo', Auth::guard('customer')
+        ->user()->Customer_SlNo)->where('sales_from', 'web')->where('status','p')->where('DeletedTime', null)
+            ->where('DeletedBy', null)->count();
+        $a_orders = Order::where('SalseCustomer_IDNo', Auth::guard('customer')
+        ->user()->Customer_SlNo)->where('sales_from', 'web')->where('status','a')->where('DeletedTime', null)
+            ->where('DeletedBy', null)->count();
+        $c_orders = Order::where('SalseCustomer_IDNo', Auth::guard('customer')
+        ->user()->Customer_SlNo)->where('sales_from', 'web')->where('status','d')->where('DeletedTime', null)
+            ->where('DeletedBy', null)->count();
+        return view('front.pages.all_orders',compact('allorders','total_order','p_orders','a_orders','c_orders'));
     }
 
 
@@ -190,6 +241,70 @@ class CustomerController extends Controller
     function userLogout(){
         Auth::guard('customer')->logout();
         return redirect()->route('customer.login')->with('success',"You are logout");
+    }
+
+    public function destroy_order($id){
+        try{
+            $sales_master = Order::where('SaleMaster_SlNo', $id)->firstOrFail();
+            if ($sales_master->status != 'p') {
+                return response()->json([
+                    'status' => true,
+                    'message' => 'You cannot delete this order.'
+                ]);
+            }
+            // $sales_master->update([
+            //     'DeletedBy' => Auth::guard('customer')->user()->Customer_SlNo,
+            //     'DeletedTime' => now()
+            // ]);
+
+            $sales_master->DeletedBy = Auth::guard('customer')->user()->Customer_SlNo;
+            $sales_master->DeletedTime = now();
+            $sales_master->save();
+            OrderDetails::where('SaleMaster_IDNo', $sales_master->SaleMaster_SlNo)->update([
+                'DeletedBy' => Auth::guard('customer')->user()->Customer_SlNo,
+                'DeletedTime' => now()
+            ]);
+            return response()->json([
+                'status' => true,
+                'd-message' => null,
+                'message' => "Order Deleted Successfully!"
+            ]);
+        }catch(Exception $e){
+            return response()->json([
+                'status' => false,
+                'd-message' => $e->getMessage(),
+                'message' => "There is a problem"
+            ]);
+        }
+    }
+
+    public function order_invoice($id){
+
+
+        $orders = Order::with(['customer'=>function($query){
+            $query->select('Customer_SlNo','Customer_Code','Customer_Name','Customer_Mobile','Customer_Address','Customer_Email');
+        },'orderDetails'=>function($q){
+            $q->select('SaleDetails_SlNo','SaleMaster_IDNo','Product_IDNo','size_id','SaleDetails_TotalQuantity','SaleDetails_Rate','SaleDetails_TotalAmount');
+        },'orderDetails.product','orderDetails.size'])->select('SaleMaster_SlNo','status','AddTime','SaleMaster_SubTotalAmount','SaleMaster_Freight','SaleMaster_TotalSaleAmount','SalseCustomer_IDNo','SaleMaster_InvoiceNo')->where('SaleMaster_SlNo',$id)->firstOrFail();
+        
+        
+
+        // return response()->json($orders);
+
+        $total_order = Order::where('SalseCustomer_IDNo', Auth::guard('customer')
+            ->user()->Customer_SlNo)->where('sales_from', 'web')->where('DeletedTime', null)
+            ->where('DeletedBy', null)->count();
+        $p_orders = Order::where('SalseCustomer_IDNo', Auth::guard('customer')
+            ->user()->Customer_SlNo)->where('sales_from', 'web')->where('status', 'p')->where('DeletedTime', null)
+            ->where('DeletedBy', null)->count();
+        $a_orders = Order::where('SalseCustomer_IDNo', Auth::guard('customer')
+            ->user()->Customer_SlNo)->where('sales_from', 'web')->where('status', 'a')->where('DeletedTime', null)
+            ->where('DeletedBy', null)->count();
+        $c_orders = Order::where('SalseCustomer_IDNo', Auth::guard('customer')
+            ->user()->Customer_SlNo)->where('sales_from', 'web')->where('status', 'd')->where('DeletedTime', null)
+            ->where('DeletedBy', null)->count();
+
+        return view('front.pages.invoice',compact('orders','total_order','p_orders','a_orders','c_orders'));
     }
 
 

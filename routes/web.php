@@ -1,9 +1,4 @@
 <?php
-
-use App\Http\Controllers\admin\AuthenticationController;
-use App\Http\Controllers\admin\DashboardController;
-use App\Http\Controllers\admin\SettingController;
-use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\frontend\CartController;
 use App\Http\Controllers\frontend\CustomerController;
 use App\Http\Controllers\frontend\HomeController;
@@ -14,6 +9,12 @@ use Illuminate\Support\Facades\Route;
 
 
 // Customer Authentication
+
+
+
+
+
+
 Route::group(['middleware' => 'guest:customer'], function () {
     Route::get('/customer/login', [CustomerController::class, 'loginCustomer'])->name('customer.login');
     Route::post('/customer/login', [CustomerController::class, 'loginCheck'])->name('customer.login.process');
@@ -21,20 +22,26 @@ Route::group(['middleware' => 'guest:customer'], function () {
     Route::post('/customer/register', [CustomerController::class, 'customerRegistration'])->name('customer.register.store');
 });
 
-
-
-Route::get('/',[HomeController::class,'index'])->name('home');
-Route::get('/product-detail/{slug}',[HomeController::class,'getProductDetail'])->name('get_product_detail');
-Route::get('/checkout-page',[HomeController::class,'checkoutPage'])->name('checkout_page');
-Route::post('/store-order',[HomeController::class,'storeOrder'])->name('store_order');
-
-
 Route::post('/add-to-cart',[CartController::class,'add'])->name('cart.add');
 Route::post('/update-to-cart',[CartController::class,'update'])->name('cart.updat');
 Route::post('/delete-to-cart',[CartController::class,'remove'])->name('cart.delete');
 Route::get('/get-cart-data',[CartController::class,'get_cart_data'])->name('cart.get');
 Route::get('/cart-clear',[CartController::class,'clearCart'])->name('cart.clear');
 
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/product-detail/{slug}', [HomeController::class, 'getProductDetail'])->name('get_product_detail');
+Route::get('/checkout-page', [HomeController::class, 'checkoutPage'])->name('checkout_page');
+Route::post('/store-order', [HomeController::class, 'storeOrder'])->name('store_order');
+
+Route::group(['middleware' => 'auth:customer'], function () {
+    Route::get('/profile', [CustomerController::class, 'dashboard'])->name('dashboard');
+    Route::post('/profile', [CustomerController::class, 'updateCustomer'])->name('profile.update');
+    Route::get('/all-orders', [CustomerController::class, 'allOrders'])->name('customer.all.order');
+    Route::post('/delete-orders/{id}', [CustomerController::class, 'destroy_order'])->name('customer.order.delete');
+    Route::get('/show-order-invoice/{id}', [CustomerController::class, 'order_invoice'])->name('customer.order.invoice');
+
+    Route::get('/customer-logout', [CustomerController::class, 'userLogout'])->name('customer.logout');
+});
 
 
 // Authentication
@@ -56,12 +63,7 @@ Route::get('/clear-all', function () {
 // Route::get('/profile', [CustomerController::class, 'profile'])->name('dashboard');
 
 // Customer Authentication
-Route::group(['middleware' => 'auth:customer'], function () {
-    Route::get('/profile', [CustomerController::class, 'dashboard'])->name('dashboard');
-    Route::post('/profile', [CustomerController::class, 'updateCustomer'])->name('profile.update');
-    Route::get('/all-orders', [CustomerController::class, 'allOrders'])->name('customer.all.order');
-    Route::get('/customer-logout', [CustomerController::class, 'userLogout'])->name('customer.logout');
-});
+
 
 
 

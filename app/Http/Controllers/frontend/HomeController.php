@@ -12,6 +12,7 @@ use App\Models\OrderDetails;
 use App\Models\Product;
 use App\Models\Review;
 use App\Models\Slider;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -136,13 +137,13 @@ class HomeController extends Controller
             'order_notes.max' => 'Order notes সর্বোচ্চ ২০০ অক্ষরের হতে পারবে।',
         ]);
 
-        // try{
+        try{
             DB::beginTransaction();
             $cart = session('cart', []);
             $count = count($cart);
             $subtotal = array_sum(array_map(fn($item) => $item['price'] * $item['qty'], $cart));
             if ($count < 1) {
-                return redirect()->route('home');
+                return redirect()->back()->with('error',"Your Cart Is Empty...😀");
             }
 
             $phone = $request->input('customer_mobile');
@@ -221,15 +222,15 @@ class HomeController extends Controller
 
             DB::commit();
             session()->forget('cart');
-            return redirect()->back();
+            return redirect()->route('dashboard')->with('success',"Order placed successfully!");
 
-        // }catch(Exception $e){
+        }catch(Exception $e){
 
-        //     DB::rollBack();
+            DB::rollBack();
 
-        //     return redirect()->route('home');
+            return redirect()->route('home')->with($e->getMessage());
 
-        // }
+        }
     }
 
 

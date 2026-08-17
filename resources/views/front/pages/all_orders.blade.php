@@ -7,12 +7,14 @@
         .orders-page {
             width: 100%;
         }
+
         .orders-page .pg-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
             margin-bottom: 15px;
         }
+
         .orders-page .pg-title {
             display: flex;
             align-items: center;
@@ -21,16 +23,19 @@
             font-size: 15px;
             font-weight: 700;
         }
+
         .orders-page .pg-title-bar {
             width: 3px;
             height: 16px;
             background: var(--color-second);
             border-radius: 1px;
         }
+
         .orders-page .o-date {
             color: var(--color-second);
             font-size: 11px;
         }
+
         .orders-page .stat-row {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -52,17 +57,20 @@
             transition: .15s ease;
             box-sizing: border-box;
         }
+
         .orders-page .stat-card:hover {
             border-color: #ddd;
             box-shadow: 0 2px 7px rgba(0, 0, 0, .06);
             text-decoration: none;
         }
+
         /* Active card */
         .orders-page .stat-card.s-active {
             border-color: var(--color-second);
             background: #fff8f6;
             box-shadow: inset 3px 0 0 var(--color-second);
         }
+
         .orders-page .stat-ico {
             width: 30px;
             height: 30px;
@@ -98,6 +106,7 @@
             background: #fff0f0;
             color: #e60000;
         }
+
         .orders-page .stat-v {
             font-size: 19px;
             line-height: 17px;
@@ -111,6 +120,7 @@
             font-size: 9px;
             line-height: 11px;
         }
+
         .orders-page .tbl-card {
             width: 100%;
             background: #fff;
@@ -119,6 +129,7 @@
             overflow: hidden;
             box-shadow: 0 1px 3px rgba(0, 0, 0, .04);
         }
+
         .orders-page .tbl-card table {
             width: 100%;
             margin: 0;
@@ -182,8 +193,8 @@
 
 
         /* =========================================================
-       COLUMN WIDTHS
-       ========================================================= */
+           COLUMN WIDTHS
+           ========================================================= */
 
         .orders-page .tbl-card th:nth-child(1),
         .orders-page .tbl-card td:nth-child(1) {
@@ -222,8 +233,8 @@
 
 
         /* =========================================================
-       ORDER CODE
-       ========================================================= */
+           ORDER CODE
+           ========================================================= */
 
         .orders-page .o-code {
             color: #e60000;
@@ -244,8 +255,8 @@
 
 
         /* =========================================================
-       STATUS BADGE
-       ========================================================= */
+           STATUS BADGE
+           ========================================================= */
 
         .orders-page .sbadge {
             display: inline-flex;
@@ -273,19 +284,16 @@
         .orders-page .sbadge-dot {
             width: 5px;
             height: 5px;
-
             border-radius: 50%;
-
             display: inline-block;
-
-            background: #e60000;
+            background: red;
         }
 
 
         /* Pending */
 
         .orders-page .s-pending {
-            color: #e60000;
+            color: #0002ff;
 
             background: #fff9e8;
         }
@@ -321,14 +329,13 @@
 
         .orders-page .s-cancelled {
             color: #e60000;
-
             background: #fff0f0;
         }
 
 
         /* =========================================================
-       ACTION BUTTONS
-       ========================================================= */
+           ACTION BUTTONS
+           ========================================================= */
 
         .orders-page .act-wrap {
             display: flex;
@@ -396,8 +403,8 @@
 
 
         /* =========================================================
-       PAGINATION
-       ========================================================= */
+           PAGINATION
+           ========================================================= */
 
         .orders-page .pg-footer {
             margin-top: 12px;
@@ -429,8 +436,8 @@
 
 
         /* =========================================================
-       RESPONSIVE
-       ========================================================= */
+           RESPONSIVE
+           ========================================================= */
 
         @media (max-width: 1000px) {
 
@@ -506,24 +513,26 @@
                 </div>
                 <div class="stat-row">
                     <!-- Total -->
-                    <a href="{{ route('customer.all.order', ['status' => 'all']) }}" class="stat-card {{ request('status') === 'all' ? ' s-active' : '' }}">
+                    <a href="{{ route('customer.all.order', ['status' => 'all']) }}"
+                        class="stat-card {{ request('status') === 'all' ? ' s-active' : '' }}">
                         <div class="stat-ico ico-total">
                             <i class="fa-solid fa-bag-shopping"></i>
                         </div>
                         <div>
-                            <div class="stat-v">6</div>
+                            <div class="stat-v">{{ $total_order ?? 0 }}</div>
                             <div class="stat-l">Total</div>
                         </div>
                     </a>
-                    <a href="{{ route('customer.all.order', ['status' => 'pending']) }}" class="stat-card {{ request('status') === 'pending' ? ' s-active' : '' }}">
+                    <a href="{{ route('customer.all.order', ['status' => 'pending']) }}"
+                        class="stat-card {{ request('status') === 'pending' ? ' s-active' : '' }}">
                         <div class="stat-ico ico-pending">
                             <i class="fa-solid fa-clock"></i>
                         </div>
                         <div>
-                            <div class="stat-v">5</div>
+                            <div class="stat-v">{{ $p_orders ?? 0 }}</div>
                             <div class="stat-l">Pending</div>
                         </div>
-                    </a> 
+                    </a>
                     <!-- Processing -->
                     {{-- <a href="{{ route('customer.all.order', ['status' => 'processing']) }}"
                         class="stat-card {{ request('status') === 'processing' ? ' s-active' : '' }}">
@@ -536,29 +545,31 @@
                         </div>
                     </a> --}}
                     <!-- Delivered -->
-                    <a href="{{ route('customer.all.order', ['status' => 'confirmed']) }}" class="stat-card {{ request('status') === 'confirmed' ? ' s-active' : '' }}">
+                    <a href="{{ route('customer.all.order', ['status' => 'confirmed']) }}"
+                        class="stat-card {{ request('status') === 'confirmed' ? ' s-active' : '' }}">
                         <div class="stat-ico ico-complete">
                             <i class="fa-solid fa-calendar-check"></i>
                         </div>
                         <div>
-                            <div class="stat-v">1</div>
+                            <div class="stat-v">{{ $a_orders ?? 0 }}</div>
                             <div class="stat-l">Confirmed</div>
                         </div>
                     </a>
                     <!-- Cancelled -->
-                    <a href="{{ route('customer.all.order', ['status' => 'cancel']) }}" class="stat-card {{ request('status') === 'cancel' ? ' s-active' : '' }}">
+                    <a href="{{ route('customer.all.order', ['status' => 'cancel']) }}"
+                        class="stat-card {{ request('status') === 'cancel' ? ' s-active' : '' }}">
                         <div class="stat-ico ico-cancel">
                             <i class="fa-solid fa-arrow-rotate-left"></i>
                         </div>
                         <div>
-                            <div class="stat-v">0</div>
+                            <div class="stat-v">{{ $c_orders ?? 0 }}</div>
                             <div class="stat-l">Cancelled</div>
                         </div>
                     </a>
                 </div>
                 <!-- =========================
-                     ORDERS TABLE
-                ========================== -->
+                         ORDERS TABLE
+                    ========================== -->
 
                 <div class="tbl-card">
                     <table class="table table-borderless mb-0">
@@ -578,90 +589,77 @@
 
 
                         <tbody>
-                            <!-- Order 1 -->
-                            <tr>
-                                <td>
-                                    <span class="o-code">
-                                        SS47820478
-                                    </span>
-                                </td>
-                                <td>
-                                    <span class="o-date">
-                                        Apr 25, 2026
-                                    </span>
-                                </td>
-                                <td>
-                                    ৳450.00
-                                </td>
-                                <td>
-                                    Cash on Delivery
-                                </td>
-                                <td>
-                                    <span class="sbadge s-delivered">
-                                        <span class="sbadge-dot"></span>
-                                        delivered
-                                    </span>
-                                </td>
-                                <td>
-                                    N/A
-                                </td>
-                                <td>
-                                    <div class="act-wrap">
-                                        <a href="#" class="act-btn a-view" title="View">
-                                            <i class="fa fa-eye"></i>
-                                        </a>
-                                        <button type="button" class="act-btn a-del" title="Delete">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
+                            @foreach ($allorders as $order)
+                                <!-- Order 1 -->
+                                <tr>
+                                    <td>
+                                        <span class="o-code">
+                                            {{ $order->SaleMaster_InvoiceNo }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="o-date">
+                                            <!-- Apr 25, 2026 -->
+                                            {{ date_format(date_create($order->AddTime), 'd M Y') }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        ৳{{ $order->SaleMaster_TotalSaleAmount }}
+                                    </td>
+                                    <td>
+                                        Cash on Delivery
+                                    </td>
+                                    <td>
+                                        @if($order->status == 'p')
+                                            <span class="sbadge s-processing">
+                                                <span class="sbadge-dot"></span>
+                                                Pending
+                                            </span>
+                                        @elseif($order->status == 'a')
+                                            <span class="sbadge s-delivered">
+                                                <span class="sbadge-dot"></span>
+                                                Confirmed
+                                            </span>
+
+                                        @else
+                                            <span class="sbadge s-cancelled">
+                                                <span class="sbadge-dot"></span>
+                                                Cancelled
+                                            </span>
+                                        @endif
+
+                                    </td>
+                                    <td>
+                                        {{ $order->SaleMaster_Description }}
+                                    </td>
+                                    <td>
+                                        <div class="act-wrap">
+                                            <a href="{{ route('customer.order.invoice', ['id' => $order->SaleMaster_SlNo]) }}" class="act-btn a-view" title="View">
+                                                <i class="fa fa-eye"></i>
+                                            </a>
+                                            @if($order->status == 'p')
+                                                <button type="button"
+                                                    onclick="deleteOrder('{{ route('customer.order.delete', ['id' => $order->SaleMaster_SlNo]) }}')"
+                                                    class="act-btn a-del" title="Delete">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            @endif
+                                        </div>
+                                    </td>
+                                </tr>
+
+                            @endforeach
 
 
-                            <!-- Order 2 -->
-                            <tr>
-                                <td>
-                                    <span class="o-code">
-                                        SS78367462
-                                    </span>
-                                </td>
-                                <td>
-                                    <span class="o-date">
-                                        Apr 25, 2026
-                                    </span>
-                                </td>
-                                <td>
-                                    ৳3,690.00
-                                </td>
-                                <td>
-                                    Cash on Delivery
-                                </td>
-                                <td>
-                                    <span class="sbadge s-pending">
-                                        <span class="sbadge-dot"></span>
-                                        pending
-                                    </span>
-                                </td>
-                                <td>
-                                    N/A
-                                </td>
-                                <td>
-                                    <div class="act-wrap">
-                                        <a href="#" class="act-btn a-view" title="View">
-                                            <i class="fa fa-eye"></i>
-                                        </a>
-                                        <button type="button" class="act-btn a-del" title="Delete">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
 
 
                         </tbody>
 
                     </table>
 
+                </div>
+                <div class="d-flex justify-content-end mt-3">
+                    {{ $allorders->links() }}
                 </div>
 
             </div>
@@ -675,6 +673,52 @@
 
 @push('script')
     <script>
+        function deleteOrder(url) {
 
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+
+                if (result.isConfirmed) {
+                    $.ajax({
+                        method: 'post',
+                        url: url,
+                        headers: {
+                            'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                        },
+                        success: function (res) {
+                            if (res.status) {
+                                // Swal.fire({
+                                //     title: "Deleted!",
+                                //     text: res.message,
+                                //     icon: "success"
+                                // }).then(() => {
+                                //     location.reload();
+                                // });
+
+                                location.reload();
+                            }{
+                                Swal.fire({
+                                    title: "Warning!",
+                                    text: res.message,
+                                    icon: "success"
+                                })
+                            }
+                        },
+                        error: function (res) {
+                            console.log(res);
+                        }
+                    });
+
+                }
+
+            });
+        }
     </script>
 @endpush

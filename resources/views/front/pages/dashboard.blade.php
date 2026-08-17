@@ -12,7 +12,6 @@
         .dash-main {
             flex: 1;
             min-width: 0;
-            min-height: 100vh;
             background: #f5f4f0;
             padding: 18px 20px;
             box-sizing: border-box;
@@ -115,8 +114,8 @@
             border-bottom: 1px solid #ddd;
             font-size: 14px;
             font-weight: 600;
-            color: #222;
-            background: #fff;
+            color: #fff;
+            background: var(--nav-color);
         }
 
         .account-body {

@@ -335,13 +335,11 @@
         .shipment-option {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-
+            justify-content: end;
             width: 100%;
-
             margin-bottom: 7px;
-
             font-size: 14px;
+            gap: 10px;
         }
 
         .shipment-option:last-child {
@@ -350,6 +348,7 @@
 
         .shipment-option label {
             cursor: pointer;
+    min-width: 130px;
         }
 
         .shipment-option input {
@@ -463,7 +462,7 @@
                                     আপনার নাম
                                     <span class="required">*</span>
                                 </label>
-                                <input type="text" id="customer_name" value="{{ old('customer_name') }}" name="customer_name" class="checkout-input @error('customer_name') is-invalid  @enderror"
+                                <input type="text" id="customer_name" value="{{ old('customer_name', optional(Auth::guard("customer")->user())->Customer_Name) }}" name="customer_name" class="checkout-input @error('customer_name') is-invalid  @enderror"
                                     placeholder="আপনার নাম লিখুন">
                                 @error('customer_name')
                                     <strong class="error_message">{{ $message }}</strong>
@@ -475,7 +474,7 @@
                                     মোবাইল নাম্বার
                                     <span class="required">*</span>
                                 </label>
-                                <input type="tel" id="customer_mobile" value="{{ old('customer_mobile') }}" name="customer_mobile" class="checkout-input  @error('customer_mobile') is-invalid  @enderror"
+                                <input type="tel" id="customer_mobile" value="{{ old('customer_mobile', optional(Auth::guard("customer")->user())->Customer_Mobile) }}" name="customer_mobile" class="checkout-input  @error('customer_mobile') is-invalid  @enderror"
                                     placeholder="মোবাইল নাম্বার লিখুন">
                                 @error('customer_mobile')
                                     <strong class="error_message">{{ $message }}</strong>
@@ -487,7 +486,7 @@
                                     সম্পূর্ণ ঠিকানা
                                     <span class="required">*</span>
                                 </label>
-                                <input type="text" id="customer_address" value="{{ old('customer_address') }}" name="customer_address" class="checkout-input  @error('customer_address') is-invalid  @enderror"
+                                <input type="text" id="customer_address" value="{{ old('customer_address', optional(Auth::guard("customer")->user())->Customer_Address) }}" name="customer_address" class="checkout-input  @error('customer_address') is-invalid  @enderror"
                                     placeholder="গ্রামঃ , থানাঃ , জেলার নাম লিখুন">
                                 @error('customer_address')
                                     <strong class="error_message">{{ $message }}</strong>
@@ -556,21 +555,23 @@
                                 <div class="shipment-row">
                                     {{-- Shipment Title --}}
                                     <div class="shipment-title">
-                                        Shipment
+                                        Shipping Charge
                                     </div>
                                     {{-- Shipment Options --}}
                                     <div class="shipment-options">
                                         <div class="shipment-option">
+                                            <input type="radio" name="shipment" id="inside_dhaka" value="{{ $setting->insite_dhaka }}" checked>
                                             <label for="inside_dhaka">
                                                 ঢাকার ভিতর: <strong>{{ $setting->insite_dhaka }}৳</strong>
                                             </label>
-                                            <input type="radio" name="shipment" id="inside_dhaka" value="{{ $setting->insite_dhaka }}" checked>
+
                                         </div>
                                         <div class="shipment-option">
+                                            <input type="radio" name="shipment" id="outside_dhaka" value="{{ $setting->outsite_dhaka }}">
                                             <label for="outside_dhaka">
                                                 ঢাকার বাহিরে: <strong>{{ $setting->outsite_dhaka }}৳</strong>
                                             </label>
-                                            <input type="radio" name="shipment" id="outside_dhaka" value="{{ $setting->outsite_dhaka }}">
+
                                         </div>
                                     </div>
                                 </div>

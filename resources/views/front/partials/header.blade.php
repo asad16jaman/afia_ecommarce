@@ -55,12 +55,18 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-black icon-circle" href="{{ route('customer.login') }}">
+                        <a class="nav-link text-black icon-circle" href="{{ Auth::guard('customer')->check() ? route('dashboard') : route('customer.login') }}">
                             <div class="d-flex align-items-center  flex-column flex-md-row gap-lg-2">
                                 <div class="nav_cart_icon"><i class="bi bi-person"></i></div>
                                 <div class="nav_cart_text text-left d-none d-lg-block">
                                     <h5>Account</h5>
-                                    <span>Login And Register</span>
+                                    @auth('customer')
+                                        <span>Profile</span>
+                                    @else
+                                        
+                                        <span>Login And Register</span>
+                                    @endauth
+                                    
                                 </div>
                             </div>
                         </a>

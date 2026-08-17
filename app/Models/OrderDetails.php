@@ -19,7 +19,11 @@ class OrderDetails extends Model
     }
     public function product()
     {
-        return $this->belongsTo(Product::class, 'Product_IDNo', 'Product_SlNo')->select('Product_SlNo', 'Product_Code', 'Product_Name', 'Product_Purchase_Rate', 'Product_SellingPrice');
+        return $this->belongsTo(Product::class, 'Product_IDNo', 'Product_SlNo')->select('Product_SlNo', 'Product_Code', 'Product_Name', 'Product_Purchase_Rate','Product_MinimumSellingPrice','discount', 'Product_SellingPrice');
+    }
+
+    public function size(){
+        return $this->belongsTo(Size::class,'size_id','Size_SlNo')->select('Size_Name','Size_SlNo');
     }
 
 }

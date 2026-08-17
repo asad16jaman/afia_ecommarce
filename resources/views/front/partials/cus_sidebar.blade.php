@@ -13,7 +13,6 @@
 
 .dash-shell {
     width: 100%;
-    min-height: 100vh;
     display: flex;
     align-items: stretch;
     background: #f5f4f0;
@@ -21,7 +20,8 @@
 .dash-sidebar {
     width: var(--sidebar-width);
     min-width: var(--sidebar-width);
-    height: 100vh;
+    height: 100%;
+    min-height: 420px;
     background: var(--nav-color);
     border-right: 1px solid var(--sidebar-border);
     display: flex;
@@ -167,7 +167,7 @@
     align-items: center;
     justify-content: center;
     background: #ededed;
-    color: #888;
+    color: var(--nav-color);
     border-radius: 10px;
     font-size: 9px;
     font-weight: 700;
@@ -177,6 +177,7 @@
 
 .sb-link:hover .sb-badge{
     background:#000;
+    color: #fff;
 }
 
 .sb-link.active .sb-badge {
@@ -321,7 +322,7 @@
 
             <a href="{{ route('dashboard') }}" class="sb-link">
                 <span class="sb-link-l">
-                    <i class="bi bi-person"></i> Profile
+                    <i class="bi bi-person-gear"></i> Profile
                 </span>
             </a>
         </div>
@@ -333,14 +334,14 @@
                 <span class="sb-link-l">
                     <i class="bi bi-list-ul"></i> All Orders
                 </span>
-                <span class="sb-badge">{{--$counts->total ?? 0--}}</span>
+                <span class="sb-badge">{{ $total_order ?? 0 }}</span>
             </a>
 
             <a href="{{ route('customer.all.order', ['status' => 'pending']) }}" class="sb-link {{ request('status') === 'pending' ? 'active' : '' }}">
                 <span class="sb-link-l">
                     <i class="bi bi-clock"></i> Pending
                 </span>
-                <span class="sb-badge">{{--$counts->pending ?? 0--}}</span>
+                <span class="sb-badge">{{ $p_orders ?? 0 }}</span>
             </a>
 
            {{-- <a href="{{ route('customer.all.order', ['status' => 'processing']) }}"
@@ -356,14 +357,14 @@
                 <span class="sb-link-l">
                     <i class="bi bi-check-circle"></i> Confirmed
                 </span>
-                <span class="sb-badge">{{--$counts->completed ?? 0--}}</span>
+                <span class="sb-badge">{{ $a_orders ?? 0 }}</span>
             </a>
 
             <a href="{{ route('customer.all.order', ['status' => 'cancel']) }}" class="sb-link {{request('status') === 'cancel' ? 'active' : ''}}">
                 <span class="sb-link-l">
                     <i class="bi bi-x-circle"></i> Cancelled
                 </span>
-                <span class="sb-badge">{{$counts->cancel ?? 0}}</span>
+                <span class="sb-badge">{{ $c_orders ?? 0 }}</span>
             </a>
             <a href="{{ route('customer.logout') }}" class="sb-link list-group-item list-group-item-action">
                 <span class="sb-link-l">
