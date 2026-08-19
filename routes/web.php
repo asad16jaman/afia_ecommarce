@@ -5,15 +5,7 @@ use App\Http\Controllers\frontend\HomeController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
-
-
-
 // Customer Authentication
-
-
-
-
-
 
 Route::group(['middleware' => 'guest:customer'], function () {
     Route::get('/customer/login', [CustomerController::class, 'loginCustomer'])->name('customer.login');
@@ -29,9 +21,14 @@ Route::get('/get-cart-data',[CartController::class,'get_cart_data'])->name('cart
 Route::get('/cart-clear',[CartController::class,'clearCart'])->name('cart.clear');
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/shop', [HomeController::class, 'allproducts'])->name('all.products');
+Route::get('/get-product',[HomeController::class,'getProducts'])->name('get.products');
 Route::get('/product-detail/{slug}', [HomeController::class, 'getProductDetail'])->name('get_product_detail');
 Route::get('/checkout-page', [HomeController::class, 'checkoutPage'])->name('checkout_page');
 Route::post('/store-order', [HomeController::class, 'storeOrder'])->name('store_order');
+Route::get('/search-get-product',[HomeController::class,'getSearchProducts'])->name('get_search_product');
+
+
 
 Route::group(['middleware' => 'auth:customer'], function () {
     Route::get('/profile', [CustomerController::class, 'dashboard'])->name('dashboard');
@@ -61,26 +58,18 @@ Route::get('/clear-all', function () {
 
 
 // Route::get('/profile', [CustomerController::class, 'profile'])->name('dashboard');
-
 // Customer Authentication
 
 
-
-
-
 // Route::group(['middleware' => 'auth'], function () {
-
 //     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 //     Route::post('/logout', [AuthenticationController::class, 'logout'])->name('logout');
-
 //     // Update Profile
 //     Route::get('/profile', [AuthenticationController::class, 'editProfile'])->name('profile.edit');
 //     Route::post('/profile/update', [AuthenticationController::class, 'updateProfile'])->name('profile.update');
-
 //     // Change Password
 //     Route::get('/change-password', [AuthenticationController::class, 'showChangePasswordForm'])->name('password.change');
 //     Route::post('/change-password', [AuthenticationController::class, 'updatePassword'])->name('password.update');
-
 //     // Users
 //     Route::get('/users', [UserController::class, 'index'])->name('users.index');
 //     Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
@@ -89,14 +78,10 @@ Route::get('/clear-all', function () {
 //     Route::put('/users/update/{id}', [UserController::class, 'update'])->name('users.update');
 //     Route::put('/users/update-status/{id}', [UserController::class, 'updateStatus'])->name('users.updateStatus');
 //     Route::delete('/users/destroy/{id}', [UserController::class, 'destroy'])->name('users.destroy');
-
 //     // User Access
 //     Route::put('/user/{user}/access', [UserController::class, 'updateAccess'])->name('user.access.update');
-
-  
 
 //     // settings
 //     Route::get('/setting', [SettingController::class, 'setting'])->name('setting');
 //     Route::put('/setting', [SettingController::class, 'update'])->name('setting.update');
-
 // });

@@ -182,7 +182,6 @@ class CustomerController extends Controller
                 return back()->with('error', "Current Password Not Match");
             }
         }
-
         $data = $request->only(['Customer_Name','Customer_Email','Customer_Mobile','Customer_Address']);
 
         if ($request->filled('password')) {
@@ -191,6 +190,17 @@ class CustomerController extends Controller
             }
             $data['password'] = Hash::make($request->password);
         }
+
+        if ($request->hasFile('web_profile')) {
+            if ($customer->web_profile && file_exists(public_path($customer->web_profile))) {
+                unlink(public_path($customer->web_profile));
+            }
+            $imageFile = $request->file('web_profile');
+            $imageName = $this->uploadImg($imageFile, 'uploads/profile');
+            $imagePath = 'uploads/profile/' . $imageName;
+        }
+        $data['web_profile'] = $imagePath;
+
         Customer::where('Customer_SlNo', $customer->Customer_SlNo)->update($data);
         return back()->with('success',"Successfully Updated Your Profile.");
         

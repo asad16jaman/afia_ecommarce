@@ -43,25 +43,31 @@ function proceedProductSize(event) {
     addToCart(product, size, 1);
 }
 
-function proceedProductSizeByNow(product, event) {
-    // const button = event.currentTarget;
-    // const card = button.closest('.product-card');
-    // const selectedSize = card.querySelector(
-    //     '.product-size-overlay input[type="radio"]:checked'
-    // );
-    // if (!selectedSize) {
-    //     alert('Please select a size');
-    //     return;
-    // }
-    // const sizeId = selectedSize.value;
-    // const sizename = selectedSize.dataset.size_name;
-    // let size = {
-    //     sizeid: sizeId, sizename: sizename
-    // }
-    // const product = JSON.parse(
-    //     card.querySelector('.addToCart_css').dataset.product
-    // );
-    // card.querySelector('.product-size-overlay')
-    //     .classList.remove('show'); 
+function proceedProductSizeByNow(event) {
+
+
+    const button = event.currentTarget;
+    const card = button.closest(".product-card");
+    const selectedSize = card.querySelector(
+        '.product-size-overlay input[type="radio"]:checked',
+    );
+    if (!selectedSize) {
+        alert("Please select a size");
+        return;
+    }
+    const sizeId = selectedSize.value;
+    const sizename = selectedSize.dataset.size_name;
+    let size = {
+        sizeid: sizeId,
+        sizename: sizename,
+    };
+    const product = JSON.parse(
+        card.querySelector(".data_container").dataset.thiscard,
+    );
+
+    card.querySelector(".product-size-overlay").classList.remove("show");
+
+    byNow(product, size, 1);
+
 
 } 

@@ -1,5 +1,5 @@
 @extends('front.layout.app')
-@section('title', 'Home Page')
+@section('title', 'Customer Register')
 @push('style')
     <style>
         .register-section {

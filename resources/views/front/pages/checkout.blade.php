@@ -541,7 +541,7 @@
                                                         Size: {{ $c_item['size_name'] }}
                                                     </div>
                                                     <div class="cart-item-price">
-                                                        {{ $c_item['price'] }} X {{ $c_item['qty'] }} = {{ $c_item['total_price'] }}
+                                                        {{ $c_item['price'] }} X {{ $c_item['qty'] }} = {{ number_format((int) $c_item['total_price'] * (int) $c_item['qty'], 2)}}
                                                     </div>
                                                 </div>
                                             </div>
@@ -550,7 +550,7 @@
                                 </div>
                                 <div class="subtotal order-total d-flex justify-content-between py-2">
                                     <h5>Subtotal</h5>
-                                    <strong id="subtotal" data-subtotal="{{ $subtotal }}">{{ $subtotal }}</strong>
+                                    <strong id="subtotal" data-subtotal="{{ $subtotal }}">৳{{ number_format($subtotal, 2) }}</strong>
                                 </div>
                                 <div class="shipment-row">
                                     {{-- Shipment Title --}}
@@ -578,7 +578,7 @@
                                 <div class="order-total">
                                     <h5>Total</h5>
                                     <strong id="trandTotal">
-                                        ৳ {{ $subtotal + $setting->insite_dhaka }}
+                                        ৳ {{ number_format($subtotal + $setting->insite_dhaka, 2) }}
                                     </strong>
                                 </div>
                                 <input type="submit" value="Order Now" class="order-now-btn">
@@ -620,7 +620,7 @@
                                 Size: ${ob.size_name}
                             </div>
                             <div class="cart-item-price">
-                                ${ob.price} X ${ob.qty} = ${ob.total_price}
+                                ${ob.price} X ${ob.qty} = ${(ob.total_price * ob.qty).toFixed(2)}
                             </div>
                         </div>
                     </div>
@@ -634,11 +634,11 @@
                 card_code2 += createSummeryCartItem(key, item2);
             }
             $('#card_summary_item_container').html(card_code2)
-            $('#subtotal').html(ob.subtotal).attr('data-subtotal', ob.subtotal);
+            $('#subtotal').html("৳"+ob.subtotal.toFixed(2)).attr('data-subtotal', ob.subtotal);
 
             let shipping = parseInt($('input[name="shipment"]:checked').val());
             let total = parseInt(ob.subtotal) + shipping;
-            $('#trandTotal').html(total);
+            $('#trandTotal').html("৳"+total.toFixed(2));
         }
 
         function get_cart2() {
@@ -672,7 +672,8 @@
         $(document).on('change', 'input[name="shipment"]', function () {
                 let subtotal = parseFloat($('#subtotal').attr('data-subtotal')) || 0;
                 let shipping = parseFloat($(this).val()) || 0;
-                $('#trandTotal').html(subtotal + shipping);
+                let total = subtotal + shipping
+                $('#trandTotal').html("৳"+total.toFixed(2));
             });
 
     </script>

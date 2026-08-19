@@ -1,5 +1,5 @@
 @extends('front.layout.app')
-@section('title', 'Home Page')
+@section('title', 'Order Details')
 @push('style')
     <style>
     .com_content {

@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
 class HomeController extends Controller
@@ -51,31 +52,80 @@ class HomeController extends Controller
             return $el;
         });
         $products = Product::select('Product_SlNo', 'Product_Code','Product_Name', 'slug','Product_SellingPrice','Product_MinimumSellingPrice','discount','thum_image')
-        ->where('status','a')->inRandomOrder()->get();
+        ->where('status','a')->inRandomOrder()->take(20)->get();
 
         $products = $products->map(function ($el) {
             $size_wise_stock = StockHelper::getSizeWiseStock($el->Product_SlNo);
-            ;
             $current_stock = StockHelper::getProductStock($el->Product_SlNo);
-            ;
             $el->size_wise_stock = $size_wise_stock;
             $el->current_stock = $current_stock;
             return $el;
         });
-        // ->where('new_arrival','!=',1)->orwhere('popular_product', '!=',1)
         $reviews = Review::select('id','image','title')->where('status','a')->get();
-       
        return view('front.pages.home',compact('sliders','banner','categories','newArrivals','popular_roduct','products','reviews'));
     }
 
 
-    
+    public function allproducts(){
+
+        $categories = Category::select('ProductCategory_SlNo', 'ProductCategory_Name', 'image')
+        ->where('status', 'a')->get();
+        $min = Product::min('Product_MinimumSellingPrice');
+        $max = Product::max('Product_MinimumSellingPrice');
+        return view('front.pages.shop',compact('categories','max','min'));
+    }
+
+    public function getProducts(Request $request)
+    {
+        $products = Product::select(
+            'Product_SlNo',
+            'Product_Code',
+            'Product_Name',
+            'slug',
+            'Product_SellingPrice',
+            'Product_MinimumSellingPrice',
+            'discount',
+            'thum_image'
+        )->where('status', 'a')
+        ->when(!empty($request->categories), function ($query) use ($request) {
+                $query->whereIn('ProductCategory_ID', $request->categories);
+            })
+        ->when($request->filled('min'), function ($query) use ($request) {
+                $query->where(
+                    'Product_MinimumSellingPrice',
+                    '>=',
+                    $request->min
+                );
+            })
+        ->when($request->filled('max'), function ($query) use ($request) {
+                $query->where(
+                    'Product_MinimumSellingPrice',
+                    '<=',
+                    $request->max
+                );
+            })
+            ->inRandomOrder()
+            ->paginate(18);
+        $products->getCollection()->transform(function ($el) {
+            $el->size_wise_stock = StockHelper::getSizeWiseStock(
+                $el->Product_SlNo
+            );
+            $el->current_stock = StockHelper::getProductStock(
+                $el->Product_SlNo
+            );
+            return $el;
+        });
+
+        return response()->json([
+            'status' => true,
+            'products' => $products
+        ]);
+    }
 
     public function getProductDetail($slug){
         $product = Product::with(['product_images','category'=>function($q){
             $q->select('ProductCategory_SlNo','ProductCategory_Name');
         }])->where('slug',$slug)->firstOrFail();
-        // return response()->json($product);
         $r_products = Product::select('Product_SlNo', 'Product_Code', 'Product_Name', 'slug', 'Product_SellingPrice', 'Product_MinimumSellingPrice', 'discount', 'thum_image')
             ->where('status', 'a')->inRandomOrder()->get();
         $r_products = $r_products->map(function ($el) {
@@ -89,7 +139,6 @@ class HomeController extends Controller
         $product->current_stock = $ll;
         $pp = StockHelper::getSizeWiseStock($product->Product_SlNo);
         $product->size_wise_stock = $pp;
-        // return response()->json($product);
         return view('front.pages.product-detail',compact('r_products','product'));
     }
 
@@ -214,20 +263,12 @@ class HomeController extends Controller
                 $orderDetails->last_update_ip = $request->ip();
                 $orderDetails->branch_id = 1;
                 $orderDetails->save();
-
-                // $inventory = Inventory::where('product_id', $value['product_id'])->first();
-                // $inventory->sales_quantity += (int)$value['qty'];
-                // $inventory->update();
             }
-
             DB::commit();
             session()->forget('cart');
             return redirect()->route('dashboard')->with('success',"Order placed successfully!");
-
         }catch(Exception $e){
-
             DB::rollBack();
-
             return redirect()->route('home')->with($e->getMessage());
 
         }
@@ -235,7 +276,32 @@ class HomeController extends Controller
 
 
 
-   
+   public function getSearchProducts(Request $request){
+
+        $products = collect();
+
+        if ($request->filled('search')) {
+            $products = Product::select(
+                'Product_SlNo',
+                'Product_Code',
+                'Product_Name',
+                'slug',
+                'thum_image'
+            )
+                ->whereLike('Product_Name', "%". $request->search."%")
+                ->whereNull('DeletedTime')
+                ->limit(10)
+                ->get();
+        }
+       
+
+
+        return response()->json([
+            'status' => true,
+            'data' => $products
+        ]);
+
+   }
 
 
 

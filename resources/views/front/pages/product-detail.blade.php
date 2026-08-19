@@ -1,5 +1,5 @@
 @extends('front.layout.app')
-@section('title', 'Product Pages')
+@section('title', 'Product Detail Page')
 @push('style')
     <style>
 
@@ -94,17 +94,13 @@ $cart_product = [
                                                         <span class="fw-semibold">Select Size</span>
                                                         <!-- <a href="#" class="weight-guide">Weight Guide</a> -->
                                                     </div>
-                                                    @if($product->current_stock >= 1)
+                                                   
                                                         <div class="d-flex gap-2 flex-wrap" id="selected_product_size" data-selectedid="{{ $product->size_wise_stock[0]->Size_SlNo ?? '' }}" data-selected_size_name="{{ $product->size_wise_stock[0]->Size_Name ?? '' }}">
                                                             @foreach ($product->size_wise_stock as $size)
-                                                                <button class=" {{ $size->current_stock > 0 ? 'weight-btn' : 'of_stock' }} weight-btn_fun {{ $loop->index == 0 ? 'active' : '' }}" data-current_stock="{{ $size->current_stock }}" data-size="{{ $size->Size_SlNo }}" data-size_name="{{ $size->Size_Name }}">{{ $size->Size_Name }}</button>
+                                                                <button class="weight-btn weight-btn_fun {{ $loop->index == 0 ? 'active' : '' }}" data-current_stock="{{ $size->current_stock }}" data-size="{{ $size->Size_SlNo }}" data-size_name="{{ $size->Size_Name }}">{{ $size->Size_Name }}</button>
                                                             @endforeach
                                                         </div>
-                                                    @else
-                                                        <div class="d-flex gap-2 flex-wrap">
-                                                            <button class="weight-btn2">Stock out</button>
-                                                        </div>
-                                                    @endif
+                                                   
 
                                                 </div>
 
@@ -113,7 +109,7 @@ $cart_product = [
                                                         <i class="fa-solid fa-cart-plus me-1" ></i> Add to Cart
                                                     </button>
 
-                                                    <button class="detail_page_byNow" data-product='@json($cart_product)'>
+                                                    <button class="detail_page_byNow" data-product='@json($cart_product)' onclick="by_now_from_detail(event)">
                                                         <i class="fa fa-shopping-bag me-1"></i> Buy Now
                                                     </button>
                                                 </div>
@@ -373,6 +369,14 @@ $cart_product = [
             const size_name = document.getElementById('selected_product_size').dataset.selected_size_name;
             addToCart(product,{sizeid:size,sizename:size_name},1)
         }
+
+        function by_now_from_detail(event) {
+                const button = event.currentTarget;
+                const product = JSON.parse(button.dataset.product);
+                const size = document.getElementById('selected_product_size').dataset.selectedid;
+                const size_name = document.getElementById('selected_product_size').dataset.selected_size_name;
+                byNow(product, { sizeid: size, sizename: size_name }, 1)
+            }
 
     </script>
     <script src="{{ asset('assets/js/add_to_cart_from_product_card.js') }}"></script>

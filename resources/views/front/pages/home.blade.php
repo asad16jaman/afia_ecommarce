@@ -220,9 +220,9 @@
             </div>
             <!-- Button -->
             <div class="text-center mt-4">
-                <a href="#" class="show_more rounded-pill px-4 text-black">
+                <a href="{{ route('all.products') }}" class="show_more rounded-pill px-4 text-black">
                     Show More Products
-                    <i class="fa-solid fa-chevron-down ms-2"></i>
+                    <i class="fa-solid fa-chevron-right ms-2"></i>
                 </a>
             </div>
         </div>

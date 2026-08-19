@@ -1,4 +1,4 @@
- <!-- header section -->
+<!-- header section -->
 <section id="header" class="fixed-top">
     <div class="container py-lg-2">
         <div class="d-flex justify-content-between align-items-center">
@@ -10,15 +10,27 @@
                 </div>
             </a>
             <!-- Menu -->
-            <div class="justify-content-center ms-lg-4 d-none d-lg-block" id="navbarNav">
+            <div class="justify-content-center ms-lg-4 d-none d-lg-block position-relative" id="navbarNav">
                 <form class="search-form  d-none d-lg-block">
                     <div class="input-group search-pill">
-                        <input type="text" class="form-control border-0" placeholder="Search here">
+                        <input type="text"  id="navSearchBox" class="form-control border-0" placeholder="Search here">
                         <span class="input-group-text bg-white border-0">
                             <i class="fa fa-search color-second"></i>
                         </span>
                     </div>
                 </form>
+                <div class="position-absolute searchItemContainer" id="searchItemContainer">
+                    {{-- <a href="">
+                        <div class="product_item activeclass">
+                            <div class="search_img_container">
+                                <img class="profileImg" src="{{ asset('assets/images/product/p1.jpg') }}" alt="">
+                            </div>
+                            <div class="text-truncate">𝐒𝐚𝐟𝐟𝐫𝐨𝐧 𝐑𝐨𝐲𝐚𝐥 𝐊𝐨𝐭𝐢 𝐁𝐨𝐫𝐤𝐚 𝐒𝐚𝐟𝐟𝐫𝐨𝐧 𝐑𝐨𝐲𝐚𝐥 𝐊𝐨𝐭𝐢
+                                𝐁𝐨𝐫𝐤𝐚</div>
+                        </div>
+                    </a> --}}
+                    
+                </div>
             </div>
             <div class="d-flex align-items-center">
                 <ul class="d-flex mb-0 gap-lg-4 gap-3">
@@ -44,8 +56,8 @@
                             <div class="d-flex position-relative flex-column flex-md-row align-items-center gap-lg-2">
                                 <div class="nav_cart_icon"><i class="bi bi-cart4"></i></div>
                                 <span
-                                    class="position-absolute translate-middle badge cart_badge_position rounded-pill bg-danger d-lg-none d-block">
-                                    99
+                                    class="position-absolute translate-middle badge cart_badge_position rounded-pill bg-danger d-lg-none d-block" id="product_count2">
+                                    0
                                 </span>
                                 <div class="nav_cart_text d-none d-lg-block">
                                     <h5>Cart(<span id="product_count">0</span>)</h5>
@@ -63,7 +75,6 @@
                                     @auth('customer')
                                         <span>Profile</span>
                                     @else
-                                        
                                         <span>Login And Register</span>
                                     @endauth
                                     
@@ -86,15 +97,27 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <!-- Search -->
-                <div class="px-3">
+                <div class="px-3  position-relative">
                     <form class="search-form flex-grow-1">
                         <div class="input-group search-pill">
-                            <input type="text" class="form-control border-0" placeholder="Search here">
+                            <input type="text" id="navSearchBox2" class="form-control border-0" placeholder="Search here">
                             <span class="input-group-text bg-white border-0">
                                 <i class="fa fa-search color-second"></i>
                             </span>
                         </div>
                     </form>
+                    <div class="position-absolute searchItemContainer" id="searchItemContainer2">
+                        {{-- <a href="">
+                            <div class="product_item activeclass">
+                                <div class="search_img_container">
+                                    <img class="profileImg" src="{{ asset('assets/images/product/p1.jpg') }}" alt="">
+                                </div>
+                                <div class="text-truncate">𝐒𝐚𝐟𝐟𝐫𝐨𝐧 𝐑𝐨𝐲𝐚𝐥 𝐊𝐨𝐭𝐢 𝐁𝐨𝐫𝐤𝐚 𝐒𝐚𝐟𝐟𝐫𝐨𝐧 𝐑𝐨𝐲𝐚𝐥 𝐊𝐨𝐭𝐢
+                                    𝐁𝐨𝐫𝐤𝐚</div>
+                            </div>
+                        </a> --}}
+                    
+                    </div>
                 </div>
             </div>
             <div class="collapse navbar-collapse" id="mainNavbar">
@@ -125,10 +148,12 @@
                             <a class="dropdown-item" href="#">Sub Category5</a>
                         </div>
                     </li> --}}
-
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ route('all.products') }}">Shop</a>
+                    </li>
                     @foreach ($nav_categories as $nav_cat)
                         <li class="nav-item">
-                            <a class="nav-link active" href="#">{{ $nav_cat->ProductCategory_Name }}</a>
+                            <a class="nav-link active" href="{{ route('all.products', ['category' => $nav_cat->ProductCategory_SlNo]) }}">{{ $nav_cat->ProductCategory_Name }}</a>
                         </li>
                     @endforeach
                     

@@ -376,11 +376,11 @@
     </nav>
 
     <div class="sb-footer">
-        <form action="{{ route('customer.logout') }}" method="POST">
+        <a href="{{ route('customer.logout') }}" >
             <button type="submit" class="sb-logout">
                 <i class="bi bi-box-arrow-right"></i> Logout
             </button>
-        </form>
+    </a>
     </div>
 
 </aside>

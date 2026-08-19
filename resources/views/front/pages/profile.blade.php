@@ -1,5 +1,5 @@
 @extends('front.layout.app')
-@section('title', 'Home Page')
+@section('title', 'Profile')
 @push('style')
         <style>
             /* =========================================================

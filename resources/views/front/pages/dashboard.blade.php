@@ -1,5 +1,5 @@
 @extends('front.layout.app')
-@section('title', 'Home Page')
+@section('title', 'Customer Profile')
 @push('style')
     <style>
         .error_message{
@@ -47,7 +47,7 @@
         .customer-profile-img {
             width: 150px;
             height: 150px;
-            object-fit: cover;
+            object-fit: contain;
             border-radius: 50%;
             display: block;
             margin: 0 auto 8px;
@@ -375,7 +375,7 @@
                     <div class="profile-grid">
                          <div class="profile-left">
                             <div class="profile-card">
-                                <img src="https://i.pravatar.cc/300?img=12" alt="Customer" class="customer-profile-img">
+                                <img src="{{ Auth::guard('customer')->user()->web_profile ? asset(Auth::guard('customer')->user()->web_profile) : asset('images/pro.png') }}" alt="Customer" class="customer-profile-img">
                                 <h5 class="customer-name">
                                     {{ Auth::guard('customer')->user()->Customer_Name }}
                                 </h5>
@@ -404,15 +404,15 @@
                                     Account Information
                                 </div>
                                 <div class="account-body">
-                                    <form method="post" action="{{ route('profile.update') }}">
+                                    <form method="post" action="{{ route('profile.update') }}" enctype="multipart/form-data">
                                         @csrf
                                         <!-- First Row -->
                                         <div class="form-row two-columns">
                                             <div class="form-group">
-                                                <label>
+                                                <label for="web_profile">
                                                     Profile Image
                                                 </label>
-                                                <input type="file" class="profile-file">
+                                                <input type="file" id="web_profile" name="web_profile" class="profile-file">
                                             </div>
                                             <div class="form-group">
                                                 <label for="Customer_Name">

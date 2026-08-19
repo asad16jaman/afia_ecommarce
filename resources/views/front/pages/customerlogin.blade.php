@@ -1,5 +1,5 @@
 @extends('front.layout.app')
-@section('title', 'Home Page')
+@section('title', 'Login Page')
 @push('style')
     <style>
          .login-section {
