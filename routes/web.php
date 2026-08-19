@@ -57,31 +57,3 @@ Route::get('/clear-all', function () {
 });
 
 
-// Route::get('/profile', [CustomerController::class, 'profile'])->name('dashboard');
-// Customer Authentication
-
-
-// Route::group(['middleware' => 'auth'], function () {
-//     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-//     Route::post('/logout', [AuthenticationController::class, 'logout'])->name('logout');
-//     // Update Profile
-//     Route::get('/profile', [AuthenticationController::class, 'editProfile'])->name('profile.edit');
-//     Route::post('/profile/update', [AuthenticationController::class, 'updateProfile'])->name('profile.update');
-//     // Change Password
-//     Route::get('/change-password', [AuthenticationController::class, 'showChangePasswordForm'])->name('password.change');
-//     Route::post('/change-password', [AuthenticationController::class, 'updatePassword'])->name('password.update');
-//     // Users
-//     Route::get('/users', [UserController::class, 'index'])->name('users.index');
-//     Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
-//     Route::post('/users/store', [UserController::class, 'store'])->name('users.store');
-//     Route::get('/users/edit/{id}', [UserController::class, 'edit'])->name('users.edit');
-//     Route::put('/users/update/{id}', [UserController::class, 'update'])->name('users.update');
-//     Route::put('/users/update-status/{id}', [UserController::class, 'updateStatus'])->name('users.updateStatus');
-//     Route::delete('/users/destroy/{id}', [UserController::class, 'destroy'])->name('users.destroy');
-//     // User Access
-//     Route::put('/user/{user}/access', [UserController::class, 'updateAccess'])->name('user.access.update');
-
-//     // settings
-//     Route::get('/setting', [SettingController::class, 'setting'])->name('setting');
-//     Route::put('/setting', [SettingController::class, 'update'])->name('setting.update');
-// });

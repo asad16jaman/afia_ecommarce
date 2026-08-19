@@ -150,7 +150,7 @@
                         Discover the latest fashion arrivals crafted for style, comfort, and confidence
                     </p>
                 </div>
-                <div class="row g-3">
+                <div class="row g-3 d-flex justify-content-center">
                     <!-- Product -->
                     @foreach ($newArrivals as $arrival)
                         <div class="col-lg-3 col-md-3 col-6">

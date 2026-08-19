@@ -61,7 +61,7 @@
                 </div>
                 <!-- Map -->
                 <div class="col-lg-4 col-xs-12">
-                    <!-- <div class="facebook-widget">
+                    <div class="facebook-widget">
                         <div class="fb-page" data-href="https://www.facebook.com/afiaborkahouse" data-tabs="timeline"
                             data-width="390" data-height="240" data-small-header="false"
                             data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true">
@@ -73,7 +73,7 @@
                             </blockquote>
                         </div>
 
-                    </div> -->
+                    </div> 
 
                 </div>
             </div>
@@ -92,6 +92,6 @@
         </div>
     </footer>
 
-    <!-- <div id="fb-root"></div>
+   <div id="fb-root"></div>
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v23.0">
-    </script> -->
+    </script>

@@ -117,7 +117,7 @@ class CustomerController extends Controller
                 'string',
                 'max:150',
             ],
-            'image' => [
+            'web_profile' => [
                 'nullable',
                 'image',
                 'mimes:jpg,jpeg,png,webp',
@@ -160,9 +160,9 @@ class CustomerController extends Controller
             'Customer_Address.string' => 'ঠিকানা অবশ্যই সঠিক হতে হবে।',
             'Customer_Address.max' => 'ঠিকানা সর্বোচ্চ ১৫০ অক্ষরের হতে পারবে।',
             // Profile Image
-            'image.image' => 'সঠিক একটি ছবি নির্বাচন করুন।',
-            'image.mimes' => 'ছবির ফরম্যাট অবশ্যই JPG, JPEG, PNG অথবা WEBP হতে হবে।',
-            'image.max' => 'ছবির সাইজ সর্বোচ্চ ২ MB হতে পারবে।',
+            'web_profile.image' => 'সঠিক একটি ছবি নির্বাচন করুন।',
+            'web_profile.mimes' => 'ছবির ফরম্যাট অবশ্যই JPG, JPEG, PNG অথবা WEBP হতে হবে।',
+            'web_profile.max' => 'ছবির সাইজ সর্বোচ্চ ২ MB হতে পারবে।',
             // Current Password
             'current_password.required' => 'বর্তমান পাসওয়ার্ড লিখুন।',
             // New Password

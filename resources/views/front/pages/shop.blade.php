@@ -404,7 +404,7 @@
                         <span>Products</span>
                     </div>
 
-                    <div class="row" style="visibility:hidden" :style="{ visibility: showproduct ? 'visible' : 'hidden' }">
+                    <div class="row d-flex justify-content-center" style="visibility:hidden" :style="{ visibility: showproduct ? 'visible' : 'hidden' }">
                         <div class="col-md-4 col-lg-4 col-6" v-for="(item,key) in products">
                             <div class="product-card ">
                                 <a href="">

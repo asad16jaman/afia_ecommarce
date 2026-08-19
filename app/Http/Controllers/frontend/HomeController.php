@@ -18,7 +18,6 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
@@ -32,7 +31,7 @@ class HomeController extends Controller
         $banner = Banner::first();
         $categories = Category::select('ProductCategory_SlNo','ProductCategory_Name','image')->where('status','a')->get();
         $newArrivals = Product::select('Product_SlNo','Product_Code','Product_Name','slug','Product_SellingPrice','Product_MinimumSellingPrice','discount','thum_image')
-        ->where('new_arrival',1)->where('status','a')->get();
+        ->where('new_arrival',1)->where('status','a')->latest('AddTime')->get();
         $newArrivals = $newArrivals->map(function($el){
             $size_wise_stock = StockHelper::getSizeWiseStock($el->Product_SlNo);;
             $current_stock = StockHelper::getProductStock($el->Product_SlNo);;
@@ -290,12 +289,10 @@ class HomeController extends Controller
             )
                 ->whereLike('Product_Name', "%". $request->search."%")
                 ->whereNull('DeletedTime')
-                ->limit(10)
+                ->latest('AddTime')
+                ->limit(5)
                 ->get();
         }
-       
-
-
         return response()->json([
             'status' => true,
             'data' => $products
