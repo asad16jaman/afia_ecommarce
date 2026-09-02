@@ -37,10 +37,13 @@ class ViewServiceProvider extends ServiceProvider
                 // 'google_map' => '<iframe src="..."></iframe>',
             ];
             $setting = Company::first();
-            $nav_category = Category::select('ProductCategory_Name', 'ProductCategory_SlNo')->where('status' , 'a')->take(8)->get();
+            $nav_category = Category::with(['subcategories'=>function($q){
+                $q->select('id','category_id','name','slug');
+            }])->select('ProductCategory_Name', 'ProductCategory_SlNo')->where('status' , 'a')->take(6)->get();
             if (!$setting) {
                 $setting = (object) $defaultSettings;
             }
+            
             $view->with('setting',$setting);
             $view->with('currency', $setting->Currency_Symbol);
             $view->with('nav_categories' , $nav_category);

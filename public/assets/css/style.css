@@ -121,7 +121,7 @@ ul {
 
 .dropdown-menu .dropdown-item,
 .user-dropdown .dropdown-item {
-    padding: 3px 10px;
+    padding: 6px 10px;
     display: block;
     color: #212529;
     text-decoration: none;
@@ -130,8 +130,8 @@ ul {
 
 .dropdown-menu .dropdown-item:hover,
 .user-dropdown .dropdown-item:hover {
-    background-color: #f27f20;
-    color: #fff;
+    background-color: #eef0fc;
+    color: #000;
 }
 
 /* header End */
@@ -410,15 +410,13 @@ ul {
     line-height: 20px;
     margin-bottom: 8px;
     font-weight: 600;
-
-    /* 2 line truncate */
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
-
     overflow: hidden;
     text-overflow: ellipsis;
     height: 40px;
+  
 }
 
 .product-content h4:hover{
@@ -433,11 +431,13 @@ ul {
 
 .addToCart_css,.buyNow_css{
     width: 45%;
+    min-width: 100px;
     border-radius: 5px;
     padding: 3px 0;
     font-size: 13px;
     transition: 0.35s ease-in-out;
     font-weight: 600;
+    margin-top: 5px;
 }
 
 .buyNow_css{
@@ -638,12 +638,13 @@ ul {
 
 
 
-.detail_page_byNow,.detail_page_addToCard{
-    padding: 6px 24px;
-    font-size: 15px;
+.detail_page_byNow,.detail_page_addToCard,.detail_whatsapp,.detail_call{
+   font-size: 15px;
     color: #fff;
-    border-radius: 5px;
+    border-radius: 22px;
     transition: 0.35s ease-in-out;
+    width: 196px;
+    height: 43px;
 }
 
 .detail_page_byNow{
@@ -666,7 +667,33 @@ ul {
     color: var(--nav-color);
 }
 
-
+.detail_whatsapp{
+    background-color: rgb(77 194 71);
+    border: 2px solid rgb(77 194 71);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    font-size: 15px;
+    font-weight: 600;
+}
+.detail_call{
+    background-color: rgb(29 59 139);
+    border: 2px solid #1d3b8b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    font-weight: 600;
+}
+.detail_whatsapp:hover{
+    background-color: #fff;
+    color: rgb(77 194 71);
+}
+.detail_call:hover{
+    background-color: #fff;
+    color: #1d3b8b;
+}
 
 .discount-badge{
     position:absolute;
@@ -691,6 +718,11 @@ ul {
 .discount-badge span{
     font-size:15px;
     font-weight:800;
+}
+@media screen and (max-width:991px){
+    .addToCart_css,.buyNow_css{
+        width: 100%;
+    }
 }
 
 @media screen and (max-width:768px){
@@ -1548,8 +1580,8 @@ ul {
 
 @media screen and (min-width:992px){
      .scrol-lg{
-        height: 450px;
-        overflow-y: scroll;
+        /* height: 900px;
+        overflow-y: scroll; */
      }
 }
 

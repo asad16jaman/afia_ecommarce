@@ -19,18 +19,7 @@
                         </span>
                     </div>
                 </form>
-                <div class="position-absolute searchItemContainer" id="searchItemContainer">
-                    {{-- <a href="">
-                        <div class="product_item activeclass">
-                            <div class="search_img_container">
-                                <img class="profileImg" src="{{ asset('assets/images/product/p1.jpg') }}" alt="">
-                            </div>
-                            <div class="text-truncate">𝐒𝐚𝐟𝐟𝐫𝐨𝐧 𝐑𝐨𝐲𝐚𝐥 𝐊𝐨𝐭𝐢 𝐁𝐨𝐫𝐤𝐚 𝐒𝐚𝐟𝐟𝐫𝐨𝐧 𝐑𝐨𝐲𝐚𝐥 𝐊𝐨𝐭𝐢
-                                𝐁𝐨𝐫𝐤𝐚</div>
-                        </div>
-                    </a> --}}
-                    
-                </div>
+                <div class="position-absolute searchItemContainer" id="searchItemContainer" style="display:none"></div>
             </div>
             <div class="d-flex align-items-center">
                 <ul class="d-flex mb-0 gap-lg-4 gap-3">
@@ -106,23 +95,11 @@
                             </span>
                         </div>
                     </form>
-                    <div class="position-absolute searchItemContainer" id="searchItemContainer2">
-                        {{-- <a href="">
-                            <div class="product_item activeclass">
-                                <div class="search_img_container">
-                                    <img class="profileImg" src="{{ asset('assets/images/product/p1.jpg') }}" alt="">
-                                </div>
-                                <div class="text-truncate">𝐒𝐚𝐟𝐟𝐫𝐨𝐧 𝐑𝐨𝐲𝐚𝐥 𝐊𝐨𝐭𝐢 𝐁𝐨𝐫𝐤𝐚 𝐒𝐚𝐟𝐟𝐫𝐨𝐧 𝐑𝐨𝐲𝐚𝐥 𝐊𝐨𝐭𝐢
-                                    𝐁𝐨𝐫𝐤𝐚</div>
-                            </div>
-                        </a> --}}
-                    
-                    </div>
+                    <div class="position-absolute searchItemContainer" style="display:none" id="searchItemContainer2"></div>
                 </div>
             </div>
-            <div class="collapse navbar-collapse" id="mainNavbar">
+            <div class="collapse navbar-collapse position-relative" id="mainNavbar">
                 <ul class="navbar-nav mx-auto">
-                   
                     <!-- Mega Dropdown -->
                     {{-- <li class="nav-item dropdown position-static">
                         <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
@@ -148,18 +125,34 @@
                             <a class="dropdown-item" href="#">Sub Category5</a>
                         </div>
                     </li> --}}
+
                     <li class="nav-item">
                         <a class="nav-link active" href="{{ route('all.products') }}">Shop</a>
                     </li>
+
                     @foreach ($nav_categories as $nav_cat)
-                        <li class="nav-item">
-                            <a class="nav-link active" href="{{ route('all.products', ['category' => $nav_cat->ProductCategory_SlNo]) }}">{{ $nav_cat->ProductCategory_Name }}</a>
-                        </li>
+                        @if(!empty($nav_cat->subcategories) && count($nav_cat->subcategories) > 0)
+                                    <li class="nav-item dropdown position-static">
+                                <a class="nav-link dropdown-toggle" href="{{ route('category.products', ['id' => $nav_cat->ProductCategory_SlNo]) }}" data-bs-toggle="dropdown">
+                                    {{ $nav_cat->ProductCategory_Name }}
+                                </a>
+                                <div class="dropdown-menu nav_dropdown container shadow rounded-0 mt-0">
+                                    <a class="dropdown-item nav_drop_item" href="{{ route('category.products', ['id' => $nav_cat->ProductCategory_SlNo]) }}">{{ $nav_cat->ProductCategory_Name }}</a>
+                                    @foreach ($nav_cat->subcategories as $subcat)
+                                        <a class="dropdown-item nav_drop_item" href="{{ route('category.products', ['id' => $nav_cat->ProductCategory_SlNo, 'producttype'=> $subcat->id]) }}">{{ $subcat->name }}</a>
+                                    @endforeach
+                                </div>
+                            </li>
+                        @else
+                                <li class="nav-item" >
+                                <a class="nav-link active" href="{{ route('category.products', ['id' => $nav_cat->ProductCategory_SlNo]) }}">{{ $nav_cat->ProductCategory_Name }}</a>
+                            </li>
+                        @endif
+
                     @endforeach
-                    
+
                     
                 </ul>
-
             </div>
         </div>
     </nav>

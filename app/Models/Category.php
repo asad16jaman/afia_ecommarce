@@ -21,6 +21,10 @@ class Category extends Model
             'ProductCategory_SlNo'
         );
     }
+
+    public function subcategories(){
+        return $this->hasMany(Subcategory::class,'category_id','ProductCategory_SlNo');
+    }
     
     protected $guarded = [];
 }

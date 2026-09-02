@@ -5,25 +5,21 @@
                 <!-- Contact -->
                 <div class="col-lg-4 col-md-6 col-xs-12">
                     <h4 class="footer-title">Contact Info</h4>
-
                     <ul class="footer-contact list-unstyled">
                         <li>
                             <i class="bi bi-geo-alt-fill"></i>
                            {{ $setting->address }}
                         </li>
-
                         <li>
                             <i class="bi bi-telephone-fill"></i>
                             <a href="tel:{{ $setting->phone }}">{{ $setting->phone }}</a>
                         </li>
-
                         <li>
                             <i class="bi bi-envelope-fill"></i>
                             <a href="mailto:{{ $setting->email }}">
                                 {{ $setting->email }}
                             </a>
                         </li>
-
                         <li>
                             <i class="bi bi-headset"></i>
                             Hotline: {{ $setting->hotline_number }}
@@ -34,7 +30,7 @@
                         <a href="{{ $setting->facebook_link }}" target="_blank"><i class="bi bi-facebook"></i></a>
                         <a href="{{ $setting->instagrame_link }}" target="_blank"><i class="bi bi-instagram"></i></a>
                         <a href="{{ $setting->youtube }}" target="_blank"><i class="bi bi-youtube"></i></a>
-                        <!-- <a href="#"><i class="bi bi-tiktok"></i></a> -->
+                        <a href="{{ $setting->tiktok }}" target="_blank" href=""><i class="bi bi-tiktok"></i></a>
 
                     </div>
                 </div>
@@ -61,19 +57,7 @@
                 </div>
                 <!-- Map -->
                 <div class="col-lg-4 col-xs-12">
-                    <div class="facebook-widget">
-                        <div class="fb-page" data-href="https://www.facebook.com/afiaborkahouse" data-tabs="timeline"
-                            data-width="390" data-height="240" data-small-header="false"
-                            data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true">
-
-                            <blockquote cite="https://www.facebook.com/afiaborkahouse" class="fb-xfbml-parse-ignore">
-                                <a href="https://www.facebook.com/afiaborkahouse">
-                                    Afia Borka House
-                                </a>
-                            </blockquote>
-                        </div>
-
-                    </div> 
+                    
 
                 </div>
             </div>
@@ -92,6 +76,4 @@
         </div>
     </footer>
 
-   <div id="fb-root"></div>
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v23.0">
-    </script>
+ 

@@ -71,7 +71,7 @@
         }
 
         .login-text a {
-            color: var(--logo-color);
+            color: var(--color-second);
             font-weight: bold;
             text-decoration: none;
         }

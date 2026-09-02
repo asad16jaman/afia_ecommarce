@@ -6,18 +6,43 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
+use Log;
 
 class CartController extends Controller
 {
     public function add(Request $request)
     {
         $productId = $request->product_id;
+
+        $cartProduct = Product::with(['category'=>function($q){
+            $q->select('ProductCategory_SlNo','category_discount');
+        }])
+        ->select('Product_SlNo','ProductCategory_ID','Product_SellingPrice','Product_MinimumSellingPrice','discount')
+        ->where('Product_SlNo', $productId)->first();
+
+        if(!$cartProduct){
+            return response()->json([
+                'status' => false,
+                'message' => 'Product Not Found'
+            ]);
+        }
+
+        $productPrice = $cartProduct->Product_MinimumSellingPrice;
+        if((float)$cartProduct->category->category_discount > (float)$cartProduct->discount){
+            $productPrice = $cartProduct->Product_SellingPrice - (($cartProduct->Product_SellingPrice * $cartProduct->category->category_discount) / 100);
+        }
+
         $size = $request->size;
-        $price = $request->price;
+        $price = $productPrice;
         $qty = $request->qty;
         $cart = Session::get('cart', []);
 
-        $key = $productId ."_". $size;
+        if($size){
+            $key = $productId . "_" . $size;
+        }else{
+            $key = $productId;
+        }
+        
 
         $totalPrice = (float)$price * (float) $qty; 
         
@@ -27,8 +52,8 @@ class CartController extends Controller
         } else {
             $cart[$key] = [
                 'product_id' => $productId,
-                'size' => $size,
-                'size_name' => $request->size_name,
+                'size' => $size ?? null,
+                'size_name' => $request->size_name ?? null,
                 'price' => $price,
                 'qty' => $qty,
                 'name' => $request->name,
@@ -44,7 +69,6 @@ class CartController extends Controller
 
         $count = count($cart);
         $subtotal = array_sum(array_map(fn($item) => $item['price'] * $item['qty'], $cart));
-
         return response()->json([
             'success' => true,
             'count' => $count,

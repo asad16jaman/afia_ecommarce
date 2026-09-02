@@ -5,8 +5,10 @@
         .filter-box {
             width: 100%;
             box-shadow: 1px 1px 15px 0px #00000073;
-            border-radius: 15px;;
+            border-radius: 15px;
+            ;
         }
+
         .filter-box .accordion-item {
             border: none;
             border-radius: 5px;
@@ -14,6 +16,7 @@
             background: #fff;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
         }
+
         .filter-box .accordion-button {
             min-height: 50px;
             padding: 12px 18px;
@@ -25,24 +28,29 @@
             box-shadow: none;
             position: relative;
         }
+
         .filter-box .accordion-button:not(.collapsed) {
             background: #f5f5f5;
             color: var(--nav-color);
             box-shadow: none;
             font-weight: 600;
         }
+
         .filter-box .accordion-button::after {
             width: 10px;
             height: 10px;
             background-size: 10px;
         }
+
         .filter-box .accordion-button:not(.collapsed) {
             border-bottom: 1px solid var(--color-second);
         }
+
         .filter-box .accordion-body {
             padding: 16px 18px;
             background: #fff;
         }
+
         .price-inputs {
             display: flex;
             gap: 8px;
@@ -52,12 +60,14 @@
         .price-input {
             flex: 1;
         }
+
         .price-input label {
             display: block;
             font-size: 12px;
             color: #777;
             margin-bottom: 4px;
         }
+
         .price-input input {
             width: 100%;
             height: 38px;
@@ -69,18 +79,22 @@
             color: #333;
             transition: 0.2s;
         }
+
         .price-input input:focus {
             border-color: #f85606;
             box-shadow: 0 0 0 2px rgba(248, 86, 6, 0.08);
         }
+
         .price-input input::-webkit-outer-spin-button,
         .price-input input::-webkit-inner-spin-button {
             -webkit-appearance: none;
             margin: 0;
         }
+
         .price-input input[type=number] {
             -moz-appearance: textfield;
         }
+
         .filter-btn {
             display: block;
             margin-left: auto;
@@ -94,12 +108,15 @@
             cursor: pointer;
             transition: 0.2s;
         }
+
         .filter-btn:hover {
             background: #d94700;
         }
+
         .category-search {
             margin-bottom: 14px;
         }
+
         .category-search input {
             height: 36px;
             border: 1px solid #f85606;
@@ -108,10 +125,12 @@
             padding: 6px 12px;
             box-shadow: none;
         }
+
         .category-search input:focus {
             border-color: #f85606;
             box-shadow: 0 0 0 2px rgba(248, 86, 6, 0.08);
         }
+
         .category-list {
             display: flex;
             flex-direction: column;
@@ -120,16 +139,20 @@
             overflow-y: auto;
             padding-right: 4px;
         }
+
         .category-list::-webkit-scrollbar {
             width: 4px;
         }
+
         .category-list::-webkit-scrollbar-track {
             background: #f1f1f1;
         }
+
         .category-list::-webkit-scrollbar-thumb {
             background: #ccc;
             border-radius: 10px;
         }
+
         .category-item {
             display: flex;
             align-items: center;
@@ -141,9 +164,11 @@
             padding: 2px 0;
             user-select: none;
         }
+
         .category-item:hover {
             color: #f85606;
         }
+
         .category-item input[type="checkbox"] {
             width: 14px;
             height: 14px;
@@ -151,10 +176,12 @@
             accent-color: #f85606;
             cursor: pointer;
         }
+
         .category-item span {
             flex: 1;
             line-height: 20px;
         }
+
         .product-breadcrumb {
             display: flex;
             align-items: center;
@@ -166,57 +193,89 @@
             border-radius: 4px;
             font-size: 13px;
         }
+
         .product-breadcrumb a {
             color: #666;
             text-decoration: none;
             transition: 0.2s;
         }
+
         .product-breadcrumb a:hover {
             color: #f85606;
         }
+
         .product-breadcrumb span {
             color: #777;
         }
+
         .product-breadcrumb span:last-child {
             color: #f85606;
             font-weight: 500;
         }
+
         .product-breadcrumb i {
             font-size: 10px;
             color: #999;
         }
-        .bg_button{
+
+        .bg_button {
             background-color: var(--nav-color);
             border: 1px solid var(--nav-color);
-            color:#fff;
+            color: #fff;
             transition: 0.35s ease-in-out;
         }
-        .bg_button:hover{
+
+        .bg_button:hover {
             background-color: #fff;
             border: 1px solid var(--nav-color);
             color: var(--nav-color)
         }
-        .bg_button_disable{
-                cursor: not-allowed !important;
-             background-color: var(--nav-color);
-             opacity: 0.5;
-             display: none;
+
+        .bg_button_disable {
+            cursor: not-allowed !important;
+            background-color: var(--nav-color);
+            opacity: 0.5;
+            display: none;
         }
+        .bannerImg{
+            width: 100%;
+        }
+        .r-0{
+            border-radius: 2px;
+            border: none;
+            box-shadow: 0px 0px 15px 0px #0000006b;
+            cursor:pointer
+        }
+        .crdbdy{
+            overflow: hidden;
+            transition: 0.35s ease-in-out;
+        }
+        .crdbdy img{
+            transition: 0.35s ease-in-out;
+        }
+        .crdbdy:hover img{
+            transform: scale(1.05);
+        }
+
         @media (max-width: 767px) {
             .filter-box {
                 margin-bottom: 15px;
             }
+
             .filter-box .accordion-button {
                 min-height: 46px;
                 padding: 10px 14px;
                 font-size: 15px;
             }
+
             .filter-box .accordion-body {
                 padding: 14px;
             }
+
             .price-inputs {
                 gap: 7px;
             }
+
             .product-breadcrumb {
                 margin-top: 10px;
             }
@@ -272,7 +331,7 @@
                                     <button class="accordion-button" type="button" data-bs-toggle="collapse"
                                         data-bs-target="#categoryFilter" aria-expanded="true"
                                         aria-controls="categoryFilter">
-                                        <span>Category</span>
+                                        <span>{{ $category->ProductCategory_Name }}</span>
                                     </button>
                                 </h2>
                                 <div id="categoryFilter" class="accordion-collapse collapse show"
@@ -280,21 +339,18 @@
                                     <div class="accordion-body">
                                         <!-- Category Search -->
                                         <!-- <div class="category-search">
-                                                <input type="text" class="form-control" placeholder="Search Category">
-                                            </div> -->
+                                                    <input type="text" class="form-control" placeholder="Search Category">
+                                                </div> -->
                                         <!-- Categories -->
                                         <div class="category-list">
-                                            @foreach ($categories as $cat)
+                                            @foreach ($category->subcategories as $cat)
                                                 <label class="category-item">
-                                                    <input type="checkbox" v-model="categories"
-                                                        :value="{{ $cat->ProductCategory_SlNo }}">
+                                                    <input type="checkbox" v-model="subcategories"
+                                                        :value="{{ $cat->id }}">
 
-                                                    <span>{{ $cat->ProductCategory_Name }}</span>
+                                                    <span>{{ $cat->name }}</span>
                                                 </label>
                                             @endforeach
-
-
-
                                         </div>
                                     </div>
                                 </div>
@@ -305,17 +361,30 @@
 
                 <div class="col-12 col-md-8 col-lg-9">
                     <!-- Breadcrumb -->
-                    <div class="product-breadcrumb">
+                   {{--  <div class="product-breadcrumb">
                         <a href="{{ route('home') }}">Home</a>
                         <span>
                             <i class="bi bi-chevron-right"></i>
                         </span>
                         <span>Products</span>
-                    </div>
+                    </div> --}}
+                    @if($category->banner)
+                        <div class="row">
+                            <div class="col-12 mt-0">
+                                <div class="card r-0">
+                                    <div class="card-body p-1 ">
+                                        <div class="crdbdy">
+                                            <img src="{{ $softUrl . $category->banner  }}" class="bannerImg" alt="{{ $category->ProductCategory_Name }}">
+                                        </div>
 
-                    
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
 
-                    <div class="row d-flex justify-content-center" style="visibility:hidden" :style="{ visibility: showproduct ? 'visible' : 'hidden' }">
+                    <div class="row d-flex justify-content-center" style="visibility:hidden"
+                        :style="{ visibility: showproduct ? 'visible' : 'hidden' }">
                         <div class="col-md-6 col-lg-4 col-6" v-for="(item,key) in products">
                             <div class="product-card ">
                                 <a :href="'/product-detail/'+item.slug">
@@ -325,11 +394,11 @@
                                     </div>
                                 </a>
                                 <div class="product-content text-center data_container" :data-thiscard='JSON.stringify({
-                                        Product_SlNo: item.Product_SlNo,
-                                        Product_MinimumSellingPrice: item.Product_MinimumSellingPrice,
-                                        Product_Name: item.Product_Name,
-                                        thum_image: item.thum_image
-                                    })'>
+                                            Product_SlNo: item.Product_SlNo,
+                                            Product_MinimumSellingPrice: item.Product_MinimumSellingPrice,
+                                            Product_Name: item.Product_Name,
+                                            thum_image: item.thum_image
+                                        })'>
                                     <a :href="'/product-detail/'+item.slug">
                                         <h4>@{{ item.Product_Name }}</h4>
                                         <div class="product_price_container">
@@ -341,18 +410,16 @@
                                             </span>
                                         </div>
                                     </a>
-                                    
                                 </div>
-                               
-
                             </div>
                         </div>
-
                         <div class="col-12">
                             <div class="d-flex justify-content-end">
                                 <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                                    <button type="button" @click="prevpage" class="btn bg_button" :class="{bg_button_disable : !prev_page_url  }"> Prev </button>
-                                    <button type="button" @click="nextpage" class="btn bg_button" :class="{bg_button_disable : !next_page_url  }">Next</button>
+                                    <button type="button" @click="prevpage" class="btn bg_button"
+                                        :class="{bg_button_disable : !prev_page_url  }"> Prev </button>
+                                    <button type="button" @click="nextpage" class="btn bg_button"
+                                        :class="{bg_button_disable : !next_page_url  }">Next</button>
                                 </div>
                             </div>
                         </div>
@@ -366,93 +433,95 @@
 
 @push('script')
     <script src="{{ asset('assets/js/add_to_cart_from_product_card.js') }}"></script>
-        <script src="{{ asset('assets/js/vue.js') }}"></script>
-        <script>
-            new Vue({
-                el: "#al_product_handle",
-                data() {
-                    return {
-                        softurl: "{{ $softUrl }}",
-                        minprice: {{ $min ?? 0}},
-                        maxprice: {{ $max ?? 0 }},
-                        categories: [],
-                        products: [],
-                        showproduct: false,
-                        next_page_url:null,
-                        prev_page_url:null
+    <script src="{{ asset('assets/js/vue.js') }}"></script>
+    <script>
+        new Vue({
+            el: "#al_product_handle",
+            data() {
+                return {
+                    softurl: "{{ $softUrl }}",
+                    minprice: {{ $min ?? 0}},
+                    maxprice: {{ $max ?? 0 }},
+                    category_id: {{ $category->ProductCategory_SlNo }},
+                    subcategories: [],
+                    products: [],
+                    showproduct: false,
+                    next_page_url: null,
+                    prev_page_url: null
+                }
+            },
+            methods: {
+                getProducts(url) {
+                    let data = {
+                        min: this.minprice,
+                        max: this.maxprice,
+                        sub_category: this.subcategories,
+                        category_id : this.category_id
                     }
-                },
-                methods: {
-                    getProducts(url) {
-                        let data = {
-                            min: this.minprice,
-                            max: this.maxprice,
-                            categories: this.categories
-                        }
-                        $.ajax({
-                            method: 'get',
-                            url: url,
-                            data: data,
-                            success: (res) => {
-                                if (res.status) {
-                                    this.products = res.products.data
-                                    this.showproduct = true
-                                    this.prev_page_url = res.products.prev_page_url;
-                                    this.next_page_url = res.products.next_page_url;
-                                }
-                            },
-                            error: (res) => {
-
+                    $.ajax({
+                        method: 'get',
+                        url: url,
+                        data: data,
+                        success: (res) => {
+                            if (res.status) {
+                                this.products = res.products.data
+                                this.showproduct = true
+                                this.prev_page_url = res.products.prev_page_url;
+                                this.next_page_url = res.products.next_page_url;
                             }
-                        });
-                    },
-                    trigerAddcart(event){
-                        openProductSizeSelector(event, 'add_to_cart')
-                    },
-                    trigerBuyNow(event) {
-                        openProductSizeSelector(event, 'buy_now')
-                    },
-                    closeOverlay(event){
-                        closeProductSizeSelector(event)
-                    },
-                    addcart(event){
-                        proceedProductSize(event)
-                    },
-                    byNow(event){
-                        proceedProductSizeByNow(event)
-                    },
-                    nextpage(){
-                        if(this.next_page_url){
-                            this.getProducts(this.next_page_url)
+                        },
+                        error: (res) => {
+
                         }
-                    },
-                    prevpage(){
-                        if(this.prev_page_url){
-                            this.getProducts(this.prev_page_url)
-                        }
+                    });
+                },
+                trigerAddcart(event) {
+                    openProductSizeSelector(event, 'add_to_cart')
+                },
+                trigerBuyNow(event) {
+                    openProductSizeSelector(event, 'buy_now')
+                },
+                closeOverlay(event) {
+                    closeProductSizeSelector(event)
+                },
+                addcart(event) {
+                    proceedProductSize(event)
+                },
+                byNow(event) {
+                    proceedProductSizeByNow(event)
+                },
+                nextpage() {
+                    if (this.next_page_url) {
+                        this.getProducts(this.next_page_url)
                     }
                 },
-                created() {
-                    const params = new URLSearchParams(window.location.search);
-                    let catId = params.get('category');
+                prevpage() {
+                    if (this.prev_page_url) {
+                        this.getProducts(this.prev_page_url)
+                    }
+                }
+            },
+            created() {
+                const params = new URLSearchParams(window.location.search);
+                    let catId = params.get('producttype');
                     if(catId){
-                        this.categories = [catId];
+                        this.subcategories = [catId];
                     }
-                    this.getProducts("{{ route('get.products') }}")
+                this.getProducts("{{ route('get.cat.wise.products') }}")
+            },
+            watch: {
+                subcategories(newValue) {
+                    this.getProducts("{{ route('get.cat.wise.products') }}")
                 },
-                watch: {
-                    categories(newValue) {
-                        this.getProducts("{{ route('get.products') }}")
-                    },
-                    maxprice(newValue){
-                        this.getProducts("{{ route('get.products') }}")
-                    },
-                    minprice(newValue){
-                        this.getProducts("{{ route('get.products') }}")
-                    },
-
+                maxprice(newValue) {
+                    this.getProducts("{{ route('get.cat.wise.products') }}")
+                },
+                minprice(newValue) {
+                    this.getProducts("{{ route('get.cat.wise.products') }}")
                 },
 
-            });
-        </script>
+            },
+
+        });
+    </script>
 @endpush

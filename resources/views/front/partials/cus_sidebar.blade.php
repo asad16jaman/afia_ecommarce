@@ -255,7 +255,8 @@
     /* Horizontal navigation */
     .dash-sidebar nav {
         display: flex;
-        width: max-content;
+        width: 100%;
+        flex-direction: column;
     }
     .sb-label {
         display: none;
@@ -264,6 +265,7 @@
         display: flex;
         width: auto;
         border-bottom: none;
+        flex-direction: column;
     }
     .sb-link {
         width: auto;
@@ -279,6 +281,9 @@
     }
     .sb-footer {
         display: none;
+    }
+    .dash-sidebar{
+        min-height: 0px;
     }
 }
 
@@ -351,6 +356,22 @@
                 </span>
                 <span class="sb-badge">{{$counts->processing ?? 0}}</span>
             </a>  --}}
+
+            <a href="{{ route('customer.all.order', ['status' => 'processing']) }}"
+                class="sb-link {{ request('status') === 'processing' ? 'active' : '' }}">
+                <span class="sb-link-l">
+                    <i class="bi bi-clock"></i> Processing
+                </span>
+                <span class="sb-badge">{{ $pr_orders ?? 0 }}</span>
+            </a>
+
+            <a href="{{ route('customer.all.order', ['status' => 'shipping']) }}"
+                class="sb-link {{ request('status') === 'shipping' ? 'active' : '' }}">
+                <span class="sb-link-l">
+                    <i class="bi bi-clock"></i> Shipping
+                </span>
+                <span class="sb-badge">{{ $pr_orders ?? 0 }}</span>
+            </a>
 
 
             <a href="{{ route('customer.all.order', ['status' => 'confirmed']) }}" class="sb-link {{request('status') === 'confirmed' ? 'active' : ''}}">

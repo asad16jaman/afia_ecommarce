@@ -38,7 +38,7 @@
 
         .orders-page .stat-row {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(6, 1fr);
             gap: 9px;
             margin-bottom: 14px;
         }
@@ -294,39 +294,50 @@
 
         .orders-page .s-pending {
             color: #0002ff;
-
             background: #fff9e8;
         }
-
-
-        /* Delivered */
-
-        .orders-page .s-delivered {
-            color: #269b4b;
-
-            background: #effaf2;
+         .orders-page .s-pending .sbadge-dot {
+            background: #0002ff;
         }
 
+        /* Delivered */
+        .orders-page .s-delivered {
+            color: #269b4b;
+            background: #effaf2;
+        }
         .orders-page .s-delivered .sbadge-dot {
             background: #269b4b;
         }
 
 
         /* Processing */
-
         .orders-page .s-processing {
             color: #1677ff;
-
             background: #edf4ff;
         }
-
         .orders-page .s-processing .sbadge-dot {
             background: #1677ff;
+        }
+        /* Processing */
+        .orders-page .s-shipping {
+            color: #16e0ee;
+            background: #edf4ff;
+        }
+        .orders-page .s-shipping .sbadge-dot {
+            background: #16e0ee;
+        }
+
+         /* Processing */
+        .orders-page .s-return {
+            color: #e7f706;
+            background: #edf4ff;
+        }
+        .orders-page .s-return .sbadge-dot {
+            background: #e7f706;
         }
 
 
         /* Cancelled */
-
         .orders-page .s-cancelled {
             color: #e60000;
             background: #fff0f0;
@@ -339,148 +350,91 @@
 
         .orders-page .act-wrap {
             display: flex;
-
             align-items: center;
-
             justify-content: center;
-
             gap: 5px;
         }
 
         .orders-page .act-btn {
             width: 26px;
             height: 26px;
-
             padding: 0;
-
             display: inline-flex;
-
             align-items: center;
             justify-content: center;
-
             border-radius: 4px;
-
             background: #fff;
-
             font-size: 11px;
-
             text-decoration: none;
-
             cursor: pointer;
-
             transition: .15s ease;
         }
-
-
-        /* View */
-
         .orders-page .a-view {
             border: 1px solid #00a651;
-
             color: #00a651;
         }
-
         .orders-page .a-view:hover {
             background: #00a651;
-
             color: #fff;
         }
-
-
-        /* Delete */
-
         .orders-page .a-del {
             border: 1px solid #e60000;
-
             color: #e60000;
         }
-
         .orders-page .a-del:hover {
             background: #e60000;
-
             color: #fff;
         }
-
-
         /* =========================================================
            PAGINATION
            ========================================================= */
-
         .orders-page .pg-footer {
             margin-top: 12px;
         }
-
         .orders-page .pagination {
             gap: 3px;
         }
-
         .orders-page .pagination .page-link {
             border: 1px solid #ddd;
-
             color: #555;
-
             font-size: 11px;
-
             padding: 5px 9px;
-
             border-radius: 4px;
         }
-
         .orders-page .pagination .page-item.active .page-link {
             background: #e60000;
-
             border-color: #e60000;
-
             color: #fff;
         }
-
-
         /* =========================================================
            RESPONSIVE
            ========================================================= */
-
         @media (max-width: 1000px) {
-
             .orders-page .stat-row {
-                grid-template-columns: repeat(3, 1fr);
+                grid-template-columns: repeat(4, 1fr);
             }
-
             .orders-page .tbl-card {
                 overflow-x: auto;
             }
-
             .orders-page .tbl-card table {
                 min-width: 850px;
             }
         }
-
-
         @media (max-width: 700px) {
-
             .orders-page .stat-row {
                 grid-template-columns: repeat(2, 1fr);
             }
-
             .orders-page .pg-header {
                 margin-bottom: 12px;
             }
-
             .orders-page .pg-title {
                 font-size: 14px;
             }
         }
-
-
         @media (max-width: 450px) {
-
-            .orders-page .stat-row {
-                grid-template-columns: 1fr;
-            }
-
             .orders-page .stat-card {
                 min-height: 52px;
             }
-
             .orders-page .o-date {
                 display: none;
             }
@@ -534,16 +488,29 @@
                         </div>
                     </a>
                     <!-- Processing -->
-                    {{-- <a href="{{ route('customer.all.order', ['status' => 'processing']) }}"
+                    <a href="{{ route('customer.all.order', ['status' => 'processing']) }}"
                         class="stat-card {{ request('status') === 'processing' ? ' s-active' : '' }}">
                         <div class="stat-ico ico-process">
                             <i class="fa-solid fa-spinner"></i>
                         </div>
                         <div>
-                            <div class="stat-v">0</div>
+                            <div class="stat-v">{{ $pr_orders ?? 0 }}</div>
                             <div class="stat-l">Processing</div>
                         </div>
-                    </a> --}}
+                    </a> 
+
+                    <!-- Processing -->
+                    <a href="{{ route('customer.all.order', ['status' => 'shipping']) }}"
+                        class="stat-card {{ request('status') === 'shipping' ? ' s-active' : '' }}">
+                        <div class="stat-ico ico-process">
+                            <i class="fa-solid fa-truck"></i>
+                        </div>
+                        <div>
+                            <div class="stat-v">{{ $sip_orders ?? 0 }}</div>
+                            <div class="stat-l">Shipping</div>
+                        </div>
+                    </a>
+
                     <!-- Delivered -->
                     <a href="{{ route('customer.all.order', ['status' => 'confirmed']) }}"
                         class="stat-card {{ request('status') === 'confirmed' ? ' s-active' : '' }}">
@@ -611,7 +578,7 @@
                                     </td>
                                     <td>
                                         @if($order->status == 'p')
-                                            <span class="sbadge s-processing">
+                                            <span class="sbadge s-pending">
                                                 <span class="sbadge-dot"></span>
                                                 Pending
                                             </span>
@@ -619,6 +586,16 @@
                                             <span class="sbadge s-delivered">
                                                 <span class="sbadge-dot"></span>
                                                 Confirmed
+                                            </span>
+                                        @elseif($order->status == 'pr')
+                                            <span class="sbadge s-processing">
+                                                <span class="sbadge-dot"></span>
+                                                Processing
+                                            </span>
+                                        @elseif($order->status == 's')
+                                            <span class="sbadge s-shipping">
+                                                <span class="sbadge-dot"></span>
+                                                Shipping
                                             </span>
 
                                         @else

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title')</title>
+    <title>@yield('title') | {{ optional($setting)->Company_Name }}</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" type="image/png" href="{{ asset('assets/images/logo.webp') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
@@ -109,6 +109,7 @@
     <script src="{{ asset('assets/js/jquery-3.6.0.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('assets/js/slick.min.js') }}"></script>
+    <script src="{{ asset('assets/js/isotope.pkgd.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/js/swiper12.2.js') }}"></script>
     <script src="{{ asset('assets/js/all.min.js') }}"></script>
@@ -156,7 +157,8 @@
                                 </button>
                             </div>
                             <div>
-                                <span>Size: ${ob.size_name}</span>
+
+                                <span>${ob.size_name ? 'Size: '+ ob.size_name : ''}</span>
                             </div>
                             <div class="cart-item-price">
                                 ৳ ${ob.price}

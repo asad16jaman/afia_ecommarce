@@ -22,6 +22,8 @@ Route::get('/cart-clear',[CartController::class,'clearCart'])->name('cart.clear'
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/shop', [HomeController::class, 'allproducts'])->name('all.products');
+Route::get('/category/{id}/products', [HomeController::class, 'categoryWiseProducts'])->name('category.products');
+Route::get('/get-category-wise-product',[HomeController::class,'getCatWiseProducts'])->name('get.cat.wise.products');
 Route::get('/get-product',[HomeController::class,'getProducts'])->name('get.products');
 Route::get('/product-detail/{slug}', [HomeController::class, 'getProductDetail'])->name('get_product_detail');
 Route::get('/checkout-page', [HomeController::class, 'checkoutPage'])->name('checkout_page');
@@ -30,13 +32,15 @@ Route::get('/search-get-product',[HomeController::class,'getSearchProducts'])->n
 
 
 
+Route::post('/store-review', [CustomerController::class, 'storeReview'])->name('store_review');
+Route::get('/get-review', [CustomerController::class, 'getAllReview'])->name('get_reviews');
+
 Route::group(['middleware' => 'auth:customer'], function () {
     Route::get('/profile', [CustomerController::class, 'dashboard'])->name('dashboard');
     Route::post('/profile', [CustomerController::class, 'updateCustomer'])->name('profile.update');
     Route::get('/all-orders', [CustomerController::class, 'allOrders'])->name('customer.all.order');
     Route::post('/delete-orders/{id}', [CustomerController::class, 'destroy_order'])->name('customer.order.delete');
     Route::get('/show-order-invoice/{id}', [CustomerController::class, 'order_invoice'])->name('customer.order.invoice');
-
     Route::get('/customer-logout', [CustomerController::class, 'userLogout'])->name('customer.logout');
 });
 

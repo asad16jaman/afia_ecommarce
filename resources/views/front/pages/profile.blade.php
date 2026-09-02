@@ -615,7 +615,7 @@
        RESPONSIVE
        ========================================================= */
 
-    @media (max-width: 767px) {
+    {{-- @media (max-width: 767px) {
 
         #container.header_margin > .row {
             display: block;
@@ -655,10 +655,8 @@
 
         .dash-sidebar nav {
             display: flex;
-
-            flex-direction: row;
-
-            width: max-content;
+            flex-direction: column;
+            width: 100%;
         }
 
         .sb-group {
@@ -724,7 +722,7 @@
 
             margin-top: 5px !important;
         }
-    }
+    } --}}
 
 
     /* =========================================================

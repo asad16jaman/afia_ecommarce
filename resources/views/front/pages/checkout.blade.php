@@ -538,7 +538,10 @@
                                                         </button>
                                                     </div>
                                                     <div class="cart-item-size">
-                                                        Size: {{ $c_item['size_name'] }}
+                                                        @if($c_item['size_name'])
+                                                            Size: {{ $c_item['size_name'] }}
+                                                        @endif
+
                                                     </div>
                                                     <div class="cart-item-price">
                                                         {{ $c_item['price'] }} X {{ $c_item['qty'] }} = {{ number_format((int) $c_item['total_price'] * (int) $c_item['qty'], 2)}}
@@ -617,7 +620,7 @@
                                 </button>
                             </div>
                             <div class="cart-item-size">
-                                Size: ${ob.size_name}
+                                ${ob.size_name ? 'Size: '+ob.size_name : ''}
                             </div>
                             <div class="cart-item-price">
                                 ${ob.price} X ${ob.qty} = ${(ob.total_price * ob.qty).toFixed(2)}

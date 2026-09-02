@@ -20,6 +20,14 @@ class Product extends Model
         return $this->belongsTo(Category::class,'ProductCategory_ID','ProductCategory_SlNo');
     }
 
+    public function subcategory(){
+        return $this->belongsTo(Subcategory::class,'sub_categori_id','id');
+    }
+
+    public function p_brand(){
+        return $this->belongsTo(Brand::class, 'brand', 'brand_SiNo');
+    }
+
 
     protected $guarded = [];
 }

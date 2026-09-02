@@ -4,12 +4,15 @@ namespace App\Http\Controllers\frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
+use App\Models\Customerreview;
 use App\Models\Order;
 use App\Models\OrderDetails;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class CustomerController extends Controller
 {
@@ -223,6 +226,10 @@ class CustomerController extends Controller
             $status = 'a';
         }elseif($query == 'cancel'){
             $status = 'd';
+        }elseif($query == 'processing'){
+            $status = 'pr';
+        } elseif ($query == 'shipping') {
+            $status = 's';
         }else {
           $status = null;
         };
@@ -234,16 +241,26 @@ class CustomerController extends Controller
         $total_order = Order::where('SalseCustomer_IDNo', Auth::guard('customer')
         ->user()->Customer_SlNo)->where('sales_from', 'web')->where('DeletedTime', null)
             ->where('DeletedBy', null)->count();
+
         $p_orders = Order::where('SalseCustomer_IDNo', Auth::guard('customer')
         ->user()->Customer_SlNo)->where('sales_from', 'web')->where('status','p')->where('DeletedTime', null)
             ->where('DeletedBy', null)->count();
+        $pr_orders = Order::where('SalseCustomer_IDNo', Auth::guard('customer')
+            ->user()->Customer_SlNo)->where('sales_from', 'web')->where('status', 'pr')->where('DeletedTime', null)
+            ->where('DeletedBy', null)->count();
+        $sip_orders = Order::where('SalseCustomer_IDNo', Auth::guard('customer')
+            ->user()->Customer_SlNo)->where('sales_from', 'web')->where('status', 's')->where('DeletedTime', null)
+            ->where('DeletedBy', null)->count();
+
         $a_orders = Order::where('SalseCustomer_IDNo', Auth::guard('customer')
         ->user()->Customer_SlNo)->where('sales_from', 'web')->where('status','a')->where('DeletedTime', null)
             ->where('DeletedBy', null)->count();
+
         $c_orders = Order::where('SalseCustomer_IDNo', Auth::guard('customer')
-        ->user()->Customer_SlNo)->where('sales_from', 'web')->where('status','d')->where('DeletedTime', null)
+        ->user()->Customer_SlNo)->where('sales_from', 'web')->where('is_canceled','yes')->where('DeletedTime', null)
             ->where('DeletedBy', null)->count();
-        return view('front.pages.all_orders',compact('allorders','total_order','p_orders','a_orders','c_orders'));
+            
+        return view('front.pages.all_orders',compact('allorders','total_order','p_orders','a_orders','c_orders','pr_orders','sip_orders'));
     }
 
 
@@ -317,6 +334,58 @@ class CustomerController extends Controller
         return view('front.pages.invoice',compact('orders','total_order','p_orders','a_orders','c_orders'));
     }
 
+    public function storeReview(Request $request){
+        $valid_rules = [
+            'stars' => "required|int|min:1|max:5",
+            'review' => "required|string|max:255",
+        ];
+
+        if(empty($request->Product_SlNo)){
+            $valid_rules['name'] = "required|string:max:100";
+            $valid_rules['address'] = "required|string:max:200";
+            $valid_rules['phone'] = "required";
+        }else{
+            $valid_rules['Product_SlNo'] = "required";
+        }
+
+        $checking = Validator::make($request->all(),$valid_rules);
+        if($checking->fails()){
+            return response()->json([
+                'status' => false,
+                'errormessage' => "There is a problem"
+            ]);
+        }
+
+        $data = [
+            'rating' => $request->stars,
+            'review' => $request->review,
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'name' => $request->name,
+            'status' => 'p',
+            'Product_SlNo' => $request->Product_SlNo,
+            'Customer_SlNo' => $request->Customer_SlNo
+        ];
+        Customerreview::create($data);
+
+        return response()->json([
+            'status' => true,
+            'message' => "Successfully stored message"
+        ]);
+
+    }
+
+    public function getAllReview(Request $request) {
+
+        $reviews = Customerreview::with(['customer' => function ($q) {
+            $q->select('Customer_Name','Customer_Code','Customer_SlNo','web_profile');
+        }])->where('status','a')->where('Product_SlNo',$request->Product_SlNo)->whereNull('deleted_at')->simplePaginate(10);
+        
+        return response()->json([
+            'status' => true,
+            'data' => $reviews
+        ]);
+    }
 
 
 
