@@ -96,12 +96,8 @@ class HomeController extends Controller
                 ->filter()
                 ->values();
         });
-
         return view('front.pages.home', compact('sliders', 'events', 'banner', 'categories', 'newArrivals', 'popular_roduct', 'products', 'reviews'));
     }
-
-
-
 
     // public function index()
     // {

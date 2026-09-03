@@ -115,6 +115,8 @@
     <script src="{{ asset('assets/js/all.min.js') }}"></script>
     <script src="{{ asset('assets/js/glightbox.min.js') }}"></script>
     <script src="{{ asset('assets/js/main.js') }}"></script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
+    </script>
 
     <script>
         if (window.innerWidth < 992) {
@@ -500,6 +502,19 @@
                 x.parentNode.insertBefore(s, x);
             })(); 
     </script>
+    <script type="text/javascript">
+		function googleTranslateElementInit() {
+			new google.translate.TranslateElement(
+				{
+					pageLanguage: 'en',
+					includedLanguages: 'en,bn',
+					layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+					autoDisplay: false,
+				},
+				'google_translate_element'
+			);
+		}
+	</script>
 
 
     @stack('script')
