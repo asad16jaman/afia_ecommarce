@@ -466,7 +466,7 @@
                         });
                     }
 
-                    const newsletterModal = new bootstrap.Modal(document.getElementById('newsletterModal')); newsletterModal.show();
+                    // const newsletterModal = new bootstrap.Modal(document.getElementById('newsletterModal')); newsletterModal.show();
                 });
 
     </script>

@@ -31,6 +31,10 @@
             border-radius: 5px;
         }
 
+        .skiptranslate{
+            /* display: none; */
+        }
+
         .product_item {
             display: flex;
             gap: 5px;

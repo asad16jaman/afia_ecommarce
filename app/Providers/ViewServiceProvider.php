@@ -52,7 +52,7 @@ class ViewServiceProvider extends ServiceProvider
             });
 
         View::share('softUrl', config('app.soft_url'));
-
+        // View::share('softUrl', request()->getScheme() . '://soft.afialifestyle.com/');
 
 
     }
