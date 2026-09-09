@@ -22,15 +22,26 @@ Route::get('/cart-clear',[CartController::class,'clearCart'])->name('cart.clear'
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/shop', [HomeController::class, 'allproducts'])->name('all.products');
-Route::get('/category/{id}/products', [HomeController::class, 'categoryWiseProducts'])->name('category.products');
+Route::get('/category/{slug}/products', [HomeController::class, 'categoryWiseProducts'])->name('category.products');
+Route::get('/get-subcategory-id', [HomeController::class, 'getSubCategoryId'])->name('subcategory_id_get');
 Route::get('/get-category-wise-product',[HomeController::class,'getCatWiseProducts'])->name('get.cat.wise.products');
 Route::get('/get-product',[HomeController::class,'getProducts'])->name('get.products');
 Route::get('/product-detail/{slug}', [HomeController::class, 'getProductDetail'])->name('get_product_detail');
 Route::get('/checkout-page', [HomeController::class, 'checkoutPage'])->name('checkout_page');
 Route::post('/store-order', [HomeController::class, 'storeOrder'])->name('store_order');
 Route::get('/search-get-product',[HomeController::class,'getSearchProducts'])->name('get_search_product');
+Route::get('/galleries',[HomeController::class,'galleries'])->name('galleries');
+Route::get('/blogs', [HomeController::class, 'getAllBlogs'])->name('get_all_blog');
+Route::get('/blogs/{slug}/detail', [HomeController::class, 'getBlog'])->name('get_blog');
 
+Route::get('/terms-condition', [HomeController::class, 'getTermsCondition'])->name('get_terms_condition');
+Route::get('/privecy-policy', [HomeController::class, 'getPrivecyPolicy'])->name('get_privecy_policy');
+Route::get('/return-policy', [HomeController::class, 'getReturnPolicy'])->name('get_return_policy');
+Route::get('/delivery-policy', [HomeController::class, 'getDeliveryPolicy'])->name('get_delivery_policy');
 
+Route::get('/free-shipping', [HomeController::class, 'freeShipping'])->name('get_free_shipping');
+Route::get('/authentication', [HomeController::class, 'authenticate'])->name('get_authenticate');
+Route::get('/safe-secure-payment', [HomeController::class, 'safeSecure'])->name('get_safe_payment');
 
 Route::post('/store-review', [CustomerController::class, 'storeReview'])->name('store_review');
 Route::get('/get-review', [CustomerController::class, 'getAllReview'])->name('get_reviews');
@@ -43,7 +54,6 @@ Route::group(['middleware' => 'auth:customer'], function () {
     Route::get('/show-order-invoice/{id}', [CustomerController::class, 'order_invoice'])->name('customer.order.invoice');
     Route::get('/customer-logout', [CustomerController::class, 'userLogout'])->name('customer.logout');
 });
-
 
 // Authentication
 // Route::group(['middleware' => 'guest'], function () {

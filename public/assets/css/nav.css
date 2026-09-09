@@ -180,7 +180,6 @@
     }
 
     .dropdown-submenu>.dropdown-menu{
-
         position:static!important;
         display:none;
         opacity:1;
@@ -195,9 +194,8 @@
         display:block;
     }
 
-
     .topbarLogo{
-           height: 80px;
+           height: 45px;
         padding: 6px 0px;
 }
 .search-pill{

@@ -5,16 +5,19 @@ namespace App\Http\Controllers\frontend;
 use App\Helpers\StockHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Banner;
+use App\Models\Blog;
 use App\Models\Category;
 use App\Models\Customer;
 use App\Models\Customerreview;
 use App\Models\Fastiv;
+use App\Models\Gallery;
 use App\Models\Order;
 use App\Models\OrderDetails;
 use App\Models\Policy;
 use App\Models\Product;
 use App\Models\Review;
 use App\Models\Slider;
+use App\Models\Subcategory;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -30,7 +33,11 @@ class HomeController extends Controller
 
     public function getProductsWithRaw($cluse = null, $orderBy = null, $limit = null)
     {
-        return DB::select("
+        // Prevent invalid SQL such as: IN ()
+        if ($cluse && preg_match('/\bIN\s*\(\s*\)/i', $cluse)) {
+            return [];
+        }
+        $sql = "
         SELECT
             p.Product_SlNo,
             p.Product_Code,
@@ -55,22 +62,26 @@ class HomeController extends Controller
         FROM tbl_product AS p
         LEFT JOIN tbl_productcategory AS c
             ON p.ProductCategory_ID = c.ProductCategory_SlNo
-
         WHERE p.status = 'a'
           AND p.in_website = 1
-          " . ($cluse ? "AND $cluse" : "") . "
-
-        " . ($orderBy ? "ORDER BY $orderBy" : "") . "
-
-        " . ($limit ? "LIMIT $limit" : "") . "
-    ");
+    ";
+        if (!empty($cluse)) {
+            $sql .= " AND {$cluse}";
+        }
+        if (!empty($orderBy)) {
+            $sql .= " ORDER BY {$orderBy}";
+        }
+        if (!empty($limit)) {
+            $sql .= " LIMIT {$limit}";
+        }
+        return DB::select($sql);
     }
 
     public function index()
     {
         $sliders = Slider::where('status', 'a')->get();
         $banner = Banner::first();
-        $categories = Category::select('ProductCategory_SlNo', 'ProductCategory_Name', 'image')->where('status', 'a')->get();
+        $categories = Category::select('ProductCategory_SlNo','slug', 'ProductCategory_Name', 'image')->where('status', 'a')->get();
 
         $newArrivals = $this->getProductsWithRaw('p.new_arrival = 1');
         $popular_roduct = $this->getProductsWithRaw('p.popular_product = 1');
@@ -96,7 +107,11 @@ class HomeController extends Controller
                 ->filter()
                 ->values();
         });
-        return view('front.pages.home', compact('sliders', 'events', 'banner', 'categories', 'newArrivals', 'popular_roduct', 'products', 'reviews'));
+        $galleries = Gallery::where('type','p')->where('status','a')->inRandomOrder()->take(6)->get();
+        $blogs = Blog::where('status','a')->orderBy('created_at','asc')->take(3)->get();
+
+        // return response()->json($galleries);
+        return view('front.pages.home', compact('sliders', 'events', 'banner', 'categories', 'newArrivals', 'popular_roduct', 'products', 'reviews','galleries','blogs'));
     }
 
     // public function index()
@@ -183,7 +198,6 @@ class HomeController extends Controller
 
     public function allproducts()
     {
-
         $categories = Category::select('ProductCategory_SlNo', 'ProductCategory_Name', 'image')
             ->where('status', 'a')->get();
         $min = Product::min('Product_MinimumSellingPrice');
@@ -191,18 +205,42 @@ class HomeController extends Controller
         return view('front.pages.shop', compact('categories', 'max', 'min'));
     }
 
-    public function categoryWiseProducts($id)
+    public function categoryWiseProducts($slug)
     {
         $category = Category::with([
             'subcategories' => function ($q) {
                 $q->select('id', 'category_id', 'name', 'slug')->where('status', 'a');
+            },'subcategories.childcategories'=>function($q){
+                $q->select('id','subcategory_id','name','slug')->where('status','a');
             }
-        ])->where('ProductCategory_SlNo', $id)->firstOrFail();
+        ])->where('slug', $slug)->firstOrFail();
         // return response()->json($category);
         $min = Product::min('Product_MinimumSellingPrice');
         $max = Product::max('Product_MinimumSellingPrice');
         return view('front.pages.category_wise', compact('category', 'max', 'min'));
-        // return response()->json($categories);
+    }
+
+    public function getSubCategoryId(Request $request){
+        try{
+            $data = $request->slug;
+            $ob = Subcategory::where('slug', $data)->pluck('id')->firstOrFail();
+            if($ob){
+                return response()->json([
+                    'status' => true,
+                    'id' => $ob 
+                ]);
+            }else{
+                return response()->json([
+                    'status' => false,
+                    'id' => null
+                ]);
+            }
+        }catch(\Exception $e){
+            return response()->json([
+                'status' => false,
+                'id' => null
+            ]);
+        }
     }
 
     public function getCatWiseProducts(Request $request)
@@ -222,60 +260,93 @@ class HomeController extends Controller
                 'p.Product_SellingPrice',
                 'p.thum_image'
             )
+
+            // Final minimum selling price
             ->selectRaw("
-                    CASE
-                        WHEN COALESCE(c.category_discount, 0) > COALESCE(p.discount, 0)
-                        THEN ROUND(
-                            p.Product_SellingPrice -
-                            (p.Product_SellingPrice * c.category_discount / 100),
-                            2
-                        )
-                        ELSE p.Product_MinimumSellingPrice
-                    END AS Product_MinimumSellingPrice
-                ")
+            CASE
+                WHEN COALESCE(c.category_discount, 0) > COALESCE(p.discount, 0)
+                THEN ROUND(
+                    p.Product_SellingPrice -
+                    (p.Product_SellingPrice * c.category_discount / 100),
+                    2
+                )
+                ELSE p.Product_MinimumSellingPrice
+            END AS Product_MinimumSellingPrice
+        ")
+
+            // Final discount
             ->selectRaw("
-                CASE
-                    WHEN COALESCE(c.category_discount, 0) > COALESCE(p.discount, 0)
-                    THEN c.category_discount
-                    ELSE COALESCE(p.discount, 0)
-                END AS discount
-            ")->where('ProductCategory_ID', $request->category_id)
-            ->when(!empty($request->sub_category), function ($query) use ($request) {
-                $query->whereIn(
-                    'p.sub_categori_id',
-                    $request->sub_category
-                );
-            })
-            ->when($request->filled('min'), function ($query) use ($request) {
-                $query->whereRaw("
+            CASE
+                WHEN COALESCE(c.category_discount, 0) > COALESCE(p.discount, 0)
+                THEN c.category_discount
+                ELSE COALESCE(p.discount, 0)
+            END AS discount
+        ")->where(
+                'p.ProductCategory_ID',
+                $request->category_id
+        )->when(
+                !empty($request->sub_category),
+                function ($query) use ($request) {
+                    $query->whereIn(
+                        'p.sub_categori_id',
+                        $request->sub_category
+                    );
+                }
+        )->when(
+                !empty($request->child_category_id),
+                function ($query) use ($request) {
+                    $query->whereIn(
+                        'p.child_category_id',
+                        $request->child_category_id
+                    );
+                }
+            )->when(
+                $request->filled('min'),
+                function ($query) use ($request) {
+                    $query->whereRaw("
                     (
                         CASE
-                            WHEN COALESCE(c.category_discount, 0) > COALESCE(p.discount, 0)
+                            WHEN COALESCE(c.category_discount, 0)
+                                > COALESCE(p.discount, 0)
+
                             THEN ROUND(
                                 p.Product_SellingPrice -
-                                (p.Product_SellingPrice * c.category_discount / 100),
+                                (
+                                    p.Product_SellingPrice
+                                    * c.category_discount / 100
+                                ),
                                 2
                             )
+
                             ELSE p.Product_MinimumSellingPrice
                         END
                     ) >= ?
                 ", [$request->min]);
-            })
-            ->when($request->filled('max'), function ($query) use ($request) {
-                $query->whereRaw("
-            (
-                CASE
-                    WHEN COALESCE(c.category_discount, 0) > COALESCE(p.discount, 0)
-                    THEN ROUND(
-                        p.Product_SellingPrice -
-                        (p.Product_SellingPrice * c.category_discount / 100),
-                        2
-                    )
-                    ELSE p.Product_MinimumSellingPrice
-                END
-            ) <= ?
-        ", [$request->max]);
-            })
+                }
+            )->when(
+                $request->filled('max'),
+                function ($query) use ($request) {
+                    $query->whereRaw("
+                    (
+                        CASE
+                            WHEN COALESCE(c.category_discount, 0)
+                                > COALESCE(p.discount, 0)
+
+                            THEN ROUND(
+                                p.Product_SellingPrice -
+                                (
+                                    p.Product_SellingPrice
+                                    * c.category_discount / 100
+                                ),
+                                2
+                            )
+
+                            ELSE p.Product_MinimumSellingPrice
+                        END
+                    ) <= ?
+                ", [$request->max]);
+                }
+            )
             ->where('p.status', 'a')
             ->where('p.in_website', 1)
             ->inRandomOrder()
@@ -373,7 +444,7 @@ class HomeController extends Controller
         $product = Product::with([
             'product_images',
             'category' => function ($q) {
-                $q->select('ProductCategory_SlNo', 'ProductCategory_Name','category_discount');
+                $q->select('ProductCategory_SlNo', 'ProductCategory_Name','category_discount','slug');
             },
             'subcategory' => function ($q) {
                 $q->select('id', 'name');
@@ -384,7 +455,7 @@ class HomeController extends Controller
         ])->where('slug', $slug)->firstOrFail();
 
         $r_products = Product::select('Product_SlNo', 'Product_Code', 'Product_Name', 'slug', 'Product_SellingPrice', 'Product_MinimumSellingPrice', 'discount', 'thum_image','have_size')
-            ->where('status', 'a')->where('in_website', 1)->where('ProductCategory_ID', $product->ProductCategory_ID)->inRandomOrder()->get();
+            ->where('status', 'a')->where('Product_SlNo',"!=" , $product->Product_SlNo)->where('in_website', 1)->where('ProductCategory_ID', $product->ProductCategory_ID)->inRandomOrder()->get();
         
         $ll = StockHelper::getProductStock($product->Product_SlNo);
 
@@ -535,8 +606,6 @@ class HomeController extends Controller
         }
     }
 
-
-
     public function getSearchProducts(Request $request)
     {
         $products = collect();
@@ -560,7 +629,52 @@ class HomeController extends Controller
         ]);
 
     }
+    public function galleries(){
+        $galleries = Gallery::where('status', 'a')->inRandomOrder()->get();
+        return view('front.pages.galleries',compact('galleries'));
+    }
+    public function getAllBlogs(){
+        $blogs = Blog::where('status', 'a')->orderBy('created_at', 'asc')->take(3)->get();
+        return view('front.pages.blogs',compact('blogs'));
 
+    }
+    public function getBlog($slug){
+        $blog = Blog::where('slug',$slug)->firstOrFail();
+        $r_products = Product::select('Product_Name','slug','Product_SlNo','thum_image','ProductCategory_ID')->where('ProductCategory_ID',$blog->category_id)->inRandomOrder()->where('status','a')->take(12)->get();
+        return view('front.pages.blog_detail',compact('blog','r_products'));
+    }
+
+    public function getTermsCondition(){
+        $page = Policy::findOrFail(1);
+        return view('front.pages.otherPages',compact('page'));
+    }
+
+    public function getPrivecyPolicy(){
+        $page = Policy::findOrFail(5);
+        return view('front.pages.otherPages', compact('page'));
+    }
+    public function getReturnPolicy(){
+        $page = Policy::findOrFail(2);
+        return view('front.pages.otherPages', compact('page'));
+    }
+    public function getDeliveryPolicy()
+    {
+        $page = Policy::findOrFail(3);
+        return view('front.pages.otherPages', compact('page'));
+    }
+    
+    public function freeShipping(){
+        $page = Policy::findOrFail(6);
+        return view('front.pages.otherPages', compact('page'));
+    }
+    public function authenticate(){
+        $page = Policy::findOrFail(7);
+        return view('front.pages.otherPages', compact('page'));
+    }
+    public function safeSecure(){
+        $page = Policy::findOrFail(8);
+        return view('front.pages.otherPages', compact('page'));
+    }
 
 
 

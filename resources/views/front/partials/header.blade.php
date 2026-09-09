@@ -141,20 +141,20 @@
 
                     @foreach ($nav_categories as $nav_cat)
                         @if(!empty($nav_cat->subcategories) && count($nav_cat->subcategories) > 0)
-                                    <li class="nav-item dropdown position-static">
-                                <a class="nav-link dropdown-toggle" href="{{ route('category.products', ['id' => $nav_cat->ProductCategory_SlNo]) }}" data-bs-toggle="dropdown">
+                            <li class="nav-item dropdown position-static">
+                                <a class="nav-link dropdown-toggle" href="{{ route('category.products', ['slug' => $nav_cat->slug]) }}" data-bs-toggle="dropdown">
                                     {{ $nav_cat->ProductCategory_Name }}
                                 </a>
                                 <div class="dropdown-menu nav_dropdown container shadow rounded-0 mt-0">
-                                    <a class="dropdown-item nav_drop_item" href="{{ route('category.products', ['id' => $nav_cat->ProductCategory_SlNo]) }}">{{ $nav_cat->ProductCategory_Name }}</a>
+                                    <a class="dropdown-item nav_drop_item" href="{{ route('category.products', ['slug' => $nav_cat->slug]) }}">{{ $nav_cat->ProductCategory_Name }}</a>
                                     @foreach ($nav_cat->subcategories as $subcat)
-                                        <a class="dropdown-item nav_drop_item" href="{{ route('category.products', ['id' => $nav_cat->ProductCategory_SlNo, 'producttype' => $subcat->id]) }}">{{ $subcat->name }}</a>
+                                        <a class="dropdown-item nav_drop_item" href="{{ route('category.products', ['slug' => $nav_cat->slug, 'producttype' => $subcat->slug]) }}">{{ $subcat->name }}</a>
                                     @endforeach
                                 </div>
                             </li>
                         @else
                                 <li class="nav-item" >
-                                <a class="nav-link active" href="{{ route('category.products', ['id' => $nav_cat->ProductCategory_SlNo]) }}">{{ $nav_cat->ProductCategory_Name }}</a>
+                                <a class="nav-link active" href="{{ route('category.products', ['slug' => $nav_cat->slug]) }}">{{ $nav_cat->ProductCategory_Name }}</a>
                             </li>
                         @endif
 

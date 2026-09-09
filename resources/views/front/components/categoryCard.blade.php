@@ -1,5 +1,5 @@
 <div class="category-card">
-    <a href="{{ route('category.products', ['id' => $id]) }}">
+    <a href="{{ route('category.products', ['slug' => $slug]) }}">
         <div class="category-img">
             <img src="{{ asset($img) }}" class="img-fluid" alt="Party Borka Design">
         </div>

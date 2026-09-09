@@ -5266,6 +5266,7 @@ fieldset:disabled .btn {
     transition: var(--bs-accordion-btn-icon-transition)
 }
 
+
 @media (prefers-reduced-motion:reduce) {
     .accordion-button::after {
         transition: none

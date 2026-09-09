@@ -57,7 +57,7 @@ class CartController extends Controller
                 'price' => $price,
                 'qty' => $qty,
                 'name' => $request->name,
-                'image' => $request->img ? config('app.soft_url'). $request->img : asset('uploads/no_images/no-image.png'),
+                'image' => $request->img ? config('app.soft_url'). $request->img : asset('assets/images/product_default.png'),
                 'total_price' => $totalPrice,
             ];
         }

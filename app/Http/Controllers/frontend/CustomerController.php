@@ -306,18 +306,12 @@ class CustomerController extends Controller
     }
 
     public function order_invoice($id){
-
-
         $orders = Order::with(['customer'=>function($query){
             $query->select('Customer_SlNo','Customer_Code','Customer_Name','Customer_Mobile','Customer_Address','Customer_Email');
         },'orderDetails'=>function($q){
             $q->select('SaleDetails_SlNo','SaleMaster_IDNo','Product_IDNo','size_id','SaleDetails_TotalQuantity','SaleDetails_Rate','SaleDetails_TotalAmount');
         },'orderDetails.product','orderDetails.size'])->select('SaleMaster_SlNo','status','AddTime','SaleMaster_SubTotalAmount','SaleMaster_Freight','SaleMaster_TotalSaleAmount','SalseCustomer_IDNo','SaleMaster_InvoiceNo')->where('SaleMaster_SlNo',$id)->firstOrFail();
-        
-        
-
         // return response()->json($orders);
-
         $total_order = Order::where('SalseCustomer_IDNo', Auth::guard('customer')
             ->user()->Customer_SlNo)->where('sales_from', 'web')->where('DeletedTime', null)
             ->where('DeletedBy', null)->count();
@@ -330,16 +324,14 @@ class CustomerController extends Controller
         $c_orders = Order::where('SalseCustomer_IDNo', Auth::guard('customer')
             ->user()->Customer_SlNo)->where('sales_from', 'web')->where('status', 'd')->where('DeletedTime', null)
             ->where('DeletedBy', null)->count();
-
         return view('front.pages.invoice',compact('orders','total_order','p_orders','a_orders','c_orders'));
     }
 
     public function storeReview(Request $request){
         $valid_rules = [
             'stars' => "required|int|min:1|max:5",
-            'review' => "required|string|max:255",
+            'review' => "required|string|max:50000",
         ];
-
         if(empty($request->Product_SlNo)){
             $valid_rules['name'] = "required|string:max:100";
             $valid_rules['address'] = "required|string:max:200";
@@ -347,7 +339,6 @@ class CustomerController extends Controller
         }else{
             $valid_rules['Product_SlNo'] = "required";
         }
-
         $checking = Validator::make($request->all(),$valid_rules);
         if($checking->fails()){
             return response()->json([
@@ -355,7 +346,6 @@ class CustomerController extends Controller
                 'errormessage' => "There is a problem"
             ]);
         }
-
         $data = [
             'rating' => $request->stars,
             'review' => $request->review,
@@ -367,20 +357,16 @@ class CustomerController extends Controller
             'Customer_SlNo' => $request->Customer_SlNo
         ];
         Customerreview::create($data);
-
         return response()->json([
             'status' => true,
             'message' => "Successfully stored message"
         ]);
-
     }
 
     public function getAllReview(Request $request) {
-
         $reviews = Customerreview::with(['customer' => function ($q) {
             $q->select('Customer_Name','Customer_Code','Customer_SlNo','web_profile');
         }])->where('status','a')->where('Product_SlNo',$request->Product_SlNo)->whereNull('deleted_at')->simplePaginate(10);
-        
         return response()->json([
             'status' => true,
             'data' => $reviews

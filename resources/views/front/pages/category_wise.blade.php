@@ -14,7 +14,7 @@
             border-radius: 5px;
             overflow: hidden;
             background: #fff;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            /* box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); */
         }
 
         .filter-box .accordion-button {
@@ -135,9 +135,9 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
-            max-height: 300px;
-            overflow-y: auto;
-            padding-right: 4px;
+            /* max-height: 300px; */
+            /* overflow-y: auto; */
+            padding: 0 6px;
         }
 
         .category-list::-webkit-scrollbar {
@@ -237,24 +237,49 @@
             opacity: 0.5;
             display: none;
         }
-        .bannerImg{
+
+        .bannerImg {
             width: 100%;
         }
-        .r-0{
+
+        .r-0 {
             border-radius: 2px;
             border: none;
             box-shadow: 0px 0px 15px 0px #0000006b;
-            cursor:pointer
+            cursor: pointer
         }
-        .crdbdy{
+
+        .crdbdy {
             overflow: hidden;
             transition: 0.35s ease-in-out;
         }
-        .crdbdy img{
+
+        .crdbdy img {
             transition: 0.35s ease-in-out;
         }
-        .crdbdy:hover img{
+
+        .crdbdy:hover img {
             transform: scale(1.05);
+        }
+
+        .child_cat_accordian {
+            width: 10%;
+            border: 0px solid transparent !important;
+            font-size: 17px;
+            background: transparent !important;
+        }
+
+        .child_cat_accordian::after {
+            width: 20px !important;
+            height: 20px !important;
+            background-size: 20px 20px !important;
+        }
+
+        .subcat_pad {
+            padding: 12px 0;
+            /* box-shadow: 0px 4px 10px #0000000f; */
+            border-radius: 7px;
+
         }
 
         @media (max-width: 767px) {
@@ -337,19 +362,48 @@
                                 <div id="categoryFilter" class="accordion-collapse collapse show"
                                     data-bs-parent="#categoryAccordion">
                                     <div class="accordion-body">
-                                        <!-- Category Search -->
-                                        <!-- <div class="category-search">
-                                                    <input type="text" class="form-control" placeholder="Search Category">
-                                                </div> -->
-                                        <!-- Categories -->
                                         <div class="category-list">
                                             @foreach ($category->subcategories as $cat)
-                                                <label class="category-item">
-                                                    <input type="checkbox" v-model="subcategories"
-                                                        :value="{{ $cat->id }}">
-
-                                                    <span>{{ $cat->name }}</span>
-                                                </label>
+                                                @if($cat->childcategories->isEmpty())
+                                                    <label class="category-item subcat_pad">
+                                                        <input type="checkbox" v-model="subcategories" :value="{{ $cat->id }}">
+                                                        <span>{{ $cat->name }}</span>
+                                                    </label>
+                                                @else
+                                                    <div class="accordion" id="{{ $cat->slug }}">
+                                                        <div class="accordion-item">
+                                                            <h2 class="accordion-header d-flex justify-content-between">
+                                                                <label class="category-item">
+                                                                    <input type="checkbox" v-model="subcategories"
+                                                                        :value="{{ $cat->id }}">
+                                                                    <span>{{ $cat->name }}</span>
+                                                                </label>
+                                                                <button class="accordion-button child_cat_accordian collapsed"
+                                                                    type="button" data-bs-toggle="collapse"
+                                                                    data-bs-target="#{{ $cat->slug . $cat->id }}"
+                                                                    aria-expanded="false"
+                                                                    aria-controls="{{ $cat->slug . $cat->id }}">
+                                                                </button>
+                                                            </h2>
+                                                            <div id="{{ $cat->slug . $cat->id }}"
+                                                                class="accordion-collapse collapse"
+                                                                data-bs-parent="#{{ $cat->slug }}">
+                                                                <div class="accordion-body">
+                                                                    <!-- Categories -->
+                                                                    <div class="category-list">
+                                                                        @foreach ($cat->childcategories as $c_cat)
+                                                                            <label class="category-item">
+                                                                                <input type="checkbox" v-model="childcategories"
+                                                                                    :value="{{ $c_cat->id }}">
+                                                                                <span>{{ $c_cat->name }}</span>
+                                                                            </label>
+                                                                        @endforeach
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endif
                                             @endforeach
                                         </div>
                                     </div>
@@ -361,7 +415,7 @@
 
                 <div class="col-12 col-md-8 col-lg-9">
                     <!-- Breadcrumb -->
-                   {{--  <div class="product-breadcrumb">
+                    {{-- <div class="product-breadcrumb">
                         <a href="{{ route('home') }}">Home</a>
                         <span>
                             <i class="bi bi-chevron-right"></i>
@@ -374,7 +428,8 @@
                                 <div class="card r-0">
                                     <div class="card-body p-1 ">
                                         <div class="crdbdy">
-                                            <img src="{{ $softUrl . $category->banner  }}" class="bannerImg" alt="{{ $category->ProductCategory_Name }}">
+                                            <img src="{{ $softUrl . $category->banner  }}" class="bannerImg"
+                                                alt="{{ $category->ProductCategory_Name }}">
                                         </div>
 
                                     </div>
@@ -389,16 +444,21 @@
                             <div class="product-card ">
                                 <a :href="'/product-detail/'+item.slug">
                                     <div class="product-image">
-                                        <span class="discount-badge">@{{ item.discount }}% OFF</span>
-                                        <img :src="softurl + item.thum_image" alt="dfs">
+                                        <span class="discount-badge" v-if="item.discount">@{{ item.discount }}% OFF</span>
+                                        <div class="image-loader">
+                                            <div class="spinner"></div>
+                                        </div>
+                                        <img :src="item.thum_image ? softurl + item.thum_image : '/assets/images/product_default.png'"
+                                            :data-src="item.thum_image ? softurl + item.thum_image : '/assets/images/product_default.png'"
+                                            :alt="item.Product_Name" class="lazy-product-image">
                                     </div>
                                 </a>
                                 <div class="product-content text-center data_container" :data-thiscard='JSON.stringify({
-                                            Product_SlNo: item.Product_SlNo,
-                                            Product_MinimumSellingPrice: item.Product_MinimumSellingPrice,
-                                            Product_Name: item.Product_Name,
-                                            thum_image: item.thum_image
-                                        })'>
+                                                    Product_SlNo: item.Product_SlNo,
+                                                    Product_MinimumSellingPrice: item.Product_MinimumSellingPrice,
+                                                    Product_Name: item.Product_Name,
+                                                    thum_image: item.thum_image
+                                                })'>
                                     <a :href="'/product-detail/'+item.slug">
                                         <h4>@{{ item.Product_Name }}</h4>
                                         <div class="product_price_container">
@@ -444,6 +504,7 @@
                     maxprice: {{ $max ?? 0 }},
                     category_id: {{ $category->ProductCategory_SlNo }},
                     subcategories: [],
+                    childcategories: [],
                     products: [],
                     showproduct: false,
                     next_page_url: null,
@@ -456,7 +517,8 @@
                         min: this.minprice,
                         max: this.maxprice,
                         sub_category: this.subcategories,
-                        category_id : this.category_id
+                        category_id: this.category_id,
+                        child_category_id: this.childcategories
                     }
                     $.ajax({
                         method: 'get',
@@ -468,6 +530,28 @@
                                 this.showproduct = true
                                 this.prev_page_url = res.products.prev_page_url;
                                 this.next_page_url = res.products.next_page_url;
+                                this.$nextTick(() => {
+                                    this.initLazyImages();
+                                });
+                            }
+                        },
+                        error: (res) => {
+
+                        }
+                    });
+                },
+                getSubCategoryId(slug) {
+                    console.log('call to hoice...')
+                    let ob = {
+                        slug,
+                    }
+                    $.ajax({
+                        method: 'get',
+                        url: "{{ route('subcategory_id_get') }}",
+                        data: ob,
+                        success: (res) => {
+                            if (res.status) {
+                                this.subcategories = [res.id];
                             }
                         },
                         error: (res) => {
@@ -499,18 +583,57 @@
                     if (this.prev_page_url) {
                         this.getProducts(this.prev_page_url)
                     }
+                },
+                initLazyImages() {
+                    const images = document.querySelectorAll(".lazy-product-image");
+                    const observer = new IntersectionObserver((entries, observer) => {
+                        entries.forEach(entry => {
+                            if (!entry.isIntersecting) {
+                                return;
+                            }
+                            const img = entry.target;
+                            const loader = img.parentElement.querySelector(".image-loader");
+                            const image = new Image();
+                            image.onload = function () {
+                                img.src = img.dataset.src;
+                                img.classList.add("loaded");
+                                if (loader) {
+                                    loader.style.display = "none";
+                                }
+                            };
+                            image.onerror = function () {
+                                img.src = "{{ asset('assets/images/product_default.png') }}";
+                                img.classList.add("loaded");
+                                if (loader) {
+                                    loader.style.display = "none";
+                                }
+                            };
+                            image.src = img.dataset.src;
+                            observer.unobserve(img);
+                        });
+                    }, {
+                        rootMargin: "100px"
+                    });
+                    images.forEach(img => {
+                        observer.observe(img);
+                    });
                 }
             },
             created() {
                 const params = new URLSearchParams(window.location.search);
-                    let catId = params.get('producttype');
-                    if(catId){
-                        this.subcategories = [catId];
-                    }
+                let catSlug = params.get('producttype');
+                if (catSlug) {
+                    // this.subcategories = [catId];
+                    this.getSubCategoryId(catSlug)
+
+                }
                 this.getProducts("{{ route('get.cat.wise.products') }}")
             },
             watch: {
                 subcategories(newValue) {
+                    this.getProducts("{{ route('get.cat.wise.products') }}")
+                },
+                childcategories(){
                     this.getProducts("{{ route('get.cat.wise.products') }}")
                 },
                 maxprice(newValue) {

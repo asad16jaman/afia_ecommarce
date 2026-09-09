@@ -39,7 +39,7 @@ class ViewServiceProvider extends ServiceProvider
             $setting = Company::first();
             $nav_category = Category::with(['subcategories'=>function($q){
                 $q->select('id','category_id','name','slug');
-            }])->select('ProductCategory_Name', 'ProductCategory_SlNo')->where('status' , 'a')->take(6)->get();
+            }])->select('ProductCategory_Name','slug', 'ProductCategory_SlNo')->where('status' , 'a')->take(6)->get();
             if (!$setting) {
                 $setting = (object) $defaultSettings;
             }

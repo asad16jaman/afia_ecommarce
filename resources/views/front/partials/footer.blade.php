@@ -1,4 +1,4 @@
-<!-- Footer Section -->
+ <!-- Footer Section -->
     <footer class="footer-section pt-5 pb-3">
         <div class="container">
             <div class="row gy-4">
@@ -39,10 +39,10 @@
                     <h4 class="footer-title">Quick Route</h4>
 
                     <ul class="footer-links list-unstyled">
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Products</a></li>
-                        <li><a href="#">Contact</a></li>
+                        <li><a href="{{ route('home') }}">Home</a></li>
+                        <li><a href="{{ route('all.products') }}">Products</a></li>
+                        <li><a href="{{ route('galleries') }}">Galleries</a></li>
+                        <li><a href="{{ route('get_all_blog') }}">Blogs</a></li>
                     </ul>
                 </div>
                 <!-- About -->
@@ -50,14 +50,16 @@
                     <h4 class="footer-title">Useful Links</h4>
 
                     <ul class="footer-links list-unstyled">
-                        <li><a href="#">Privecy Policy</a></li>
-                        <li><a href="#">Terms & Condition</a></li>
-                        <li><a href="#">Return Policy</a></li>
+                        <li><a href="{{ route('get_privecy_policy') }}">Privecy Policy</a></li>
+                        <li><a href="{{ route('get_terms_condition') }}">Terms & Condition</a></li>
+                        <li><a href="{{ route('get_return_policy') }}">Return Policy</a></li>
+                        <li><a href="{{ route('get_delivery_policy') }}">Delivery Policy</a></li>
                     </ul>
                 </div>
                 <!-- Map -->
                 <div class="col-lg-4 col-xs-12">
-                    
+                    <iframe src="{{ $setting->google_map }}" width="100%" height="220" style="border:0;" 
+                    allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
 
                 </div>
             </div>
