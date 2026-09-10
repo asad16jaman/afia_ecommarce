@@ -2,6 +2,9 @@
 <html lang="en">
 
 <head>
+    {!! optional($traking)->fb_pixel_header !!}
+    {!! optional($traking)->gtm_header !!}
+    {!! optional($traking)->tiktok_pixel_header !!}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title') | {{ optional($setting)->Company_Name }}</title>
@@ -18,6 +21,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/nav.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/cart.css') }}">
+   
 
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri&display=swap" rel="stylesheet">
@@ -100,6 +104,9 @@
 </head>
 
 <body>
+    {!! optional($traking)->tiktok_pixel_footer !!}
+    {!! optional($traking)->gtm_footer !!}
+    {!! optional($traking)->fb_pixel_footer !!}
 
     <!-- header section start -->
     @include('front.partials.header')
@@ -322,8 +329,6 @@
                 }
             });
         }
-
-
         function byNow(product, size, qty = 1) {
             const data = {
                 product_id: product.Product_SlNo,
@@ -471,8 +476,6 @@
                     },
                     error: function () { },
                 })
-
-
             }
         })
         window.addEventListener('keydown', function (e) {
@@ -547,8 +550,6 @@
 			);
 		}
 	</script>
-
-
     @stack('script')
 </body>
 

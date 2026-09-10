@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Category;
 use App\Models\Company;
+use App\Models\Traking;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -36,6 +37,7 @@ class ViewServiceProvider extends ServiceProvider
                 // 'footer_short_description' => 'We’re committed to delivering excellence.',
                 // 'google_map' => '<iframe src="..."></iframe>',
             ];
+            $traking = Traking::first();
             $setting = Company::first();
             $nav_category = Category::with(['subcategories'=>function($q){
                 $q->select('id','category_id','name','slug');
@@ -45,6 +47,7 @@ class ViewServiceProvider extends ServiceProvider
             }
             
             $view->with('setting',$setting);
+            $view->with('traking',$traking);
             $view->with('currency', $setting->Currency_Symbol);
             $view->with('nav_categories' , $nav_category);
 
