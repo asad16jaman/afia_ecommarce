@@ -23,8 +23,11 @@ Route::get('/cart-clear',[CartController::class,'clearCart'])->name('cart.clear'
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/shop', [HomeController::class, 'allproducts'])->name('all.products');
 Route::get('/category/{slug}/products', [HomeController::class, 'categoryWiseProducts'])->name('category.products');
+Route::get('/subcategory/{slug}/products', [HomeController::class, 'subcategoryWiseProduct'])->name('subcategories.products');
+Route::get('/child-category/{slug}/products', [HomeController::class, 'childCategorywiseProduct'])->name('childcategories.products');
 Route::get('/get-subcategory-id', [HomeController::class, 'getSubCategoryId'])->name('subcategory_id_get');
 Route::get('/get-category-wise-product',[HomeController::class,'getCatWiseProducts'])->name('get.cat.wise.products');
+Route::get('/get-sub-category-wise-product',[HomeController::class,'getSubCatWiseProducts'])->name('get.subcat.wise.products');
 Route::get('/get-product',[HomeController::class,'getProducts'])->name('get.products');
 Route::get('/product-detail/{slug}', [HomeController::class, 'getProductDetail'])->name('get_product_detail');
 Route::get('/checkout-page', [HomeController::class, 'checkoutPage'])->name('checkout_page');

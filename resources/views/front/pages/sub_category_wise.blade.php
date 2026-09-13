@@ -2,13 +2,14 @@
 @section('title', 'Shop Page')
 @push('style')
     <style>
-        .subcatLink:hover{
+        .hoverTextUnderline:hover{
             text-decoration: underline;
         }
         .filter-box {
             width: 100%;
             box-shadow: 1px 1px 15px 0px #00000073;
             border-radius: 15px;
+            ;
         }
 
         .filter-box .accordion-item {
@@ -294,12 +295,15 @@
                 padding: 10px 14px;
                 font-size: 15px;
             }
+
             .filter-box .accordion-body {
                 padding: 14px;
             }
+
             .price-inputs {
                 gap: 7px;
             }
+
             .product-breadcrumb {
                 margin-top: 10px;
             }
@@ -312,11 +316,8 @@
         <div class="container">
             <div class="row mb-4">
                 <div class="col-12 col-md-4 col-lg-3">
-
-                    <!-- PRICE FILTER -->
                     <div class="filter-box">
                         <div class="accordion" id="priceAccordion">
-
                             <div class="accordion-item">
                                 <h2 class="accordion-header">
                                     <button class="accordion-button" type="button" data-bs-toggle="collapse"
@@ -339,9 +340,6 @@
                                                     placeholder="Max Price">
                                             </div>
                                         </div>
-                                        {{-- <button type="button" class="filter-btn">
-                                            Filter
-                                        </button> --}}
                                     </div>
                                 </div>
                             </div>
@@ -355,22 +353,21 @@
                                     <button class="accordion-button" type="button" data-bs-toggle="collapse"
                                         data-bs-target="#categoryFilter" aria-expanded="true"
                                         aria-controls="categoryFilter">
-                                        <span>{{ $category->ProductCategory_Name }}</span>
+                                        <span><a href="{{ route('subcategories.products', ['slug' => $subcategory->category->slug]) }}">{{ $subcategory->name }}</a></span>
                                     </button>
                                 </h2>
                                 <div id="categoryFilter" class="accordion-collapse collapse show"
                                     data-bs-parent="#categoryAccordion">
                                     <div class="accordion-body">
                                         <div class="category-list">
-                                            @foreach ($category->subcategories as $cat)
-                                                        <div class="category-item subcat_pad">
-                                                            <label class="">
-                                                            <input type="checkbox" v-model="subcategories" :value="{{ $cat->id }}">
-
-                                                        </label>
-                                                            <a href="{{ route('subcategories.products', ['slug' => $cat->slug]) }}" class="subcatLink"><span>{{ $cat->name }}</span></a>
-                                                        </div>
-                                                   
+                                            @foreach ($subcategory->childcategories as $cat)
+                                                {{-- @if($cat->childcategories == null) --}}
+                                                <div class="category-item subcat_pad">
+                                                    <label class="">
+                                                        <input type="checkbox" v-model="childcategories" :value="{{ $cat->id }}">
+                                                    </label>
+                                                    <a href="{{ route('childcategories.products', ['slug' => $cat->slug]) }}" class="hoverTextUnderline"><span>{{ $cat->name }}</span></a>
+                                                </div>
                                             @endforeach
                                         </div>
                                     </div>
@@ -381,22 +378,33 @@
                 </div>
 
                 <div class="col-12 col-md-8 col-lg-9">
-                    @if($category->banner)
+                    @if($subcategory->image)
                         <div class="row">
                             <div class="col-12 mt-0">
                                 <div class="card r-0">
                                     <div class="card-body p-1 ">
                                         <div class="crdbdy">
-                                            <img src="{{ $softUrl . $category->banner  }}" class="bannerImg"
-                                                alt="{{ $category->ProductCategory_Name }}">
+                                            <img src="{{ $softUrl . $subcategory->image }}" class="bannerImg"
+                                                alt="{{ $subcategory->name }}">
                                         </div>
-
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @elseif(optional($subcategory->category)->banner)
+                        <div class="row">
+                            <div class="col-12 mt-0">
+                                <div class="card r-0">
+                                    <div class="card-body p-1 ">
+                                        <div class="crdbdy">
+                                            <img src="{{ $softUrl . optional($subcategory->category)->banner  }}" class="bannerImg"
+                                                alt="{{ $subcategory->image }}">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     @endif
-
                     <div class="row d-flex justify-content-center" style="visibility:hidden"
                         :style="{ visibility: showproduct ? 'visible' : 'hidden' }">
                         <div class="col-md-6 col-lg-4 col-6" v-for="(item,key) in products">
@@ -413,11 +421,11 @@
                                     </div>
                                 </a>
                                 <div class="product-content text-center data_container" :data-thiscard='JSON.stringify({
-                                                    Product_SlNo: item.Product_SlNo,
-                                                    Product_MinimumSellingPrice: item.Product_MinimumSellingPrice,
-                                                    Product_Name: item.Product_Name,
-                                                    thum_image: item.thum_image
-                                                })'>
+                                                        Product_SlNo: item.Product_SlNo,
+                                                        Product_MinimumSellingPrice: item.Product_MinimumSellingPrice,
+                                                        Product_Name: item.Product_Name,
+                                                        thum_image: item.thum_image
+                                                    })'>
                                     <a :href="'/product-detail/'+item.slug">
                                         <h4>@{{ item.Product_Name }}</h4>
                                         <div class="product_price_container">
@@ -460,8 +468,7 @@
                     softurl: "{{ $softUrl }}",
                     minprice: {{ $min ?? 0}},
                     maxprice: {{ $max ?? 0 }},
-                    category_id: {{ $category->ProductCategory_SlNo }},
-                    subcategories: [],
+                    sub_categori_id: {{ $subcategory->id }},
                     childcategories: [],
                     products: [],
                     showproduct: false,
@@ -474,8 +481,7 @@
                     let data = {
                         min: this.minprice,
                         max: this.maxprice,
-                        sub_category: this.subcategories,
-                        category_id: this.category_id,
+                        sub_categori_id: this.sub_categori_id,
                         child_category_id: this.childcategories
                     }
                     $.ajax({
@@ -584,21 +590,20 @@
                     this.getSubCategoryId(catSlug)
 
                 }
-                this.getProducts("{{ route('get.cat.wise.products') }}")
+                this.getProducts("{{ route('get.subcat.wise.products') }}")
             },
             watch: {
-                subcategories(newValue) {
-                    this.getProducts("{{ route('get.cat.wise.products') }}")
-                },
-                childcategories(){
-                    this.getProducts("{{ route('get.cat.wise.products') }}")
+                
+                childcategories() {
+                    this.getProducts("{{ route('get.subcat.wise.products') }}")
                 },
                 maxprice(newValue) {
-                    this.getProducts("{{ route('get.cat.wise.products') }}")
+                    this.getProducts("{{ route('get.subcat.wise.products') }}")
                 },
                 minprice(newValue) {
-                    this.getProducts("{{ route('get.cat.wise.products') }}")
+                    this.getProducts("{{ route('get.subcat.wise.products') }}")
                 },
+
             },
 
         });

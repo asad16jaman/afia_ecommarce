@@ -4,58 +4,47 @@
     --nav-color: rgb(0 8 45);
     --color-second: rgb(242 127 32) ;
 }
-
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-
 html {
     scroll-behavior: smooth;
 }
-
 body {
     /* font-family: 'Montserrat', sans-serif; */
     /* font-family: "Hind Siliguri"; */
     font-family: sans-serif;
 }
-
 .color-second{
     color: var(--color-second) !important;
 }
-
 .show_more{
     border: 1px solid var(--color-second);
     padding: 8px;
     transition: 0.15s ease-in-out;
 }
-
 .show_more:hover{
     background-color: var(--color-second);
     color: #fff !important;
 }
-
 a {
     text-decoration: none;
     color: inherit;
 }
-
 ul {
     list-style: none;
 }
-
 .section-head {
     padding: 0px 20px 20px 20px;
 }
 .mt-custom{
     margin-top: 15px;
 }
-
 .header_margin{
     margin-top: 122px;
 }
-
 /* header */
 #header {
     background: var(--nav-color);
@@ -63,7 +52,6 @@ ul {
     padding: 0;
 
 }
-
 #header .navbar {
     padding: 0 !important;
 }
@@ -1579,9 +1567,6 @@ ul {
         overflow-y: scroll; */
      }
 }
-
-
-
 .feature-text {
     font-size: 11px;
     margin-top: 8px;
@@ -1589,11 +1574,9 @@ ul {
     font-weight: 600;
     color: #555;
 }
-
 .thumb-slider .slick-slide {
     padding: 0 8px;
 }
-
 .thumb-img {
     width: 90%;
     border-radius: 8px;
@@ -1601,11 +1584,9 @@ ul {
     border: 2px solid transparent;
     transition: 0.3s ease;
 }
-
 .thumb-img:hover {
     border-color: #f4b400;
 }
-
 .thumb-video {
     width: 90%;
     height: 90px;
@@ -1613,30 +1594,23 @@ ul {
     background: #f3f3f3;
     cursor: pointer;
 }
-
 .nav-tabs .nav-link {
     border: none;
     color: #999;
     font-weight: 600;
 }
-
 .nav-tabs .nav-link.active {
     color: #000;
     border-bottom: 3px solid var(--color-second);
 }
-
 .weight-guide {
     font-size: 12px;
     color: var(--color-second);
     text-decoration: none;
 }
-
-
-
 .thumb-slider .slick-slide {
     padding: 0 8px;
 }
-
 @media  screen and (max-width:767px) {
     .custom-product-tabs .nav-link{
         border:none;
@@ -1647,16 +1621,13 @@ ul {
         transition:.3s;
     }
     .header_margin{
-    margin-top: 150px;
+        margin-top: 100px;
+    }
 }
-}
-
 /* //related product css  */
-
 .relatedProductsSwiper{
     padding:10px 5px 50px;
 }
-
 .relatedProductsSwiper .swiper-button-next,
 .relatedProductsSwiper .swiper-button-prev{
     width:42px;
@@ -1666,14 +1637,10 @@ ul {
     border:1px solid #ddd;
     color:#000;
 }
-
 .relatedProductsSwiper .swiper-button-next::after,
 .relatedProductsSwiper .swiper-button-prev::after{
     font-size:16px;
     font-weight:700;
 }
-
-
-
 
 

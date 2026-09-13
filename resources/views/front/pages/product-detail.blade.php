@@ -195,9 +195,7 @@
                                                                                     </div>
                                                                                     <p class="authentic mb-2">100% Authentic Product</p>
                                                                                     <p class="mb-2"><strong>SKU</strong> : {{ optional($product)->Product_Code }}</p>
-                                                                                    <p class="mb-2"><strong>Category</strong> : {{ optional($product->category)->ProductCategory_Name }}
-                                                                                    </p>
-                                                                                    <p class="mb-2"><strong>Sub Category</strong> : {{ optional($product->subcategory)->name }}</p>
+                                                                                    
                                                                                     <p class="mb-2"><strong>Brand</strong> : {{ optional($product->p_brand)->brand_name }}</p>
 
                                                                                     @if ($product->have_size)

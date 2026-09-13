@@ -2,13 +2,11 @@
 @section('title', 'Shop Page')
 @push('style')
     <style>
-        .subcatLink:hover{
-            text-decoration: underline;
-        }
         .filter-box {
             width: 100%;
             box-shadow: 1px 1px 15px 0px #00000073;
             border-radius: 15px;
+            ;
         }
 
         .filter-box .accordion-item {
@@ -16,7 +14,7 @@
             border-radius: 5px;
             overflow: hidden;
             background: #fff;
-            /* box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
         }
 
         .filter-box .accordion-button {
@@ -137,9 +135,9 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
-            /* max-height: 300px; */
-            /* overflow-y: auto; */
-            padding: 0 6px;
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 4px;
         }
 
         .category-list::-webkit-scrollbar {
@@ -240,50 +238,6 @@
             display: none;
         }
 
-        .bannerImg {
-            width: 100%;
-        }
-
-        .r-0 {
-            border-radius: 2px;
-            border: none;
-            box-shadow: 0px 0px 15px 0px #0000006b;
-            cursor: pointer
-        }
-
-        .crdbdy {
-            overflow: hidden;
-            transition: 0.35s ease-in-out;
-        }
-
-        .crdbdy img {
-            transition: 0.35s ease-in-out;
-        }
-
-        .crdbdy:hover img {
-            transform: scale(1.05);
-        }
-
-        .child_cat_accordian {
-            width: 10%;
-            border: 0px solid transparent !important;
-            font-size: 17px;
-            background: transparent !important;
-        }
-
-        .child_cat_accordian::after {
-            width: 20px !important;
-            height: 20px !important;
-            background-size: 20px 20px !important;
-        }
-
-        .subcat_pad {
-            padding: 12px 0;
-            /* box-shadow: 0px 4px 10px #0000000f; */
-            border-radius: 7px;
-
-        }
-
         @media (max-width: 767px) {
             .filter-box {
                 margin-bottom: 15px;
@@ -294,12 +248,15 @@
                 padding: 10px 14px;
                 font-size: 15px;
             }
+
             .filter-box .accordion-body {
                 padding: 14px;
             }
+
             .price-inputs {
                 gap: 7px;
             }
+
             .product-breadcrumb {
                 margin-top: 10px;
             }
@@ -347,56 +304,22 @@
                             </div>
                         </div>
                     </div>
-                    <!-- CATEGORY FILTER -->
-                    <div class="filter-box mt-3">
-                        <div class="accordion" id="categoryAccordion">
-                            <div class="accordion-item">
-                                <h2 class="accordion-header">
-                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#categoryFilter" aria-expanded="true"
-                                        aria-controls="categoryFilter">
-                                        <span>{{ $category->ProductCategory_Name }}</span>
-                                    </button>
-                                </h2>
-                                <div id="categoryFilter" class="accordion-collapse collapse show"
-                                    data-bs-parent="#categoryAccordion">
-                                    <div class="accordion-body">
-                                        <div class="category-list">
-                                            @foreach ($category->subcategories as $cat)
-                                                        <div class="category-item subcat_pad">
-                                                            <label class="">
-                                                            <input type="checkbox" v-model="subcategories" :value="{{ $cat->id }}">
 
-                                                        </label>
-                                                            <a href="{{ route('subcategories.products', ['slug' => $cat->slug]) }}" class="subcatLink"><span>{{ $cat->name }}</span></a>
-                                                        </div>
-                                                   
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="col-12 col-md-8 col-lg-9">
-                    @if($category->banner)
-                        <div class="row">
-                            <div class="col-12 mt-0">
-                                <div class="card r-0">
-                                    <div class="card-body p-1 ">
-                                        <div class="crdbdy">
-                                            <img src="{{ $softUrl . $category->banner  }}" class="bannerImg"
-                                                alt="{{ $category->ProductCategory_Name }}">
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    @endif
-
+                    <!-- Breadcrumb -->
+                    <div class="product-breadcrumb">
+                        <a href="{{ route('home') }}">Home</a>
+                        <span>
+                            <i class="bi bi-chevron-right"></i>
+                        </span>
+                        <span><a href="{{ route('subcategories.products', ['slug' => $childCategory->subcategory->slug]) }}">{{ $childCategory->subcategory->name }}</a></span>
+                        <span>
+                            <i class="bi bi-chevron-right"></i>
+                        </span>
+                        <span>{{ $childCategory->name }}</span>
+                    </div>
                     <div class="row d-flex justify-content-center" style="visibility:hidden"
                         :style="{ visibility: showproduct ? 'visible' : 'hidden' }">
                         <div class="col-md-6 col-lg-4 col-6" v-for="(item,key) in products">
@@ -413,11 +336,11 @@
                                     </div>
                                 </a>
                                 <div class="product-content text-center data_container" :data-thiscard='JSON.stringify({
-                                                    Product_SlNo: item.Product_SlNo,
-                                                    Product_MinimumSellingPrice: item.Product_MinimumSellingPrice,
-                                                    Product_Name: item.Product_Name,
-                                                    thum_image: item.thum_image
-                                                })'>
+                                                Product_SlNo: item.Product_SlNo,
+                                                Product_MinimumSellingPrice: item.Product_MinimumSellingPrice,
+                                                Product_Name: item.Product_Name,
+                                                thum_image: item.thum_image
+                                            })'>
                                     <a :href="'/product-detail/'+item.slug">
                                         <h4>@{{ item.Product_Name }}</h4>
                                         <div class="product_price_container">
@@ -432,6 +355,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-12">
                             <div class="d-flex justify-content-end">
                                 <div class="btn-group" role="group" aria-label="Basic mixed styles example">
@@ -443,6 +367,7 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -460,9 +385,7 @@
                     softurl: "{{ $softUrl }}",
                     minprice: {{ $min ?? 0}},
                     maxprice: {{ $max ?? 0 }},
-                    category_id: {{ $category->ProductCategory_SlNo }},
-                    subcategories: [],
-                    childcategories: [],
+                    child_category: {{ $childCategory->id }},
                     products: [],
                     showproduct: false,
                     next_page_url: null,
@@ -474,9 +397,7 @@
                     let data = {
                         min: this.minprice,
                         max: this.maxprice,
-                        sub_category: this.subcategories,
-                        category_id: this.category_id,
-                        child_category_id: this.childcategories
+                        child_category: this.child_category
                     }
                     $.ajax({
                         method: 'get',
@@ -491,24 +412,6 @@
                                 this.$nextTick(() => {
                                     this.initLazyImages();
                                 });
-                            }
-                        },
-                        error: (res) => {
-
-                        }
-                    });
-                },
-                getSubCategoryId(slug) {
-                    let ob = {
-                        slug,
-                    }
-                    $.ajax({
-                        method: 'get',
-                        url: "{{ route('subcategory_id_get') }}",
-                        data: ob,
-                        success: (res) => {
-                            if (res.status) {
-                                this.subcategories = [res.id];
                             }
                         },
                         error: (res) => {
@@ -577,29 +480,22 @@
                 }
             },
             created() {
-                const params = new URLSearchParams(window.location.search);
-                let catSlug = params.get('producttype');
-                if (catSlug) {
-                    // this.subcategories = [catId];
-                    this.getSubCategoryId(catSlug)
 
-                }
-                this.getProducts("{{ route('get.cat.wise.products') }}")
+                this.getProducts("{{ route('get.products') }}")
             },
             watch: {
-                subcategories(newValue) {
-                    this.getProducts("{{ route('get.cat.wise.products') }}")
-                },
-                childcategories(){
-                    this.getProducts("{{ route('get.cat.wise.products') }}")
+                categories(newValue) {
+                    this.getProducts("{{ route('get.products') }}")
                 },
                 maxprice(newValue) {
-                    this.getProducts("{{ route('get.cat.wise.products') }}")
+                    this.getProducts("{{ route('get.products') }}")
                 },
                 minprice(newValue) {
-                    this.getProducts("{{ route('get.cat.wise.products') }}")
-                },
-            },
+                    this.getProducts("{{ route('get.products') }}")
+                }
+
+
+            }
 
         });
     </script>

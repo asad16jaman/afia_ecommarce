@@ -23,7 +23,7 @@
             </div>
             <div class="d-flex align-items-center">
                 <ul class="d-flex mb-0 gap-lg-4 gap-3">
-                    <li class="nav-item d-md-flex align-items-center d-none ">
+                    <li class="nav-item d-flex align-items-center ">
                         <div class="d-flex align-items-center nav_social_media_container">
                             <div class="nav_social_media_icon">
                                 <!-- position: absolute; right: 47%; top: 10px; -->
@@ -148,7 +148,7 @@
                                 <div class="dropdown-menu nav_dropdown container shadow rounded-0 mt-0">
                                     <a class="dropdown-item nav_drop_item" href="{{ route('category.products', ['slug' => $nav_cat->slug]) }}">{{ $nav_cat->ProductCategory_Name }}</a>
                                     @foreach ($nav_cat->subcategories as $subcat)
-                                        <a class="dropdown-item nav_drop_item" href="{{ route('category.products', ['slug' => $nav_cat->slug, 'producttype' => $subcat->slug]) }}">{{ $subcat->name }}</a>
+                                        <a class="dropdown-item nav_drop_item" href="{{ route('subcategories.products', ['slug' => $subcat->slug]) }}">{{ $subcat->name }}</a>
                                     @endforeach
                                 </div>
                             </li>

@@ -220,4 +220,16 @@
     border-bottom: 1px solid #000000e6 !important;
 }
 
+.nav_social_media_icon{
+   color: var(--color-second);
+    font-size: 16px;
+}
+.nav_cart_icon{
+    color: var(--color-second);
+    font-size: 16px;
+}
+ol, ul {
+    padding-left: 0rem;
+}
+
 }

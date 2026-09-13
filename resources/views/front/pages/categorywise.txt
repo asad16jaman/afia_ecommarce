@@ -9,6 +9,7 @@
             width: 100%;
             box-shadow: 1px 1px 15px 0px #00000073;
             border-radius: 15px;
+            ;
         }
 
         .filter-box .accordion-item {
@@ -294,12 +295,15 @@
                 padding: 10px 14px;
                 font-size: 15px;
             }
+
             .filter-box .accordion-body {
                 padding: 14px;
             }
+
             .price-inputs {
                 gap: 7px;
             }
+
             .product-breadcrumb {
                 margin-top: 10px;
             }
@@ -363,6 +367,7 @@
                                     <div class="accordion-body">
                                         <div class="category-list">
                                             @foreach ($category->subcategories as $cat)
+                                                    {{-- @if($cat->childcategories == null) --}}
                                                         <div class="category-item subcat_pad">
                                                             <label class="">
                                                             <input type="checkbox" v-model="subcategories" :value="{{ $cat->id }}">
@@ -370,7 +375,41 @@
                                                         </label>
                                                             <a href="{{ route('subcategories.products', ['slug' => $cat->slug]) }}" class="subcatLink"><span>{{ $cat->name }}</span></a>
                                                         </div>
-                                                   
+                                                   {{--  @else
+                                                        <div class="accordion" id="{{ $cat->slug }}">
+                                                            <div class="accordion-item">
+                                                                <h2 class="accordion-header d-flex justify-content-between">
+                                                                    <label class="category-item">
+                                                                        <input type="checkbox" v-model="subcategories"
+                                                                            :value="{{ $cat->id }}">
+                                                                        <span>{{ $cat->name }}</span>
+                                                                    </label>
+                                                                    <button class="accordion-button child_cat_accordian collapsed"
+                                                                        type="button" data-bs-toggle="collapse"
+                                                                        data-bs-target="#{{ $cat->slug . $cat->id }}"
+                                                                        aria-expanded="false"
+                                                                        aria-controls="{{ $cat->slug . $cat->id }}">
+                                                                    </button>
+                                                                </h2>
+                                                                <div id="{{ $cat->slug . $cat->id }}"
+                                                                    class="accordion-collapse collapse"
+                                                                    data-bs-parent="#{{ $cat->slug }}">
+                                                                    <div class="accordion-body">
+                                                                        <!-- Categories -->
+                                                                        <div class="category-list">
+                                                                            @foreach ($cat->childcategories as $c_cat)
+                                                                                <label class="category-item">
+                                                                                    <input type="checkbox" v-model="childcategories"
+                                                                                        :value="{{ $c_cat->id }}">
+                                                                                    <span>{{ $c_cat->name }}</span>
+                                                                                </label>
+                                                                            @endforeach
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    @endif --}}
                                             @endforeach
                                         </div>
                                     </div>
@@ -381,6 +420,14 @@
                 </div>
 
                 <div class="col-12 col-md-8 col-lg-9">
+                    <!-- Breadcrumb -->
+                    {{-- <div class="product-breadcrumb">
+                        <a href="{{ route('home') }}">Home</a>
+                        <span>
+                            <i class="bi bi-chevron-right"></i>
+                        </span>
+                        <span>Products</span>
+                    </div> --}}
                     @if($category->banner)
                         <div class="row">
                             <div class="col-12 mt-0">
@@ -443,6 +490,7 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -599,6 +647,7 @@
                 minprice(newValue) {
                     this.getProducts("{{ route('get.cat.wise.products') }}")
                 },
+
             },
 
         });
