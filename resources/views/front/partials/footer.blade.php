@@ -59,7 +59,7 @@
                 <!-- Map -->
                 <div class="col-lg-4 col-xs-12">
                     <iframe src="{{ $setting->google_map }}" width="100%" height="220" style="border:0;" 
-                    allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+                    allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" title="Store Map"></iframe>
 
                 </div>
             </div>

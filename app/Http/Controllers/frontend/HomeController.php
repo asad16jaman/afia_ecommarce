@@ -25,7 +25,6 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
 class HomeController extends Controller
@@ -83,11 +82,10 @@ class HomeController extends Controller
         $sliders = Slider::where('status', 'a')->get();
         $banner = Banner::first();
         $categories = Category::select('ProductCategory_SlNo','slug', 'ProductCategory_Name', 'image')->where('status', 'a')->get();
-
-        $newArrivals = $this->getProductsWithRaw('p.new_arrival = 1');
-        $popular_roduct = $this->getProductsWithRaw('p.popular_product = 1');
-        $products = $this->getProductsWithRaw('', 'RAND()', 20);
-        $reviews = Review::select('id', 'image', 'title')->where('status', 'a')->get();
+        $newArrivals = $this->getProductsWithRaw('p.new_arrival = 1', 'RAND()', 8);
+        $popular_roduct = $this->getProductsWithRaw('p.popular_product = 1', 'RAND()', 7);
+        $products = $this->getProductsWithRaw('', 'RAND()', 8);
+        $reviews = Review::select('id', 'image', 'title')->where('status', 'a')->inRandomOrder()->take(8)->get();
         $events = Fastiv::where('status', 'a')->get();
         $productIds = $events
             ->pluck('products')
@@ -110,8 +108,6 @@ class HomeController extends Controller
         });
         $galleries = Gallery::where('type','p')->where('status','a')->inRandomOrder()->take(6)->get();
         $blogs = Blog::where('status','a')->orderBy('created_at','asc')->take(3)->get();
-
-        // return response()->json($galleries);
         return view('front.pages.home', compact('sliders', 'events', 'banner', 'categories', 'newArrivals', 'popular_roduct', 'products', 'reviews','galleries','blogs'));
     }
 
@@ -579,10 +575,16 @@ class HomeController extends Controller
             ) <= ?
         ", [$request->max]);
             })
-            ->where('p.status', 'a')
-            ->where('p.in_website', 1)
-            ->inRandomOrder()
-            ->paginate(18);
+        ->when($request->product_type && $request->product_type == 'new_arrival', function($query) {
+            $query->where('p.new_arrival',1);
+        })
+        ->when($request->product_type && $request->product_type == 'popular_product', function($query) {
+            $query->where('p.popular_product',1);
+        })
+        ->where('p.status', 'a')
+        ->where('p.in_website', 1)
+        ->inRandomOrder()
+        ->paginate(18);
 
         return response()->json([
             'status' => true,
@@ -606,7 +608,7 @@ class HomeController extends Controller
         ])->where('slug', $slug)->firstOrFail();
 
         $r_products = Product::select('Product_SlNo', 'Product_Code', 'Product_Name', 'slug', 'Product_SellingPrice', 'Product_MinimumSellingPrice', 'discount', 'thum_image','have_size')
-            ->where('status', 'a')->where('Product_SlNo',"!=" , $product->Product_SlNo)->where('in_website', 1)->where('ProductCategory_ID', $product->ProductCategory_ID)->inRandomOrder()->get();
+            ->where('status', 'a')->where('Product_SlNo',"!=" , $product->Product_SlNo)->where('in_website', 1)->where('ProductCategory_ID', $product->ProductCategory_ID)->inRandomOrder()->take(10)->get();
         
         $ll = StockHelper::getProductStock($product->Product_SlNo);
 

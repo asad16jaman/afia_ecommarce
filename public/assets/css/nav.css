@@ -233,3 +233,12 @@ ol, ul {
 }
 
 }
+
+@media (max-width:768px){
+    .cart_badge_position{
+        top: 3px;
+        right: -19px;
+        font-size: 10px;
+    }
+    
+}

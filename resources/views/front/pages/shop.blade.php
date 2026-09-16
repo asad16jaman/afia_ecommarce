@@ -6,9 +6,7 @@
             width: 100%;
             box-shadow: 1px 1px 15px 0px #00000073;
             border-radius: 15px;
-            ;
         }
-
         .filter-box .accordion-item {
             border: none;
             border-radius: 5px;
@@ -16,7 +14,6 @@
             background: #fff;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
         }
-
         .filter-box .accordion-button {
             min-height: 50px;
             padding: 12px 18px;
@@ -28,46 +25,38 @@
             box-shadow: none;
             position: relative;
         }
-
         .filter-box .accordion-button:not(.collapsed) {
             background: #f5f5f5;
             color: var(--nav-color);
             box-shadow: none;
             font-weight: 600;
         }
-
         .filter-box .accordion-button::after {
             width: 10px;
             height: 10px;
             background-size: 10px;
         }
-
         .filter-box .accordion-button:not(.collapsed) {
             border-bottom: 1px solid var(--color-second);
         }
-
         .filter-box .accordion-body {
             padding: 16px 18px;
             background: #fff;
         }
-
         .price-inputs {
             display: flex;
             gap: 8px;
             margin-bottom: 12px;
         }
-
         .price-input {
             flex: 1;
         }
-
         .price-input label {
             display: block;
             font-size: 12px;
             color: #777;
             margin-bottom: 4px;
         }
-
         .price-input input {
             width: 100%;
             height: 38px;
@@ -79,22 +68,18 @@
             color: #333;
             transition: 0.2s;
         }
-
         .price-input input:focus {
             border-color: #f85606;
             box-shadow: 0 0 0 2px rgba(248, 86, 6, 0.08);
         }
-
         .price-input input::-webkit-outer-spin-button,
         .price-input input::-webkit-inner-spin-button {
             -webkit-appearance: none;
             margin: 0;
         }
-
         .price-input input[type=number] {
             -moz-appearance: textfield;
         }
-
         .filter-btn {
             display: block;
             margin-left: auto;
@@ -108,15 +93,12 @@
             cursor: pointer;
             transition: 0.2s;
         }
-
         .filter-btn:hover {
             background: #d94700;
         }
-
         .category-search {
             margin-bottom: 14px;
         }
-
         .category-search input {
             height: 36px;
             border: 1px solid #f85606;
@@ -125,12 +107,10 @@
             padding: 6px 12px;
             box-shadow: none;
         }
-
         .category-search input:focus {
             border-color: #f85606;
             box-shadow: 0 0 0 2px rgba(248, 86, 6, 0.08);
         }
-
         .category-list {
             display: flex;
             flex-direction: column;
@@ -139,20 +119,16 @@
             overflow-y: auto;
             padding-right: 4px;
         }
-
         .category-list::-webkit-scrollbar {
             width: 4px;
         }
-
         .category-list::-webkit-scrollbar-track {
             background: #f1f1f1;
         }
-
         .category-list::-webkit-scrollbar-thumb {
             background: #ccc;
             border-radius: 10px;
         }
-
         .category-item {
             display: flex;
             align-items: center;
@@ -164,11 +140,9 @@
             padding: 2px 0;
             user-select: none;
         }
-
         .category-item:hover {
             color: #f85606;
         }
-
         .category-item input[type="checkbox"] {
             width: 14px;
             height: 14px;
@@ -176,12 +150,10 @@
             accent-color: #f85606;
             cursor: pointer;
         }
-
         .category-item span {
             flex: 1;
             line-height: 20px;
         }
-
         .product-breadcrumb {
             display: flex;
             align-items: center;
@@ -193,70 +165,57 @@
             border-radius: 4px;
             font-size: 13px;
         }
-
         .product-breadcrumb a {
             color: #666;
             text-decoration: none;
             transition: 0.2s;
         }
-
         .product-breadcrumb a:hover {
             color: #f85606;
         }
-
         .product-breadcrumb span {
             color: #777;
         }
-
-        .product-breadcrumb span:last-child {
+        .product-breadcrumb span:last-child a {
             color: #f85606;
             font-weight: 500;
         }
-
         .product-breadcrumb i {
             font-size: 10px;
             color: #999;
         }
-
         .bg_button {
             background-color: var(--nav-color);
             border: 1px solid var(--nav-color);
             color: #fff;
             transition: 0.35s ease-in-out;
         }
-
         .bg_button:hover {
             background-color: #fff;
             border: 1px solid var(--nav-color);
             color: var(--nav-color)
         }
-
         .bg_button_disable {
             cursor: not-allowed !important;
             background-color: var(--nav-color);
             opacity: 0.5;
             display: none;
         }
-
         @media (max-width: 767px) {
             .filter-box {
                 margin-bottom: 15px;
             }
-
             .filter-box .accordion-button {
                 min-height: 46px;
                 padding: 10px 14px;
                 font-size: 15px;
             }
-
             .filter-box .accordion-body {
                 padding: 14px;
             }
-
             .price-inputs {
                 gap: 7px;
             }
-
             .product-breadcrumb {
                 margin-top: 10px;
             }
@@ -269,7 +228,6 @@
         <div class="container">
             <div class="row mb-4">
                 <div class="col-12 col-md-4 col-lg-3">
-
                     <!-- PRICE FILTER -->
                     <div class="filter-box">
                         <div class="accordion" id="priceAccordion">
@@ -342,7 +300,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="col-12 col-md-8 col-lg-9">
                     <!-- Breadcrumb -->
                     <div class="product-breadcrumb">
@@ -350,7 +307,22 @@
                         <span>
                             <i class="bi bi-chevron-right"></i>
                         </span>
-                        <span>Products</span>
+                        
+                        <span> <a href="{{ route('all.products') }}">Products </a></span>
+                        
+                        
+                        <span v-if="product_type">
+                            <i class="bi bi-chevron-right"></i>
+                        </span>
+                        
+                        <span v-if="product_type"> 
+                            <a href="#"  v-if="product_type == 'new_arrival'" :style="{display: (product_type == 'new_arrival') ? block : '' }" style="display:none">New Arrival </a>
+                            <a href="#"  v-if="product_type == 'popular_product'" :style="{display: (product_type == 'popular_product') ? block : '' }" style="display:none">Popular Product </a>
+                        </span>
+                        
+                        
+
+                        
                     </div>
                     <div class="row d-flex justify-content-center" style="visibility:hidden"
                         :style="{ visibility: showproduct ? 'visible' : 'hidden' }">
@@ -424,7 +396,8 @@
                     products: [],
                     showproduct: false,
                     next_page_url: null,
-                    prev_page_url: null
+                    prev_page_url: null,
+                    product_type:null,
                 }
             },
             methods: {
@@ -432,7 +405,8 @@
                     let data = {
                         min: this.minprice,
                         max: this.maxprice,
-                        categories: this.categories
+                        categories: this.categories,
+                        product_type:this.product_type
                     }
                     $.ajax({
                         method: 'get',
@@ -517,10 +491,11 @@
             },
             created() {
                 const params = new URLSearchParams(window.location.search);
-                let catId = params.get('category');
-                if (catId) {
-                    this.categories = [catId];
+                let productType = params.get('product_type');
+                if(productType){
+                    this.product_type = productType
                 }
+
                 this.getProducts("{{ route('get.products') }}")
             },
             watch: {
@@ -533,7 +508,7 @@
                 minprice(newValue) {
                     this.getProducts("{{ route('get.products') }}")
                 }
-                
+
 
             }
 

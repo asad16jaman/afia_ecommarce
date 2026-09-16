@@ -200,3 +200,16 @@
             transform: rotate(360deg);
         }
     }
+
+    @media screen and (max-width:768px){
+        .cart-item-price{
+            font-size: 10px;
+        }
+        .cart-item-size{
+            font-size: 10px !important;
+        }
+        .qty-btn{
+            width: 18px;
+            height: 23px;
+        }
+    }

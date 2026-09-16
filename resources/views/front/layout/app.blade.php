@@ -13,16 +13,11 @@
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link rel="stylesheet" href="{{ asset('assets/css/swift.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-icons.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/glightbox.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/slick.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/css/slick-theme.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/nav.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/cart.css') }}">
-   
-
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri&display=swap" rel="stylesheet">
     <style>
@@ -47,24 +42,19 @@
         .product_item:hover {
             background-color: #00082d2b;
         }
-
         .search_img_container {
             width: 30px;
 
         }
-
         .search_img_container img {
             width: 100%;
         }
-
         .bg-active {
             background-color: #00082d2b;
         }
-
         .goog-te-banner-frame.skiptranslate {
 			display: none !important;
 		}
-
 		.VIpgJd-ZVi9od-ORHb-OEVmcd{
 			display: none;
 		}
@@ -75,22 +65,6 @@
         .goog-te-gadget-icon{
             display: none !important;
         }
-        /* .goog-te-gadget-simple {
-            background-color: #f27f20 !important;
-            border-left: 1px solid #f27f20 !important;
-            border-top: 1px solid #f27f20 !important;
-            border-bottom: 1px solid #f27f20 !important;
-            border-right: 1px solid #f27f20 !important;
-            font-size: 10pt;
-            display: inline-block;
-            padding-top: 1px;
-            padding-bottom: 2px;
-            cursor: pointer;
-        }
-        .goog-te-gadget-simple .VIpgJd-ZVi9od-xl07Ob-lTBxed {
-            color: #fff !important;
-        } */
-
         .dkuywW{
             display: none !important;
         }
@@ -119,7 +93,6 @@
     <!-- footer section end -->
 
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-
         <div class="offcanvas-header border-bottom">
             <h5 class="offcanvas-title" id="offcanvasRightLabel">
                 Shopping Cart
@@ -127,7 +100,6 @@
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close">
             </button>
         </div>
-
         <div class="offcanvas-body p-0">
             <div class="cart-items" id="cart_itemContainer">
                 {{-- Cart Item --}}
@@ -148,7 +120,6 @@
     <!-- all script -->
     <script src="{{ asset('assets/js/jquery-3.6.0.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="{{ asset('assets/js/slick.min.js') }}"></script>
     <script src="{{ asset('assets/js/isotope.pkgd.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/js/swiper12.2.js') }}"></script>
@@ -282,7 +253,6 @@
         }
 
     </script>
-
 
     <script>
         function addToCart(product, size, qty = 1) {

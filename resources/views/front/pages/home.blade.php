@@ -37,25 +37,24 @@
                 <!-- Slider -->
                 <div class="col-lg-8 mt-0">
                     <div id="heroSlider" class="carousel slide hero-slider" data-bs-ride="carousel">
-
                         <div class="carousel-indicators">
                             @foreach ($sliders as $_slider)
-                                <button type="button" data-bs-target="#heroSlider" data-bs-slide-to="{{ $loop->index }}"
+                                <button type="button" data-bs-target="#heroSlider"  aria-label="indicator" data-bs-slide-to="{{ $loop->index }}"
                                     class="{{ ($loop->index == 0) ? 'active' : ''}}"></button>
                             @endforeach
                         </div>
                         <div class="carousel-inner">
                             @foreach ($sliders as $slider)
                                 <div class="carousel-item  {{ $loop->index == 0 ? 'active' : '' }}">
-                                    <img src="{{ $softUrl . $slider->image}}" class="d-block w-100" alt="">
+                                    <img src="{{ $softUrl . $slider->image}}" class="d-block w-100" alt="{{ $slider->title }}">
                                 </div>
                             @endforeach
                         </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#heroSlider"
+                        <button class="carousel-control-prev" type="button" aria-label="prev" data-bs-target="#heroSlider"
                             data-bs-slide="prev">
                             <span class="carousel-control-prev-icon"></span>
                         </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#heroSlider"
+                        <button class="carousel-control-next"  aria-label="next" type="button" data-bs-target="#heroSlider"
                             data-bs-slide="next">
                             <span class="carousel-control-next-icon"></span>
                         </button>
@@ -101,7 +100,6 @@
                     <div class="card bedge_card">
                         <a href="{{ route('get_authenticate') }}">
                             <div class="card-body">
-                                
                                     <div class="d-flex gap-3">
                                         <div class="left_bedge">
                                             <span><i class="bi bi-patch-check-fill"></i></span>
@@ -111,7 +109,6 @@
                                             <p>All Product Sourced Directly</p>
                                         </div>
                                     </div>
-                                
                             </div>
                         </a>
                     </div>
@@ -221,6 +218,12 @@
                     </div>
                 @endforeach
             </div>
+            <div class="text-center mt-4">
+                <a href="{{ route('all.products', ['product_type' => 'new_arrival']) }}" class="show_more rounded-pill px-4 text-black">
+                    All New Arrivals
+                    <i class="fa-solid fa-chevron-right ms-2"></i>
+                </a>
+            </div>
 
         </div>
     </section>
@@ -234,19 +237,28 @@
             </div>
             <div class="row">
                 <div class="col-12">
-                    <div class="gallery-slider">
-                        @foreach ($popular_roduct as $p_product)
-                            <div class="">
-                                @include('front.components.productCard', ['ob' => $p_product])
-                            </div>
-                        @endforeach
-                        @foreach ($popular_roduct as $p_product)
-                            <div class="">
-                                @include('front.components.productCard', ['ob' => $p_product])
-                            </div>
-                        @endforeach
+                    <div class="swiper gallerySwiper">
+                        <div class="swiper-wrapper">
+                            @foreach ($popular_roduct as $p_product)
+                                <div class="swiper-slide mb-2">
+                                    @include('front.components.productCard', [
+        'ob' => $p_product
+    ])
+                                </div>
+                            @endforeach
+                        </div>
+
+                        <!-- Navigation -->
+                        <div class="swiper-button-prev gallery-prev"></div>
+                        <div class="swiper-button-next gallery-next"></div>
                     </div>
                 </div>
+                <div class="text-center mt-4">
+                <a href="{{ route('all.products', ['product_type' => 'popular_product']) }}" class="show_more rounded-pill px-4 text-black">
+                    All Popular Products
+                    <i class="fa-solid fa-chevron-right ms-2"></i>
+                </a>
+            </div>
             </div>
         </div>
     </section>
@@ -396,7 +408,7 @@
                         <div class="swiper-wrapper">
                             @foreach ($reviews as $_review)
                                 <div class="swiper-slide">
-                                    @include('front.components.reviewCard', ['img' => $softUrl . $_review->image, 'title' => $_review->title])
+                                    @include('front.components.reviewCard', ['img' => $softUrl . $_review->image, 'title' => $_review->title ?? "Review Image"])
                                 </div>
                             @endforeach
 
@@ -409,193 +421,220 @@
     </section>
 
     <!-- Newsletter Modal -->
-    <div class="modal fade" id="newsletterModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content position-relative border-0"> <!-- Close Button --> <button type="button"
-                    class="modalcloss position-absolute top-0 end-0 m-2" data-bs-dismiss="modal" aria-label="Close"><i
-                        class="bi bi-x-lg"></i></button>
-                <!-- Newsletter Image -->
-                <div class="modal-body p-0"> <img src="{{ $softUrl . $setting->newsletter }}" alt="Newsletter"
-                        class="img-fluid w-100"> </div>
+<div class="modal fade" id="newsletterModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content position-relative border-0">
+
+            <button type="button"
+                    class="modalcloss position-absolute top-0 end-0 m-2"
+                    data-bs-dismiss="modal"
+                    aria-label="Close">
+                <i class="bi bi-x-lg"></i>
+            </button>
+
+            <div class="modal-body p-0">
+                <img id="newsletterImage"
+                     src="{{ $softUrl . $setting->newsletter }}"
+                     alt="Newsletter"
+                     class="img-fluid w-100">
             </div>
+
         </div>
     </div>
+</div>
 @endsection
 
 @push('script')
-        <script>
-            $(document).ready(function () {
-                const slickSettings = {
-                    rows: 1,
-                    arrows: true,
-                    dots: false,
-                    infinite: true,
-                    speed: 400,
-                    autoplay: true,
-                    autoplaySpeed: 1000000,
-                    pauseOnHover: true,
-                    slidesToShow: 5,
-                    slidesToScroll: 1,
-                    responsive: [
-                        {
-                            breakpoint: 1200,
-                            settings: {
-                                slidesToShow: 5
-                            }
-                        },
-                        {
-                            breakpoint: 992,
-                            settings: {
-                                slidesToShow: 3
-                            }
-                        },
-                        {
-                            breakpoint: 768,
-                            settings: {
-                                slidesToShow: 2
-                            }
-                        }
-                    ]
-                };
-                $('.gallery-slider').slick(slickSettings);
+    <script>
+        $(document).ready(function () {
+            const gallerySwiper = new Swiper(".gallerySwiper", {
+                slidesPerView: 5,
+                slidesPerGroup: 1,
+                spaceBetween: 20,
+                loop: true,
+                speed: 400,
+                autoplay: {
+                    delay: 1000000,
+                    disableOnInteraction: false,
+                    pauseOnMouseEnter: true,
+                },
+                navigation: {
+                    nextEl: ".gallery-next",
+                    prevEl: ".gallery-prev",
+                },
+                breakpoints: {
+                    0: {
+                        slidesPerView: 2,
+                    },
 
-                const reviewSwiper = new Swiper(".reviewSwiper", {
-                    slidesPerView: 5,
-                    spaceBetween: 16,
-                    loop: true,
-                    speed: 400,
-                    rtl: true,
-                    autoplay: {
-                        delay: 2000,
-                        disableOnInteraction: false,
+                    768: {
+                        slidesPerView: 2,
                     },
-                    breakpoints: {
-                        0: {
-                            slidesPerView: 1,
-                        },
-                        768: {
-                            slidesPerView: 2,
-                        },
-                        992: {
-                            slidesPerView: 2,
-                        },
-                        1200: {
-                            slidesPerView: 5,
-                        }
+
+                    992: {
+                        slidesPerView: 3,
+                    },
+
+                    1200: {
+                        slidesPerView: 5,
                     }
-                });
-                       
-                const categorySwiper = new Swiper(".categorySwiper", {
-                    slidesPerView: 2,
-                    spaceBetween: 20,
-                    loop: true,
-                    speed: 600,
-                    autoplay: {
-                        delay: 2500,
-                        disableOnInteraction: false,
-                    },
-                    pagination: {
-                        el: ".categorySwiper .swiper-pagination",
-                        clickable: true,
-                    },
-                    breakpoints: {
-                        576: {
-                            slidesPerView: 2,
-                        },
-                        768: {
-                            slidesPerView: 3,
-                        },
-                        992: {
-                            slidesPerView: 4,
-                        },
-                        1200: {
-                            slidesPerView: 5,
-                        }
-                    }
-                });
+                }
             });
 
-            document.addEventListener('DOMContentLoaded', function () {
-                var isotopeContainer = document.querySelector('.isotope-container');
-                if (!isotopeContainer) {
-                    return;
+            const reviewSwiper = new Swiper(".reviewSwiper", {
+                slidesPerView: 5,
+                spaceBetween: 16,
+                loop: true,
+                speed: 400,
+                rtl: true,
+                autoplay: {
+                    delay: 2000,
+                    disableOnInteraction: false,
+                },
+                breakpoints: {
+                    0: {
+                        slidesPerView: 1,
+                    },
+                    768: {
+                        slidesPerView: 2,
+                    },
+                    992: {
+                        slidesPerView: 2,
+                    },
+                    1200: {
+                        slidesPerView: 5,
+                    }
                 }
-                var iso = new Isotope(isotopeContainer, {
-                    itemSelector: '.isotope-item',
-                    layoutMode: 'fitRows'
-                });
-                var filterButtons = document.querySelectorAll('.filter-btn');
-                var eventTitle = document.getElementById('event-title');
-                filterButtons.forEach(function (button) {
-                    button.addEventListener('click', function () {
-                        var filterValue = this.getAttribute('data-filter');
-                        var title = this.getAttribute('data-title');
-                        // Filter products
-                        iso.arrange({
-                            filter: filterValue
-                        });
-                        // Change title
-                        eventTitle.textContent = title;
-                        // Active button
-                        filterButtons.forEach(function (btn) {
-                            btn.classList.remove('btn-isotop', 'active');
-                            btn.classList.add('btn-outline-isotop');
-                        });
-                        this.classList.remove('btn-outline-isotop');
-                        this.classList.add('btn-isotop', 'active');
-                    });
-                });
+            });
 
-                // First event default selected
-                if (filterButtons.length > 0) {
-                    var firstFilter = filterButtons[0].getAttribute('data-filter');
+            const categorySwiper = new Swiper(".categorySwiper", {
+                slidesPerView: 2,
+                spaceBetween: 20,
+                loop: true,
+                speed: 600,
+                autoplay: {
+                    delay: 2500,
+                    disableOnInteraction: false,
+                },
+                pagination: {
+                    el: ".categorySwiper .swiper-pagination",
+                    clickable: true,
+                },
+                breakpoints: {
+                    576: {
+                        slidesPerView: 2,
+                    },
+                    768: {
+                        slidesPerView: 3,
+                    },
+                    992: {
+                        slidesPerView: 4,
+                    },
+                    1200: {
+                        slidesPerView: 5,
+                    }
+                }
+            });
+
+
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var isotopeContainer = document.querySelector('.isotope-container');
+            if (!isotopeContainer) {
+                return;
+            }
+            var iso = new Isotope(isotopeContainer, {
+                itemSelector: '.isotope-item',
+                layoutMode: 'fitRows'
+            });
+            var filterButtons = document.querySelectorAll('.filter-btn');
+            var eventTitle = document.getElementById('event-title');
+            filterButtons.forEach(function (button) {
+                button.addEventListener('click', function () {
+                    var filterValue = this.getAttribute('data-filter');
+                    var title = this.getAttribute('data-title');
+                    // Filter products
                     iso.arrange({
-                        filter: firstFilter
+                        filter: filterValue
                     });
-                }
-                const newsletterModal = new bootstrap.Modal(document.getElementById('newsletterModal')); newsletterModal.show();
+                    // Change title
+                    eventTitle.textContent = title;
+                    // Active button
+                    filterButtons.forEach(function (btn) {
+                        btn.classList.remove('btn-isotop', 'active');
+                        btn.classList.add('btn-outline-isotop');
+                    });
+                    this.classList.remove('btn-outline-isotop');
+                    this.classList.add('btn-isotop', 'active');
+                });
             });
 
-            document.addEventListener("DOMContentLoaded", function () {
-                const images = document.querySelectorAll(".lazy-product-image");
-                const observer = new IntersectionObserver((entries, observer) => {
-                    entries.forEach(entry => {
-                        if (!entry.isIntersecting) {
-                            return;
+            // First event default selected
+            if (filterButtons.length > 0) {
+                var firstFilter = filterButtons[0].getAttribute('data-filter');
+                iso.arrange({
+                    filter: firstFilter
+                });
+            }
+
+            const newsletterModalElement = document.getElementById('newsletterModal');
+            const newsletterImage = document.getElementById('newsletterImage');
+
+            const newsletterModal = new bootstrap.Modal(newsletterModalElement);
+
+            if (newsletterImage.complete) {
+                // Image already loaded
+                newsletterModal.show();
+            } else {
+                // Wait until image is fully loaded
+                newsletterImage.addEventListener('load', function () {
+                    newsletterModal.show();
+                });
+            }
+
+
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const images = document.querySelectorAll(".lazy-product-image");
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) {
+                        return;
+                    }
+                    const img = entry.target;
+                    const loader = img.parentElement.querySelector(".image-loader");
+                    const image = new Image();
+                    image.onload = function () {
+                        img.src = img.dataset.src;
+                        img.classList.add("loaded");
+                        if (loader) {
+                            loader.style.display = "none";
                         }
-                        const img = entry.target;
-                        const loader = img.parentElement.querySelector(".image-loader");
-                        const image = new Image();
-                        image.onload = function () {
-                            img.src = img.dataset.src;
-                            img.classList.add("loaded");
-                            if (loader) {
-                                loader.style.display = "none";
-                            }
-                        };
-                        image.onerror = function () {
-                            img.src = "{{ asset('assets/images/product_default.png') }}";
-                            img.classList.add("loaded");
-                            if (loader) {
-                                loader.style.display = "none";
-                            }
-                        };
-                        image.src = img.dataset.src;
-                        observer.unobserve(img);
-                    });
-                }, {
-                    rootMargin: "100px"
+                    };
+                    image.onerror = function () {
+                        img.src = "{{ asset('assets/images/product_default.png') }}";
+                        img.classList.add("loaded");
+                        if (loader) {
+                            loader.style.display = "none";
+                        }
+                    };
+                    image.src = img.dataset.src;
+                    observer.unobserve(img);
                 });
-
-                images.forEach(img => {
-                    observer.observe(img);
-                });
-
+            }, {
+                rootMargin: "100px"
             });
 
-            const lightbox = GLightbox({
-                selector: '.glightbox'
+            images.forEach(img => {
+                observer.observe(img);
             });
-        </script>
-        <script src="{{ asset('assets/js/add_to_cart_from_product_card.js') }}"></script>
+
+        });
+
+        const lightbox = GLightbox({
+            selector: '.glightbox'
+        });
+    </script>
 @endpush
