@@ -20,8 +20,8 @@ $currentProduct = [
                 <div class="spinner"></div>
             </div>
             <!-- Product Image -->
-            <img src="{{ asset('assets/images/product_default.png') }}"
-                data-src="{{ $ob->thum_image ? $softUrl . $ob->thum_image : asset('assets/images/product_default.png') }}"
+            <img src="{{ asset('assets/images/product_default.webp') }}"
+                data-src="{{ $ob->thum_image ? $softUrl . $ob->thum_image : asset('assets/images/product_default.webp') }}"
                 alt="{{ $ob->Product_Name }}" class="lazy-product-image">
         </div>
     </a>

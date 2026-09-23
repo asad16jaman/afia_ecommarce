@@ -1449,7 +1449,7 @@ ul {
 .weight-btn,.weight-btn2 {
     border: 1px solid #ddd;
     background: #fff;
-    padding: 10px 22px;
+    padding: 4px 18px;
     border-radius: 30px;
     font-weight: 600;
     transition: 0.3s;
@@ -1470,6 +1470,25 @@ ul {
     border-color: var(--color-second);
     color: #fff;
 }
+.colo-btn {
+    border: 1px solid #ddd;
+    background: #fff;
+    padding: 4px 18px;
+    border-radius: 30px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+.colo-btn:hover{
+    background: var(--nav-color);
+    border-color: var(--nav-color);
+    color: #fff;
+}
+.colo-btn.active {
+    background: var(--nav-color);
+    border-color: var(--nav-color);
+    color: #fff;
+}
+
 .of_stock{
     border: 1px solid #ddd;
     background: #afafaf;

@@ -134,11 +134,9 @@
                             <a class="dropdown-item" href="#">Sub Category5</a>
                         </div>
                     </li> --}}
-
                     <li class="nav-item">
                         <a class="nav-link active" href="{{ route('all.products') }}">Shop</a>
                     </li>
-
                     @foreach ($nav_categories as $nav_cat)
                         @if(!empty($nav_cat->subcategories) && count($nav_cat->subcategories) > 0)
                             <li class="nav-item dropdown position-static">
@@ -157,10 +155,7 @@
                                 <a class="nav-link active" href="{{ route('category.products', ['slug' => $nav_cat->slug]) }}">{{ $nav_cat->ProductCategory_Name }}</a>
                             </li>
                         @endif
-
                     @endforeach
-
-                    
                 </ul>
             </div>
         </div>

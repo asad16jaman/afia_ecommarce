@@ -25,5 +25,9 @@ class OrderDetails extends Model
     public function size(){
         return $this->belongsTo(Size::class,'size_id','Size_SlNo')->select('Size_Name','Size_SlNo');
     }
+    public function color()
+    {
+        return $this->belongsTo(Color::class, 'Color_SlNo', 'Color_SlNo')->select('Color_Name', 'Color_SlNo');
+    }
 
 }

@@ -26,38 +26,40 @@ class CartController extends Controller
                 'message' => 'Product Not Found'
             ]);
         }
-
         $productPrice = $cartProduct->Product_MinimumSellingPrice;
         if((float)$cartProduct->category->category_discount > (float)$cartProduct->discount){
             $productPrice = $cartProduct->Product_SellingPrice - (($cartProduct->Product_SellingPrice * $cartProduct->category->category_discount) / 100);
         }
-
+        $color = $request->color;
         $size = $request->size;
         $price = $productPrice;
         $qty = $request->qty;
         $cart = Session::get('cart', []);
-
-        if($size){
+        if($color && $size){
+            $key = $productId . "_".$color."-". $size;
+        }elseif($color){
+            $key = $productId . "_" . $color;
+        }elseif($size){
             $key = $productId . "_" . $size;
         }else{
             $key = $productId;
         }
         
-
         $totalPrice = (float)$price * (float) $qty; 
         
-
         if (isset($cart[$key])) {
             $cart[$key]['qty'] += $qty;
         } else {
             $cart[$key] = [
                 'product_id' => $productId,
+                'color' => $color ?? null,
+                'color_name' => $request->color_name ?? null,
                 'size' => $size ?? null,
                 'size_name' => $request->size_name ?? null,
                 'price' => $price,
                 'qty' => $qty,
                 'name' => $request->name,
-                'image' => $request->img ? config('app.soft_url'). $request->img : asset('assets/images/product_default.png'),
+                'image' => $request->img ? config('app.soft_url'). $request->img : asset('assets/images/product_default.webp'),
                 'total_price' => $totalPrice,
             ];
         }

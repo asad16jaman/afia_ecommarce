@@ -309,8 +309,8 @@ class CustomerController extends Controller
         $orders = Order::with(['customer'=>function($query){
             $query->select('Customer_SlNo','Customer_Code','Customer_Name','Customer_Mobile','Customer_Address','Customer_Email');
         },'orderDetails'=>function($q){
-            $q->select('SaleDetails_SlNo','SaleMaster_IDNo','Product_IDNo','size_id','SaleDetails_TotalQuantity','SaleDetails_Rate','SaleDetails_TotalAmount');
-        },'orderDetails.product','orderDetails.size'])->select('SaleMaster_SlNo','status','AddTime','SaleMaster_SubTotalAmount','SaleMaster_Freight','SaleMaster_TotalSaleAmount','SalseCustomer_IDNo','SaleMaster_InvoiceNo')->where('SaleMaster_SlNo',$id)->firstOrFail();
+            $q->select('SaleDetails_SlNo','SaleMaster_IDNo','Product_IDNo','size_id','Color_SlNo','SaleDetails_TotalQuantity','SaleDetails_Rate','SaleDetails_TotalAmount');
+        },'orderDetails.product','orderDetails.size','orderDetails.color'])->select('SaleMaster_SlNo','status','AddTime','SaleMaster_SubTotalAmount','SaleMaster_Freight','SaleMaster_TotalSaleAmount','SalseCustomer_IDNo','SaleMaster_InvoiceNo')->where('SaleMaster_SlNo',$id)->firstOrFail();
         // return response()->json($orders);
         $total_order = Order::where('SalseCustomer_IDNo', Auth::guard('customer')
             ->user()->Customer_SlNo)->where('sales_from', 'web')->where('DeletedTime', null)

@@ -569,7 +569,6 @@
                     this.classList.add('btn-isotop', 'active');
                 });
             });
-
             // First event default selected
             if (filterButtons.length > 0) {
                 var firstFilter = filterButtons[0].getAttribute('data-filter');
@@ -577,12 +576,9 @@
                     filter: firstFilter
                 });
             }
-
             const newsletterModalElement = document.getElementById('newsletterModal');
             const newsletterImage = document.getElementById('newsletterImage');
-
             const newsletterModal = new bootstrap.Modal(newsletterModalElement);
-
             if (newsletterImage.complete) {
                 // Image already loaded
                 newsletterModal.show();
@@ -592,8 +588,6 @@
                     newsletterModal.show();
                 });
             }
-
-
         });
 
         document.addEventListener("DOMContentLoaded", function () {
@@ -614,7 +608,7 @@
                         }
                     };
                     image.onerror = function () {
-                        img.src = "{{ asset('assets/images/product_default.png') }}";
+                        img.src = "{{ asset('assets/images/product_default.webp') }}";
                         img.classList.add("loaded");
                         if (loader) {
                             loader.style.display = "none";

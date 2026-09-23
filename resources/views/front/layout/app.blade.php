@@ -68,6 +68,12 @@
         .dkuywW{
             display: none !important;
         }
+        .identity_size{
+                font-size: 12px;
+    box-shadow: 1px 3px 10px 0px #0000003b;
+    padding: 3px 4px;
+    border: 1px solid #00000038;
+        }
         @media screen and (max-width:768px) {
             .searchItemContainer {
                 left: 0;
@@ -170,8 +176,8 @@
                                 </button>
                             </div>
                             <div>
-
-                                <span>${ob.size_name ? 'Size: '+ ob.size_name : ''}</span>
+                                <span class="${ob.color_name ? 'identity_size' : ''}">${ob.color_name ? 'Color: ' + ob.color_name : ''}</span>
+                                <span class="${ob.size_name ? 'identity_size' : ''}">${ob.size_name ? 'Size: '+ ob.size_name : ''}</span>
                             </div>
                             <div class="cart-item-price">
                                 ৳ ${ob.price}
@@ -255,11 +261,13 @@
     </script>
 
     <script>
-        function addToCart(product, size, qty = 1) {
+        function addToCart(product,color, size, qty = 1) {
             const data = {
                 product_id: product.Product_SlNo,
-                size: size.sizeid,
-                size_name: size.sizename,
+                color:color.color_id,
+                color_name: color.color_name,
+                size: size.size_id,
+                size_name: size.size_name,
                 price: product.Product_MinimumSellingPrice,
                 qty: qty,
                 name: product.Product_Name,
@@ -283,7 +291,7 @@
                             icon: 'success',
                             title: "Added to Cart!",
                             showConfirmButton: false,
-                            timer: 3000,
+                            timer: 1000,
                             timerProgressBar: true,
                             showClass: {
                                 popup: 'animate__animated animate__fadeInRight'
@@ -299,11 +307,14 @@
                 }
             });
         }
-        function byNow(product, size, qty = 1) {
+        function byNow(product,color, size, qty = 1) {
             const data = {
+                
                 product_id: product.Product_SlNo,
-                size: size.sizeid,
-                size_name: size.sizename,
+                color: color.color_id,
+                color_name: color.color_name,
+                size: size.size_id,
+                size_name: size.size_name,
                 price: product.Product_MinimumSellingPrice,
                 qty: qty,
                 name: product.Product_Name,
@@ -338,7 +349,7 @@
                 icon: 'success',
                 title: @json(session('success')),
                 showConfirmButton: false,
-                timer: 3000,
+                timer: 1500,
                 timerProgressBar: true,
                 showClass: {
                     popup: 'animate__animated animate__fadeInRight'
@@ -356,7 +367,7 @@
                 icon: 'error',
                 title: @json(session('error')),
                 showConfirmButton: false,
-                timer: 3000,
+                timer: 1500,
                 timerProgressBar: true,
                 showClass: {
                     popup: 'animate__animated animate__fadeInRight'

@@ -78,20 +78,13 @@
 
 @section('content')
     <div class="dash-shell header_margin">
-
         <aside class="col-sm-12 col-md-4 col-lg-2 hidden-xs" id="column-right">
             @include('front.partials.cus_sidebar')
         </aside>
-
         <main class="dash-main col-sm-12 col-md-8 col-lg-10">
-
-            <!-- Order Content  -->
-
             <section class="invoice py-4">
                 <div class="container">
-
                     <div class="bg-white p-4 shadow-sm">
-
                         <div class="d-flex justify-content-end mb-4">
                             <div>
                                 <button onclick="printDiv()" class="btn btn-outline-dark btn-sm">
@@ -99,7 +92,6 @@
                                 </button>
                             </div>
                         </div>
-
                         <div id="invoiceContent">
                             <div class="com_content">
                                 <img src="{{ $softUrl . $setting->Company_Logo_thum }}" class="align-self-center me-2"
@@ -111,7 +103,6 @@
                                     <p class="m-0 ll"><strong>Email:</strong> {{ $setting->email }}</p>
                                 </div>
                             </div>
-
                             <div class="d-flex justify-content-center align-items-start py-1"
                                 style="border-bottom: 1px dashed black; border-top: 1px dashed black">
                                 <h4 class="fw-bold mb-0">Order Invoice</h4>
@@ -123,9 +114,7 @@
                                     <div><strong>Customer Name:</strong> {{optional($orders->customer)->Customer_Name}}</div>
                                     <div><strong>Customer Mobile:</strong> {{optional($orders->customer)->Customer_Mobile}}</div>
                                     <div><strong>Customer Address:</strong> {{ optional($orders->customer)->Customer_Address }}</div>
-
                                 </div>
-
                                 <div class="col-sm-5 text-end small">
                                     <div><strong>Invoice No:</strong> {{ $orders->SaleMaster_InvoiceNo  }}</div>
                                     <div><strong>Order Status:</strong> {{ ($orders->status == 'p') ? "Panding" : (($orders->status == 'a') ? "Confirmed" : "Cancelled") }}</div>
@@ -133,12 +122,12 @@
                                     </div>
                                 </div>
                             </div>
-
                             <table class="table table-bordered mb-1 mt-3 small">
                                 <thead class="table-light">
                                     <tr>
                                         <th width="50">Sl.</th>
                                         <th>Product</th>
+                                        <th width="100">Color</th>
                                         <th width="100">Size</th>
                                         <th width="100">Qty</th>
                                         <th width="120">Unit Price</th>
@@ -150,20 +139,18 @@
                                         <tr>
                                             <td>{{ $key + 1 }}</td>
                                             <td>{{ $item->product->Product_Name }}</td>
-                                            <td>{{ optional($item->size)->Size_Name }}</td>
+                                            <td>{{ optional($item->color)->Color_Name ?? "N/A" }}</td>
+                                            <td>{{ optional($item->size)->Size_Name ?? "N/A" }}</td>
                                             <td>{{ $item->SaleDetails_TotalQuantity }}</td>
                                             <td>{{ number_format($item->SaleDetails_Rate, 2) }}</td>
                                             <td class="text-end">{{ number_format($item->SaleDetails_TotalAmount, 2) }}
                                             </td>
                                         </tr>
                                     @endforeach 
-
                                 </tbody>
                             </table>
-
                             <div class="row">
                                 <div class="col-md-9 small mt-0"></div>
-
                                 <div class="col-md-3 mt-0">
                                     <table class="table table-bordered table-sm small">
                                         <tr>
@@ -189,9 +176,6 @@
                         </div>
                     </div>
                 </div>
-
-
-
             </section>
         </main>
     </div>
@@ -199,12 +183,8 @@
 
 @push('script')
     <script>
-
-
             async function printDiv() {
                 let content = document.getElementById("invoiceContent").innerHTML;
-
-
             let myWindow = window.open('', '', `width=${screen.width},height=${screen.height}`);
             myWindow.document.write(`
             <html>
@@ -233,13 +213,10 @@
                 </body>
             </html>
         `);
-
         myWindow.focus();
         await new Promise((resolve) => setTimeout(resolve, 100));
         myWindow.print();
         myWindow.close();
     }
-
     </script>
-
 @endpush

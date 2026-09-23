@@ -538,11 +538,18 @@
                                                         </button>
                                                     </div>
                                                     <div class="cart-item-size">
+                                                        @if($c_item['color_name'])
+                                                            Size: {{ $c_item['color_name'] }}
+                                                        @endif
+
+                                                    </div>
+                                                    <div class="cart-item-size">
                                                         @if($c_item['size_name'])
                                                             Size: {{ $c_item['size_name'] }}
                                                         @endif
 
                                                     </div>
+
                                                     <div class="cart-item-price">
                                                         {{ $c_item['price'] }} X {{ $c_item['qty'] }} = {{ number_format((int) $c_item['total_price'] * (int) $c_item['qty'], 2)}}
                                                     </div>
@@ -618,6 +625,9 @@
                                 <button type="button" class="qty-btn" onclick="increaseFromSummary('${key}',${ob.qty})">
                                     <i class="bi bi-plus"></i>
                                 </button>
+                            </div>
+                            <div class="cart-item-size">
+                                ${ob.color_name ? 'Size: ' + ob.color_name : ''}
                             </div>
                             <div class="cart-item-size">
                                 ${ob.size_name ? 'Size: '+ob.size_name : ''}

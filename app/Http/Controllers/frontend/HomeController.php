@@ -594,6 +594,9 @@ class HomeController extends Controller
 
     public function getProductDetail($slug)
     {
+        $returnPolicy = Policy::findOrFail(2);
+        $deliveryPolicy = Policy::findOrFail(3);
+        
         $product = Product::with([
             'product_images',
             'category' => function ($q) {
@@ -610,18 +613,24 @@ class HomeController extends Controller
         $r_products = Product::select('Product_SlNo', 'Product_Code', 'Product_Name', 'slug', 'Product_SellingPrice', 'Product_MinimumSellingPrice', 'discount', 'thum_image','have_size')
             ->where('status', 'a')->where('Product_SlNo',"!=" , $product->Product_SlNo)->where('in_website', 1)->where('ProductCategory_ID', $product->ProductCategory_ID)->inRandomOrder()->take(10)->get();
         
-        $ll = StockHelper::getProductStock($product->Product_SlNo);
 
-        $product->current_stock = $ll;
+        // $ll = StockHelper::getProductStock($product->Product_SlNo);
+        // $product->current_stock = $ll;
 
-        $pp = StockHelper::getSizeWiseStock($product->Product_SlNo);
-
-        $product->size_wise_stock = $pp;
-
-        $total_reviews = Customerreview::where('Product_SlNo', $product->Product_SlNo)->where('status', 'a')->whereNull('deleted_at')->count();
-        $returnPolicy = Policy::findOrFail(2);
-        $deliveryPolicy = Policy::findOrFail(3);
+        if($product->have_color && $product->have_size){
+            $pp = StockHelper::getColoreWiseStock($product->Product_SlNo);
+            $product->stocks = $pp;
+        }elseif($product->have_color){
+            $pp = StockHelper::getOnlyColoreWiseStock($product->Product_SlNo);
+            $product->stocks = $pp;
+        }elseif($product->have_size){
+            $pp = StockHelper::getSizeWiseStock($product->Product_SlNo);
+            $product->stocks = $pp;
+        }else{
+            $product->stocks = null;
+        }
         // return response()->json($product);
+        $total_reviews = Customerreview::where('Product_SlNo', $product->Product_SlNo)->where('status', 'a')->whereNull('deleted_at')->count();
         return view('front.pages.product-detail', compact('r_products', 'product', 'total_reviews', 'deliveryPolicy', 'returnPolicy'));
     }
 
@@ -630,6 +639,9 @@ class HomeController extends Controller
         $cart = Session::get('cart', []);
         $count = array_sum(array_column($cart, 'qty'));
         $subtotal = array_sum(array_map(fn($item) => $item['price'] * $item['qty'], $cart));
+        if(empty($cart)){
+            return redirect()->route('all.products')->with('error',"Your Cart Is Empty!");
+        }
         return view('front.pages.checkout', compact('cart', 'count', 'subtotal'));
     }
 
@@ -737,6 +749,7 @@ class HomeController extends Controller
                 $orderDetails->Purchase_Rate = $product->Product_Purchase_Rate;
                 $orderDetails->SaleDetails_Rate = $value['price'];
                 $orderDetails->SaleDetails_TotalQuantity = $value['qty'];
+                $orderDetails->Color_SlNo = $value['color'];
                 $orderDetails->size_id = $value['size'];
                 $orderDetails->SaleDetails_Tax = 0;
                 $price = (int) $value['qty'] * (float) $value['price'];
