@@ -110,15 +110,38 @@
 
                             <div class="row mt-3 mb-3 small">
                                 <div class="col-sm-7 small">
-                                    <div><strong>Customer ID:</strong> {{ optional($orders->customer)->Customer_Code }}</div>
-                                    <div><strong>Customer Name:</strong> {{optional($orders->customer)->Customer_Name}}</div>
-                                    <div><strong>Customer Mobile:</strong> {{optional($orders->customer)->Customer_Mobile}}</div>
-                                    <div><strong>Customer Address:</strong> {{ optional($orders->customer)->Customer_Address }}</div>
+                                <div>
+                                    <strong>Customer ID:</strong>
+                                    {{ optional($orders->customer)->Customer_Code }}
+                                </div>
+                                <div>
+                                    <strong>Customer Name:</strong>
+                                    {{ optional($orders->customer)->Customer_Name }}
+                                </div>
+                                <div>
+                                    <strong>Customer Mobile:</strong>
+                                    {{ optional($orders->customer)->Customer_Mobile }}
+                                </div>
+                                <div>
+                                    <strong>Customer Address:</strong>
+                                    {{ optional($orders->customer)->Customer_Address }}
+                                </div>
                                 </div>
                                 <div class="col-sm-5 text-end small">
                                     <div><strong>Invoice No:</strong> {{ $orders->SaleMaster_InvoiceNo  }}</div>
-                                    <div><strong>Order Status:</strong> {{ ($orders->status == 'p') ? "Panding" : (($orders->status == 'a') ? "Confirmed" : "Cancelled") }}</div>
-                                    <div><strong>Order Date:</strong> {{ date_format(date_create($orders->AddTime),'d M Y')  }}
+                                    <div><strong>Order Status:</strong> 
+                                        {{
+                                                match ($orders->status) {
+                                                    'p' => 'Pending',
+                                                    'pr' => 'Processing',
+                                                    's' => 'Shipping',
+                                                    'a' => 'Confirmed',
+                                                    'd' => 'Cancelled',
+                                                    default => 'Unknown',
+                                                }
+                                            }}
+                                </div>
+                                    <div><strong>Order Date:</strong> {{ date_format(date_create($orders->AddTime), 'd M Y')  }}
                                     </div>
                                 </div>
                             </div>
@@ -139,7 +162,7 @@
                                         <tr>
                                             <td>{{ $key + 1 }}</td>
                                             <td>{{ $item->product->Product_Name }}</td>
-                                            <td>{{ optional($item->color)->Color_Name ?? "N/A" }}</td>
+                                            <td>{{ optional($item->product->color)->Color_Name ?? "N/A" }}</td>
                                             <td>{{ optional($item->size)->Size_Name ?? "N/A" }}</td>
                                             <td>{{ $item->SaleDetails_TotalQuantity }}</td>
                                             <td>{{ number_format($item->SaleDetails_Rate, 2) }}</td>

@@ -144,7 +144,7 @@ class StockHelper
             //     $item->current_stock * $item->PurchaseDetails_Rate;
             
             $item->current_stock = $current;
-            return $current > 0;
+            return $item;
         });
 
         return $stocks->values()->all();

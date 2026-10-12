@@ -261,11 +261,9 @@
     </script>
 
     <script>
-        function addToCart(product,color, size, qty = 1) {
+        function addToCart(product, size, qty = 1) {
             const data = {
                 product_id: product.Product_SlNo,
-                color:color.color_id,
-                color_name: color.color_name,
                 size: size.size_id,
                 size_name: size.size_name,
                 price: product.Product_MinimumSellingPrice,
@@ -307,12 +305,10 @@
                 }
             });
         }
-        function byNow(product,color, size, qty = 1) {
+        function byNow(product, size, qty = 1) {
             const data = {
                 
                 product_id: product.Product_SlNo,
-                color: color.color_id,
-                color_name: color.color_name,
                 size: size.size_id,
                 size_name: size.size_name,
                 price: product.Product_MinimumSellingPrice,
@@ -339,8 +335,6 @@
             });
         }
     </script>
-
-
     <script>
         @if(session('success'))
             Swal.fire({
@@ -359,7 +353,6 @@
                 }
             });
         @endif
-
         @if(session('error'))
             Swal.fire({
                 toast: true,

@@ -351,11 +351,46 @@
                                                 <del>৳ @{{ item.Product_SellingPrice }}</del>
                                             </span>
                                         </div>
+                                        <div class="d-flex flex-column flex-lg-row justify-content-around mt-2">
+                                            <a v-if="item.size_wise_stock != null" href="javascript:void(0)" class="addToCart_css"
+                                                @click="trigerAddcart($event)"><i class="bi bi-cart-plus"></i>
+                                                Add To Cart
+                                            </a>
+                                            <a v-else href="javascript:void(0)" class="addToCart_css" @click="addcartNonSize($event)"><i
+                                                    class="bi bi-cart-plus"></i>
+                                                Add To Cart
+                                            </a>
+                                        </div>
                                     </a>
+                                    <div class="product-size-overlay">
+                                        <div class="size-overlay-header">
+                                            <span>Select Size</span>
+                                            <button type="button" @click="closeOverlay">
+                                                <i class="bi bi-x-lg"></i>
+                                            </button>
+                                        </div>
+                                        <div class="product-size-options">
+                                            <div v-for="(size, key) in item.size_wise_stock" :key="size.Size_SlNo">
+                                                <label class="product-size-option">
+                                                    <input type="radio" :name="'product_size_' + item.Product_SlNo" :value="size.Size_SlNo"
+                                                        :data-size_name="size.Size_Name">
+                                                    <span>
+                                                        @{{ size.Size_Name }}
+                                                    </span>
+                                                    <small>
+                                                        available
+                                                    </small>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="size-proceed-btn proceed-add-to-cart" @click="addcart($event)">
+                                            <i class="bi bi-cart-plus"></i>
+                                            Add To Cart
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
                         <div class="col-12">
                             <div class="d-flex justify-content-end">
                                 <div class="btn-group" role="group" aria-label="Basic mixed styles example">
@@ -367,7 +402,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -414,13 +448,14 @@
                                 });
                             }
                         },
-                        error: (res) => {
-
-                        }
+                        error: (res) => {}
                     });
                 },
                 trigerAddcart(event) {
                     openProductSizeSelector(event, 'add_to_cart')
+                },
+                addcartNonSize(event) {
+                    proceedProductNonSize(event)
                 },
                 trigerBuyNow(event) {
                     openProductSizeSelector(event, 'buy_now')
@@ -480,7 +515,6 @@
                 }
             },
             created() {
-
                 this.getProducts("{{ route('get.products') }}")
             },
             watch: {
@@ -493,8 +527,6 @@
                 minprice(newValue) {
                     this.getProducts("{{ route('get.products') }}")
                 }
-
-
             }
 
         });

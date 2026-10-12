@@ -3,9 +3,10 @@ function openProductSizeSelector(event, buttonType = null) {
     const card = button.closest(".product-card");
     const overlay = card.querySelector(".product-size-overlay");
     const addToCartButton = overlay.querySelector(".proceed-add-to-cart");
-    const buyNowButton = overlay.querySelector(".proceed-buy-now");
+    // const buyNowButton = overlay.querySelector(".proceed-buy-now");
+
     addToCartButton.classList.remove("show");
-    buyNowButton.classList.remove("show");
+    // buyNowButton.classList.remove("show");
     if (buttonType === "add_to_cart") {
         addToCartButton.classList.add("show");
     } else if (buttonType === "buy_now") {
@@ -33,8 +34,8 @@ function proceedProductSize(event) {
     const sizeId = selectedSize.value;
     const sizename = selectedSize.dataset.size_name;
     let size = {
-        sizeid: sizeId,
-        sizename: sizename,
+        size_id: sizeId,
+        size_name: sizename,
     };
     const product = JSON.parse(
         card.querySelector(".data_container").dataset.thiscard,
@@ -43,9 +44,22 @@ function proceedProductSize(event) {
     addToCart(product, size, 1);
 }
 
+function proceedProductNonSize(event) {
+    const button = event.currentTarget;
+    const card = button.closest(".product-card");
+    let size = {
+        size_id: null,
+        size_name: null,
+    };
+    const product = JSON.parse(
+        card.querySelector(".data_container").dataset.thiscard,
+    );
+    card.querySelector(".product-size-overlay").classList.remove("show");
+
+    addToCart(product, size, 1);
+}
+
 function proceedProductSizeByNow(event) {
-
-
     const button = event.currentTarget;
     const card = button.closest(".product-card");
     const selectedSize = card.querySelector(

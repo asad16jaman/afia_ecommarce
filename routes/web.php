@@ -58,6 +58,9 @@ Route::group(['middleware' => 'auth:customer'], function () {
     Route::get('/customer-logout', [CustomerController::class, 'userLogout'])->name('customer.logout');
 });
 
+Route::get('/order-confirm-page/{id}', [CustomerController::class, 'order_invoice_for_guest'])->name('customer.order.invoice.guest');
+
+
 // Authentication
 // Route::group(['middleware' => 'guest'], function () {
 //     Route::get('/login', [AuthenticationController::class, 'showLogin'])->name('admin');

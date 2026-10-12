@@ -98,7 +98,7 @@
 @endpush
 
 @section('content')
-<?php
+        <?php
         $minSellPrice = $product->Product_MinimumSellingPrice;
         $discount = $product->discount;
         if ((float) $product->category->category_discount > (float) $product->discount) {
@@ -111,7 +111,7 @@
             'thum_image' => $product->thum_image,
             'Product_MinimumSellingPrice' => $minSellPrice,
         ];
-?>
+        ?>
         <section class="product-details pb-5 header_margin">
             <div class="container pt-4">
                 <div class="small text-muted">
@@ -168,7 +168,7 @@
                     </div>
                     <div class="col-lg-7">
                         <div class="ms-lg-4" id="detailProduct">
-                            <div class="mb-3 d-flex align-items-center gap-3 flex-wrap">
+                            {{-- <div class="mb-3 d-flex align-items-center gap-3 flex-wrap">
                                 <span class="premium-badge">
                                     @if($product->new_arrival)
                                         New Arrival
@@ -178,11 +178,7 @@
                                         Product
                                     @endif
                                 </span>
-                                <div class="color-second small">
-                                    ★★★★☆
-                                    <span class="text-muted">({{ $total_reviews }} Reviews)</span>
-                                </div>
-                            </div>
+                            </div> --}}
                             <h1 class="fw-bold product-title mb-2">{{ $product->Product_Name }}</h1>
                             <div class="price mb-4">
                                 @if($product->Product_SellingPrice > $minSellPrice)
@@ -200,69 +196,16 @@
                             <p class="authentic mb-2">100% Authentic Product</p>
                             <p class="mb-2"><strong>SKU</strong> : {{ optional($product)->Product_Code }}</p>
                             <p class="mb-2"><strong>Brand</strong> : {{ optional($product->p_brand)->brand_name }}</p>
-                            <div v-if="product.have_color && product.have_size" style="visibility:hidden" :style="{visibility:ismount ? 'visible' : ''}">
-                                <div v-if="colors && colors.length > 0">
-                                    <div class="mt-4">
-                                        <div class="d-flex justify-content-between mb-3">
-                                            <span class="fw-semibold">Select Color</span>
-                                            <!-- <a href="#" class="weight-guide">Weight Guide</a> -->
-                                        </div>
-                                        <div class="d-flex gap-2 flex-wrap">
-                                            <button v-for="color in colors" :key="color.Color_SlNo"
-                                                class="colo-btn color-btn_fun"
-                                                :class="{ active: selectedColor && selectedColor.Color_SlNo == color.Color_SlNo }"
-                                                @click="selectColorMethod(color)">
-                                                @{{ color.Color_Name }}
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="mt-4" v-if="sizes.length > 0">
-                                        <div class="d-flex justify-content-between mb-3">
-                                            <span class="fw-semibold">Select Size</span>
-                                        </div>
-                                        <div class="d-flex gap-2 flex-wrap" id="selected_product_size">
-                                            <button v-for="size in sizes" :key="size.Size_SlNo" class="weight-btn weight-btn_fun"
-                                                :class="{ active: selectedSize && selectedSize.Size_SlNo == size.Size_SlNo }"
-                                                @click="selectSizeMethod(size)">
-                                                @{{ size.Size_Name }}
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="text-danger fw-semibold" v-else>
-                                        Size Not Available
-                                    </div>
-                                </div>
-                                <div v-else>
-                                        <span class="text-danger fw-semibold">Stock Out</span>
-                                </div>
-                            </div>
-                            <div v-else-if="product.have_color" style="visibility:hidden" :style="{visibility:ismount ? 'visible' : ''}">
-                                <div class="mt-4" v-if="colors.length > 0">
-                                    <div class="d-flex justify-content-between mb-3">
-                                        <span class="fw-semibold">Select Color</span>
-                                        <!-- <a href="#" class="weight-guide">Weight Guide</a> -->
-                                    </div>
-                                    <div class="d-flex gap-2 flex-wrap">
-                                        <button v-for="color in colors" :key="color.Color_SlNo"
-                                            class="weight-btn weight-btn_fun"
-                                            :class="{ active: selectedColor && selectedColor.Color_SlNo == color.Color_SlNo }"
-                                            @click="selectColorMethod(color)">
-                                            @{{ color.Color_Name }}
-                                        </button>
-                                    </div>
-                                </div>
-                                <div v-else>
-                                    <span class="text-danger fw-semibold">Stock Out</span>
-                                </div>
-                            </div>
-                            <div class="mt-4" v-else-if="product.have_size"  style="visibility:hidden" :style="{visibility:ismount ? 'visible' : ''}" >
-                                <div v-if="colors.length > 0">
+                            <p class="mb-2"><strong>Color</strong> : {{ optional($product->color)->Color_Name }}</p>
+                            
+                            <div class="mt-4" v-if="product.have_size"  style="visibility:hidden" :style="{visibility:ismount ? 'visible' : ''}" >
+                                <div v-if="sizes.length > 0">
                                     <div class="d-flex justify-content-between mb-3">
                                         <span class="fw-semibold">Select Size</span>
                                         <!-- <a href="#" class="weight-guide">Weight Guide</a> -->
                                     </div>
                                     <div class="d-flex gap-2 flex-wrap" id="selected_product_size">
-                                        <button v-for="size in colors" :key="size.Size_SlNo" class="weight-btn weight-btn_fun"
+                                        <button v-for="size in sizes" :key="size.Size_SlNo" class="weight-btn weight-btn_fun"
                                             :class="{ active: selectedSize && selectedSize.Size_SlNo == size.Size_SlNo }" @click="selectSizeMethod(size)">
                                             @{{ size.Size_Name }}
                                         </button>
@@ -308,19 +251,13 @@
                                         </button>
                                     </li>
                                     <li class="nav-item" role="presentation">
-                                        <button class="nav-link" id="review-tab" data-bs-toggle="tab" data-bs-target="#review"
-                                            type="button" role="tab">
-                                            Customer Reviews ({{ $total_reviews }})
-                                        </button>
-                                    </li>
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link" id="review-tab" data-bs-toggle="tab"
+                                        <button class="nav-link" id="delvery-tab" data-bs-toggle="tab"
                                             data-bs-target="#deliveryPolicy" type="button" role="tab">
                                             {{ $deliveryPolicy->title }}
                                         </button>
                                     </li>
                                     <li class="nav-item" role="presentation">
-                                        <button class="nav-link" id="review-tab" data-bs-toggle="tab"
+                                        <button class="nav-link" id="return-tab" data-bs-toggle="tab"
                                             data-bs-target="#returnPolicy" type="button" role="tab">
                                             {{  $returnPolicy->title }}
                                         </button>
@@ -333,139 +270,7 @@
                                             {!! $product->Product_description !!}
                                         </div>
                                     </div>
-                                    <!-- Review -->
-                                    <div class="tab-pane fade" id="review" role="tabpanel">
-                                        <div class="tab-card scrol-lg">
-                                            <div class="row">
-                                                <div class="col-12">
-                                                    <h6 class="fw-bold mb-3">Write a Review</h6>
-                                                </div>
-                                                <div class="col-12">
-                                                    <div class="mb-4">
-                                                        <label class="form-label fw-semibold">Rating</label>
-                                                        <input type="hidden" id="ratingValue" name="rating" value="0">
-                                                        <div class="rating-stars">
-                                                            <i :class="parseInt(hoverstar) > 0 ? 'bi-star-fill' : 'bi bi-star' "
-                                                                @click="selectStar(1)" @mouseenter="hoverone(1)"
-                                                                @mouseleave="hoverleav(1)"></i>
-                                                            <i :class="parseInt(hoverstar) > 1 ? 'bi-star-fill' : 'bi bi-star' "
-                                                                @click="selectStar(2)" @mouseenter="hoverone(2)"
-                                                                @mouseleave="hoverleav(2)"></i>
-                                                            <i :class="parseInt(hoverstar) > 2 ? 'bi-star-fill' : 'bi bi-star' "
-                                                                @click="selectStar(3)" @mouseenter="hoverone(3)"
-                                                                @mouseleave="hoverleav(3)"></i>
-                                                            <i :class="parseInt(hoverstar) > 3 ? 'bi-star-fill' : 'bi bi-star' "
-                                                                @click="selectStar(4)" @mouseenter="hoverone(4)"
-                                                                @mouseleave="hoverleav(4)"></i>
-                                                            <i :class="parseInt(hoverstar) > 4 ? 'bi-star-fill' : 'bi bi-star' "
-                                                                @click="selectStar(5)" @mouseenter="hoverone(5)"
-                                                                @mouseleave="hoverleav(5)"></i>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            @if(!Auth::guard('customer')->check())
-                                                <div class="row">
-                                                    <div class="col-6 mt-0">
-                                                        <label for="name" class="form-label fw-semibold">Full Name</label>
-                                                        <input type="text" v-model="reviewob.name" name="name" id="name"
-                                                            class="form-control reviewtext">
-                                                    </div>
-                                                    <div class="col-6 mt-0">
-                                                        <label for="phone" class="form-label fw-semibold">Phone</label>
-                                                        <input type="text" v-model="reviewob.phone" name="phone" id="phone"
-                                                            class="form-control reviewtext">
-                                                    </div>
-                                                    <div class="col-12  mt-0">
-                                                        <label for="address" class="form-label fw-semibold">Address</label>
-                                                        <input type="text" v-model="reviewob.address" name="address" id="address"
-                                                            class="form-control reviewtext">
-                                                    </div>
-                                                </div>
-                                            @else
-                                                <input type="hidden" name="Customer_SlNo" v-model="reviewob.Customer_SlNo">
-                                            @endif
-
-                                            <!-- Review -->
-                                            <div class="row">
-                                                <div class="col-12 mt-0">
-                                                    <div class="mb-3">
-                                                        <label class="form-label fw-semibold">Your Review</label>
-                                                        <textarea class="form-control review-textarea" v-model="reviewob.review"
-                                                            name="review" rows="5" placeholder="Write your review here..."
-                                                            class="message"></textarea>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-12" @click="saveReview">
-                                                    <button type="button" class="btn-review">
-                                                        Submit Review
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="row mt-4">
-                                                <div class="col-12">
-                                                    <h5 class="fw-bold mb-4">Customer Reviews</h5>
-                                                    <!-- Review 1 -->
-                                                    <div v-for="(review,key) in reviews"
-                                                        class="customer-review mb-2 pb-1 border-bottom">
-                                                        <div class="d-flex justify-content-between align-items-start">
-                                                            <div class="d-flex align-items-center">
-                                                                <div class="review-avatar me-1">
-                                                                    <img v-if="review.customer && review.customer.web_profile"
-                                                                        :src="'/'+review.customer.web_profile"
-                                                                        alt="Asad Uzzaman">
-
-                                                                    <img v-else src="/assets/images/review_profile.avif" alt="">
-                                                                </div>
-                                                                <div>
-                                                                    <h6 class="fw-bold mb-0">
-                                                                        @{{ review.customer ? review.customer.Customer_Name :
-                                                                        review.name }}
-                                                                    </h6>
-                                                                    <small class="text-muted">
-                                                                        @{{ formatDate(review.created_at) }}
-                                                                    </small>
-                                                                </div>
-                                                            </div>
-                                                            <!-- Right: Rating -->
-                                                            <div class="review-rating">
-                                                                <i class="bi bi-star-fill"></i>
-                                                                <i
-                                                                    :class="parseInt(review.rating) >= 2 ?  'bi bi-star-fill' : 'bi bi-star'"></i>
-                                                                <i
-                                                                    :class="parseInt(review.rating) >= 3 ?  'bi bi-star-fill' : 'bi bi-star'"></i>
-                                                                <i
-                                                                    :class="parseInt(review.rating) >= 4 ?  'bi bi-star-fill' : 'bi bi-star'"></i>
-                                                                <i
-                                                                    :class="parseInt(review.rating) >= 5 ?  'bi bi-star-fill' : 'bi bi-star'"></i>
-                                                            </div>
-                                                        </div>
-                                                        <!-- Review -->
-                                                        <div class="">
-                                                            <p class="text-muted mb-0 lh-lg">
-                                                                @{{ review.review }}
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="next_prev_container d-flex justify-content-end">
-                                                        <div class="btn-group" role="group"
-                                                            aria-label="Basic mixed styles example">
-                                                            <button type="button" class="btn nextPrevbutton"
-                                                                v-if="prevUrl || nextUrl" :class="{disable : !prevUrl }"
-                                                                @click="getAllReviews(prevUrl)">Prev</button>
-                                                            <button type="button" class="btn nextPrevbutton"
-                                                                v-if="prevUrl || nextUrl" :class="{disable : !nextUrl }"
-                                                                @click="getAllReviews(nextUrl)">Next</button>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                   
                                     <div class="tab-pane fade" id="deliveryPolicy" role="tabpanel">
                                         <div class="tab-card scrol-lg scroll_tab">
                                             {!! $deliveryPolicy->description !!}
@@ -590,45 +395,28 @@
                 return {
                     cart_product: @json($cart_product),
                     product: @json($product),
-                    colors: @json($product->stocks) ?? [],
-                    selectedColor: null,
                     sizes: [],
                     selectedSize: null,
                     ismount:false
                 }
             },
             created() {
-                if (this.product.have_color && this.product.have_size) {
-                    if(this.product.stocks.length > 0){
-                        this.selectColorMethod(this.product.stocks[0])
-                    }
-                    if(this.product.stocks[0].sizes.length > 0){
-                        this.selectSizeMethod(this.product.stocks[0].sizes[0])
-                    }
-                }else if(this.product.have_color){
-                    if (this.product.stocks.length > 0) {
-                        this.selectColorMethod(this.product.stocks[0])
-                    }
-                }else if(this.product.have_size){
+
+               if(this.product.have_size){
                     if(this.product.stocks.length > 0){
                         this.selectSizeMethod(this.product.stocks[0])
                     }
+                    this.sizes = this.product.stocks;
                 }
+
+
             },
             methods: {
-                selectColorMethod(ob) {
-                    this.selectedColor = ob
-                    if(this.product.have_size){
-                        this.sizes = ob.sizes
-                        this.selectedSize = null
-                        if (this.sizes.length > 0) {
-                            this.selectedSize = this.sizes[0]
-                        }
-                    }
-                },
+
                 selectSizeMethod(ob) {
                     this.selectedSize = ob
                 },
+
                 firemessage(message){
                     Swal.fire({
                                     text: message,
@@ -641,47 +429,14 @@
                                     });
                 },
                 add_to_cart(type){
-                    if(this.product.have_color && this.product.have_size){
-                        if(this.colors.length <1 || this.sizes.length < 1){
-                            this.firemessage('This Product Stock Out')
-                            return ;
-                        }
-                        if(this.selectedColor == null && this.selectedSize == null){
-                            this.firemessage('You Need To Select Color And Size')
-                            return 
-                        }
-
-                    }else if(this.product.have_color){
-                        if(this.colors.length <1){
-                            this.firemessage('This Product Stock Out')
-                           return ;
-                        }
-                        if(this.selectedColor == null ){
-                            this.firemessage('You Need To Select Color')
-                             return 
-                        }
-                    }else if(this.product.have_size){
-                        if(this.colors.length <1){
-                              this.firemessage('This Product Stock Out')
-                           return ;
-                        }
+                     if(this.product.have_size){
                         if(this.selectedSize == null ){
-                            this.firemessage('You Need To Select Color')
+                            this.firemessage('You Need To Select Size')
                              return 
                         }
                     }
-                    let color,size;
-                    if(this.selectedColor){
-                         color = {
-                            color_id : this.selectedColor.Color_SlNo,
-                            color_name : this.selectedColor.Color_Name
-                        }
-                    }else{
-                         color = {
-                            color_id : null,
-                            color_name : null
-                        }
-                    }
+                    let size;
+
                     if(this.selectedSize){
                          size = {
                            size_id : this.selectedSize.Size_SlNo,
@@ -694,9 +449,9 @@
                         }
                     }
                     if(type == 'byNow'){
-                        byNow(this.cart_product, color, size, 1);
+                        byNow(this.cart_product, size, 1);
                     }else{
-                        addToCart(this.cart_product, color, size, 1);
+                        addToCart(this.cart_product, size, 1);
                     }
                 },
             },
@@ -707,142 +462,6 @@
     </script>
 
     <script>
-        new Vue({
-            el: "#review",
-            data() {
-                return {
-                    reviewob: {
-                        name: '',
-                        phone: '',
-                        Product_SlNo: "{{ $product->Product_SlNo }}",
-                        address: '',
-                        Customer_SlNo: "{{ optional(Auth::guard('customer')->user())->Customer_SlNo }}",
-                        review: '',
-                        stars: 0,
-                    },
-                    hoverstar: 0,
-                    reviews: [],
-                    nextUrl: null,
-                    prevUrl: null
-                }
-            },
-            created() {
-                this.getAllReviews("{{ route('get_reviews') }}");
-            },
-            methods: {
-                selectStar(star) {
-                    this.reviewob.stars = star;
-                    this.hoverstar = star;
-                },
-                hoverone(star) {
-                    this.hoverstar = star;
-                },
-                hoverleav(star) {
-                    this.hoverstar = this.reviewob.stars;
-                },
-                getAllReviews(url) {
-                    $.ajax({
-                        method: 'get',
-                        url: url,
-                        data: { Product_SlNo: "{{ $product->Product_SlNo }}" },
-                        success: (res) => {
-                            if (res.status) {
-                                this.reviews = res.data.data
-                                this.prevUrl = res.data.prev_page_url
-                                this.nextUrl = res.data.next_page_url
-                            } else {
-                            }
-                        },
-                        error: (res) => {
-                            console.log(res)
-                        }
-                    })
-                },
-                alertmessage(type, message) {
-                    Swal.fire({
-                        toast: true,
-                        position: 'top-end',
-                        icon: type,
-                        title: message,
-                        showConfirmButton: false,
-                        timer: 3000,
-                        timerProgressBar: true,
-                        showClass: {
-                            popup: 'animate__animated animate__fadeInRight'
-                        },
-                        hideClass: {
-                            popup: 'animate__animated animate__fadeOutRight'
-                        }
-                    });
-                },
-                saveReview() {
-                    if (this.reviewob.Customer_SlNo == null || this.reviewob.Customer_SlNo == '') {
-                        if (this.reviewob.name == '' || this.reviewob.name.length < 3) {
-                            this.alertmessage('error', 'Name must be more than 3 letter')
-                            return;
-                        }
-                        if (!this.reviewob.phone || !/^(?:\+88)?01[3-9]\d{8}$/.test(this.reviewob.phone.trim())) {
-                            this.alertmessage('error', 'Must Be Valid Bangladeshi Phone Number');
-                            return;
-                        }
-
-                        if (this.reviewob.address == '' || this.reviewob.address.length < 3) {
-                            this.alertmessage('error', 'Address must be more than 3 letter')
-                            return;
-                        }
-                    }
-                    if (parseInt(this.reviewob.stars) < 1) {
-                        this.alertmessage('error', 'You must be Select Rating');
-                        return;
-                    }
-                    if (this.reviewob.review.length == 0) {
-                        this.alertmessage('error', 'Type Your Review');
-                        return;
-                    }
-                    $.ajax({
-                        method: 'post',
-                        url: "{{ route('store_review') }}",
-                        headers: {
-                            'X-CSRF-TOKEN': "{{ csrf_token() }}"
-                        },
-                        data: this.reviewob,
-                        success: (res) => {
-                            if (res.status) {
-                                this.alertmessage('success', res.message)
-                                this.getAllReviews("{{ route('get_reviews') }}");
-                            } else {
-                                this.alertmessage('error', res.errormessage)
-                                this.getAllReviews("{{ route('get_reviews') }}");
-                            }
-                            this.clearForm()
-                        },
-                        error: (res) => {
-                            console.log(res)
-                        }
-                    })
-                },
-                clearForm() {
-                    this.reviewob = {
-                        name: '',
-                        phone: '',
-                        Product_SlNo: "{{ $product->Product_SlNo }}",
-                        address: '',
-                        Customer_SlNo: "{{ optional(Auth::guard('customer')->user())->Customer_SlNo }}",
-                        review: '',
-                        stars: 0,
-                    }
-                    this.hoverstar = 0;
-                },
-                formatDate(date) {
-                    const d = new Date(date);
-                    return d.toLocaleDateString('en-GB', {
-                        day: '2-digit',
-                        month: 'short',
-                        year: 'numeric'
-                    });
-                }
-            }
-        })
 
         document.addEventListener("DOMContentLoaded", function () {
             const images = document.querySelectorAll(".lazy-product-image");

@@ -307,22 +307,14 @@
                         <span>
                             <i class="bi bi-chevron-right"></i>
                         </span>
-                        
                         <span> <a href="{{ route('all.products') }}">Products </a></span>
-                        
-                        
                         <span v-if="product_type">
                             <i class="bi bi-chevron-right"></i>
                         </span>
-                        
                         <span v-if="product_type"> 
                             <a href="#"  v-if="product_type == 'new_arrival'" :style="{display: (product_type == 'new_arrival') ? block : '' }" style="display:none">New Arrival </a>
                             <a href="#"  v-if="product_type == 'popular_product'" :style="{display: (product_type == 'popular_product') ? block : '' }" style="display:none">Popular Product </a>
                         </span>
-                        
-                        
-
-                        
                     </div>
                     <div class="row d-flex justify-content-center" style="visibility:hidden"
                         :style="{ visibility: showproduct ? 'visible' : 'hidden' }">
@@ -334,8 +326,8 @@
                                         <div class="image-loader">
                                             <div class="spinner"></div>
                                         </div>
-                                        <img :src="item.thum_image ? softurl + item.thum_image : '/assets/images/product_default.png'"
-                                            :data-src="item.thum_image ? softurl + item.thum_image : '/assets/images/product_default.png'"
+                                        <img :src="item.thum_image ? softurl + item.thum_image : '/assets/images/product_default.webp'"
+                                            :data-src="item.thum_image ? softurl + item.thum_image : '/assets/images/product_default.webp'"
                                             :alt="item.Product_Name" class="lazy-product-image">
                                     </div>
                                 </a>
@@ -356,13 +348,44 @@
                                             </span>
                                         </div>
                                     </a>
-
+                                    <div class="d-flex flex-column flex-lg-row justify-content-around mt-2">
+                                        <a  v-if="item.size_wise_stock != null" href="javascript:void(0)" class="addToCart_css" @click="trigerAddcart($event)"><i class="bi bi-cart-plus"></i>
+                                            Add To Cart
+                                        </a>
+                                        <a v-else href="javascript:void(0)" class="addToCart_css" @click="addcartNonSize($event)"><i
+                                                class="bi bi-cart-plus"></i>
+                                            Add To Cart
+                                        </a>
+                                    </div>
                                 </div>
-
-
+                                <div class="product-size-overlay">
+                                    <div class="size-overlay-header">
+                                        <span>Select Size</span>
+                                        <button type="button" @click="closeOverlay">
+                                            <i class="bi bi-x-lg"></i>
+                                        </button>
+                                    </div>
+                                    <div class="product-size-options">
+                                        <div v-for="(size, key) in item.size_wise_stock" :key="size.Size_SlNo">
+                                            <label class="product-size-option">
+                                                <input type="radio" :name="'product_size_' + item.Product_SlNo" :value="size.Size_SlNo"
+                                                    :data-size_name="size.Size_Name">
+                                                <span>
+                                                    @{{ size.Size_Name }}
+                                                </span>
+                                                <small>
+                                                     available
+                                                </small>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="size-proceed-btn proceed-add-to-cart" @click="addcart($event)">
+                                        <i class="bi bi-cart-plus"></i>
+                                        Add To Cart
+                                    </button>
+                                </div>
                             </div>
                         </div>
-
                         <div class="col-12">
                             <div class="d-flex justify-content-end">
                                 <div class="btn-group" role="group" aria-label="Basic mixed styles example">
@@ -374,7 +397,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -415,22 +437,24 @@
                         success: (res) => {
                             if (res.status) {
                                 this.products = res.products.data
+                                console.log(res.products.data)
                                 this.showproduct = true
                                 this.prev_page_url = res.products.prev_page_url;
                                 this.next_page_url = res.products.next_page_url;
                                 this.$nextTick(() => {
                                     this.initLazyImages();
                                 });
-
                             }
                         },
                         error: (res) => {
-
                         }
                     });
                 },
                 trigerAddcart(event) {
                     openProductSizeSelector(event, 'add_to_cart')
+                },
+                addcartNonSize(event){
+                    proceedProductNonSize(event)
                 },
                 trigerBuyNow(event) {
                     openProductSizeSelector(event, 'buy_now')
@@ -495,7 +519,6 @@
                 if(productType){
                     this.product_type = productType
                 }
-
                 this.getProducts("{{ route('get.products') }}")
             },
             watch: {

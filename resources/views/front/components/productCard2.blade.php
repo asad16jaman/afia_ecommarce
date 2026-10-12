@@ -28,6 +28,7 @@ $currentProduct = [
         <div class="d-flex flex-column flex-lg-row flex-wrap justify-content-around mt-2">
             <a href="javascript:void(0)" class="addToCart_css"   onclick="openProductSizeSelector(event,'add_to_cart')"
                 ><i class="bi bi-cart-plus"></i> Add To Cart</a>
+
             <a href="javascript:void(0)" class="buyNow_css" onclick="openProductSizeSelector(event,'buy_now')"
                 ><i class="bi bi-bag-check"></i> By Now</a>
         </div>
@@ -78,31 +79,5 @@ $currentProduct = [
 </div>
 
 
-
-
-<div class="product-card ">
-    <a href="{{ route('get_product_detail', ['slug' => $ob->slug]) }}">
-        <div class="product-image">
-            @if($ob->discount)
-                <span class="discount-badge">{{ $ob->discount }}% OFF</span>
-            @endif
-            <img src="{{$ob->thum_image ? $softUrl . $ob->thum_image : asset('assets/images/product_default.png')  }}"
-                alt="{{ $ob->Product_Name }}">
-        </div>
-    </a>
-    <div class="product-content text-center data_container" data-thiscard='@json($currentProduct)'>
-        <a href="{{ route('get_product_detail', ['slug' => $ob->slug]) }}">
-            <h4>{{ $ob->Product_Name }}</h4>
-            <div class="product_price_container">
-                <span class="price">
-                    ৳ {{ number_format(ceil($ob->Product_MinimumSellingPrice), 2) }}
-                </span>
-                <span>
-                    <del>৳ {{ number_format($ob->Product_SellingPrice, 2) }}</del>
-                </span>
-            </div>
-        </a>
-    </div>
-</div>
 
 

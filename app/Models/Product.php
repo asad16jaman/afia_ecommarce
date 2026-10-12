@@ -28,6 +28,10 @@ class Product extends Model
         return $this->belongsTo(Brand::class, 'brand', 'brand_SiNo');
     }
 
+    public function color(){
+        return $this->belongsTo(Color::class,'color_id','Color_SlNo');
+    }
+
 
     protected $guarded = [];
 }

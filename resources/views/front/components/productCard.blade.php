@@ -39,5 +39,49 @@ $currentProduct = [
                 </span>
             </div>
         </a>
+        <div class="d-flex flex-column flex-lg-row flex-wrap justify-content-around mt-2">
+            @if($ob->have_size)
+            <a href="javascript:void(0)" class="addToCart_css" onclick="openProductSizeSelector(event,'add_to_cart')"><i
+                    class="bi bi-cart-plus"></i> Order Now</a>
+            @else
+                <a href="javascript:void(0)" class="addToCart_css" onclick="proceedProductNonSize(event)"><i
+                        class="bi bi-cart-plus"></i> Order Now</a>
+            @endif
+        </div>
     </div>
+
+    {{-- Size Overlay --}}
+    <div class="product-size-overlay">
+        <div class="size-overlay-header">
+            <span>Select Size</span>
+            <button type="button" onclick="closeProductSizeSelector(event)">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+        <div class="product-size-options">
+            @foreach ($ob->size_wise_stock ?? [] as $size)
+                <label class="product-size-option {{-- $size->current_stock <= 0 ? 'disabled' : '' --}}">
+                    <input type="radio" name="product_size_{{ $ob->Product_SlNo }}" value="{{ $size->Size_SlNo }}"
+                        data-size_name="{{ $size->Size_Name }}" {{-- $size->current_stock <= 0 ? 'disabled' : '' --}}>
+                        <span>
+                            {{ $size->Size_Name }}
+                        </span>
+                        <!-- //if stock check this code will be comment -->
+                        <small>
+                            available
+                        </small>
+                </label>
+            @endforeach
+        </div>
+        <button type="button" class="size-proceed-btn proceed-add-to-cart" onclick="proceedProductSize(event)">
+            <i class="bi bi-cart-plus"></i>
+           Order Now
+        </button>
+        <button type="button" class="size-proceed-btn proceed-buy-now" onclick="proceedProductSizeByNow(event)">
+            <i class="bi bi-bag-check"></i>
+            Buy Now
+        </button>
+    </div>
+    
+
 </div>

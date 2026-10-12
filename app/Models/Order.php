@@ -36,7 +36,7 @@ class Order extends Model
 
     public function generateSalesInvoice()
     {
-        $branchId = Auth::guard('customer')->user()->branch_id;
+        $branchId = 1;
 
         $branchNo = strlen($branchId) < 10 ? '0' . $branchId : $branchId;
         $invoice = date('y') . $branchNo . "00001";

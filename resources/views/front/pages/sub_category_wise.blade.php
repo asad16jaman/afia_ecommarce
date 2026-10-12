@@ -11,7 +11,6 @@
             border-radius: 15px;
             ;
         }
-
         .filter-box .accordion-item {
             border: none;
             border-radius: 5px;
@@ -19,7 +18,6 @@
             background: #fff;
             /* box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); */
         }
-
         .filter-box .accordion-button {
             min-height: 50px;
             padding: 12px 18px;
@@ -31,46 +29,38 @@
             box-shadow: none;
             position: relative;
         }
-
         .filter-box .accordion-button:not(.collapsed) {
             background: #f5f5f5;
             color: var(--nav-color);
             box-shadow: none;
             font-weight: 600;
         }
-
         .filter-box .accordion-button::after {
             width: 10px;
             height: 10px;
             background-size: 10px;
         }
-
         .filter-box .accordion-button:not(.collapsed) {
             border-bottom: 1px solid var(--color-second);
         }
-
         .filter-box .accordion-body {
             padding: 16px 18px;
             background: #fff;
         }
-
         .price-inputs {
             display: flex;
             gap: 8px;
             margin-bottom: 12px;
         }
-
         .price-input {
             flex: 1;
         }
-
         .price-input label {
             display: block;
             font-size: 12px;
             color: #777;
             margin-bottom: 4px;
         }
-
         .price-input input {
             width: 100%;
             height: 38px;
@@ -82,22 +72,18 @@
             color: #333;
             transition: 0.2s;
         }
-
         .price-input input:focus {
             border-color: #f85606;
             box-shadow: 0 0 0 2px rgba(248, 86, 6, 0.08);
         }
-
         .price-input input::-webkit-outer-spin-button,
         .price-input input::-webkit-inner-spin-button {
             -webkit-appearance: none;
             margin: 0;
         }
-
         .price-input input[type=number] {
             -moz-appearance: textfield;
         }
-
         .filter-btn {
             display: block;
             margin-left: auto;
@@ -111,15 +97,12 @@
             cursor: pointer;
             transition: 0.2s;
         }
-
         .filter-btn:hover {
             background: #d94700;
         }
-
         .category-search {
             margin-bottom: 14px;
         }
-
         .category-search input {
             height: 36px;
             border: 1px solid #f85606;
@@ -128,12 +111,10 @@
             padding: 6px 12px;
             box-shadow: none;
         }
-
         .category-search input:focus {
             border-color: #f85606;
             box-shadow: 0 0 0 2px rgba(248, 86, 6, 0.08);
         }
-
         .category-list {
             display: flex;
             flex-direction: column;
@@ -142,20 +123,16 @@
             /* overflow-y: auto; */
             padding: 0 6px;
         }
-
         .category-list::-webkit-scrollbar {
             width: 4px;
         }
-
         .category-list::-webkit-scrollbar-track {
             background: #f1f1f1;
         }
-
         .category-list::-webkit-scrollbar-thumb {
             background: #ccc;
             border-radius: 10px;
         }
-
         .category-item {
             display: flex;
             align-items: center;
@@ -167,11 +144,9 @@
             padding: 2px 0;
             user-select: none;
         }
-
         .category-item:hover {
             color: #f85606;
         }
-
         .category-item input[type="checkbox"] {
             width: 14px;
             height: 14px;
@@ -179,12 +154,10 @@
             accent-color: #f85606;
             cursor: pointer;
         }
-
         .category-item span {
             flex: 1;
             line-height: 20px;
         }
-
         .product-breadcrumb {
             display: flex;
             align-items: center;
@@ -196,114 +169,92 @@
             border-radius: 4px;
             font-size: 13px;
         }
-
         .product-breadcrumb a {
             color: #666;
             text-decoration: none;
             transition: 0.2s;
         }
-
         .product-breadcrumb a:hover {
             color: #f85606;
         }
-
         .product-breadcrumb span {
             color: #777;
         }
-
         .product-breadcrumb span:last-child {
             color: #f85606;
             font-weight: 500;
         }
-
         .product-breadcrumb i {
             font-size: 10px;
             color: #999;
         }
-
         .bg_button {
             background-color: var(--nav-color);
             border: 1px solid var(--nav-color);
             color: #fff;
             transition: 0.35s ease-in-out;
         }
-
         .bg_button:hover {
             background-color: #fff;
             border: 1px solid var(--nav-color);
             color: var(--nav-color)
         }
-
         .bg_button_disable {
             cursor: not-allowed !important;
             background-color: var(--nav-color);
             opacity: 0.5;
             display: none;
         }
-
         .bannerImg {
             width: 100%;
         }
-
         .r-0 {
             border-radius: 2px;
             border: none;
             box-shadow: 0px 0px 15px 0px #0000006b;
             cursor: pointer
         }
-
         .crdbdy {
             overflow: hidden;
             transition: 0.35s ease-in-out;
         }
-
         .crdbdy img {
             transition: 0.35s ease-in-out;
         }
-
         .crdbdy:hover img {
             transform: scale(1.05);
         }
-
         .child_cat_accordian {
             width: 10%;
             border: 0px solid transparent !important;
             font-size: 17px;
             background: transparent !important;
         }
-
         .child_cat_accordian::after {
             width: 20px !important;
             height: 20px !important;
             background-size: 20px 20px !important;
         }
-
         .subcat_pad {
             padding: 12px 0;
             /* box-shadow: 0px 4px 10px #0000000f; */
             border-radius: 7px;
-
         }
-
         @media (max-width: 767px) {
             .filter-box {
                 margin-bottom: 15px;
             }
-
             .filter-box .accordion-button {
                 min-height: 46px;
                 padding: 10px 14px;
                 font-size: 15px;
             }
-
             .filter-box .accordion-body {
                 padding: 14px;
             }
-
             .price-inputs {
                 gap: 7px;
             }
-
             .product-breadcrumb {
                 margin-top: 10px;
             }
@@ -436,7 +387,43 @@
                                                 <del>৳ @{{ item.Product_SellingPrice }}</del>
                                             </span>
                                         </div>
+                                        <div class="d-flex flex-column flex-lg-row justify-content-around mt-2">
+                                            <a v-if="item.size_wise_stock != null" href="javascript:void(0)" class="addToCart_css"
+                                                @click="trigerAddcart($event)"><i class="bi bi-cart-plus"></i>
+                                                Add To Cart
+                                            </a>
+                                            <a v-else href="javascript:void(0)" class="addToCart_css" @click="addcartNonSize($event)"><i
+                                                    class="bi bi-cart-plus"></i>
+                                                Add To Cart
+                                            </a>
+                                        </div>
                                     </a>
+                                    <div class="product-size-overlay">
+                                        <div class="size-overlay-header">
+                                            <span>Select Size</span>
+                                            <button type="button" @click="closeOverlay">
+                                                <i class="bi bi-x-lg"></i>
+                                            </button>
+                                        </div>
+                                        <div class="product-size-options">
+                                            <div v-for="(size, key) in item.size_wise_stock" :key="size.Size_SlNo">
+                                                <label class="product-size-option">
+                                                    <input type="radio" :name="'product_size_' + item.Product_SlNo" :value="size.Size_SlNo"
+                                                        :data-size_name="size.Size_Name">
+                                                    <span>
+                                                        @{{ size.Size_Name }}
+                                                    </span>
+                                                    <small>
+                                                        available
+                                                    </small>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="size-proceed-btn proceed-add-to-cart" @click="addcart($event)">
+                                            <i class="bi bi-cart-plus"></i>
+                                            Add To Cart
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -484,6 +471,7 @@
                         sub_categori_id: this.sub_categori_id,
                         child_category_id: this.childcategories
                     }
+                    
                     $.ajax({
                         method: 'get',
                         url: url,
@@ -499,9 +487,7 @@
                                 });
                             }
                         },
-                        error: (res) => {
-
-                        }
+                        error: (res) => { }
                     });
                 },
                 getSubCategoryId(slug) {
@@ -517,13 +503,14 @@
                                 this.subcategories = [res.id];
                             }
                         },
-                        error: (res) => {
-
-                        }
+                        error: (res) => { }
                     });
                 },
                 trigerAddcart(event) {
                     openProductSizeSelector(event, 'add_to_cart')
+                },
+                addcartNonSize(event) {
+                    proceedProductNonSize(event)
                 },
                 trigerBuyNow(event) {
                     openProductSizeSelector(event, 'buy_now')
@@ -593,7 +580,7 @@
                 this.getProducts("{{ route('get.subcat.wise.products') }}")
             },
             watch: {
-                
+
                 childcategories() {
                     this.getProducts("{{ route('get.subcat.wise.products') }}")
                 },
