@@ -77,6 +77,8 @@ $currentProduct = [
             <i class="bi bi-cart-plus"></i>
            Order Now
         </button>
+
+        
         <button type="button" class="size-proceed-btn proceed-buy-now" onclick="proceedProductSizeByNow(event)">
             <i class="bi bi-bag-check"></i>
             Buy Now

@@ -598,9 +598,7 @@ class HomeController extends Controller
             $rules['paid_amount'] = ['required','numeric','min:0'];
             $rules['payment_document'] = ['required','file','image','mimes:jpg,jpeg,png,webp','max:2048'];
         }
-        if ($request->checkout_type == 'new_user') {
-            $rules['password'] = ['required','string','min:8','max:50'];
-        }
+        
         $request->validate($rules, [
             'customer_name.required' => 'আপনার নাম লিখুন।',
             'customer_name.string' => 'নাম অবশ্যই সঠিক হতে হবে।',
@@ -625,10 +623,6 @@ class HomeController extends Controller
             'payment_document.mimes' => 'শুধু JPG, JPEG, PNG অথবা WebP image দেওয়া যাবে।',
             'payment_document.max' => 'পেমেন্টের image সর্বোচ্চ ২ MB হতে পারবে।',
 
-            'password.required' => 'পাসওয়ার্ড লিখুন।',
-            'password.string' => 'পাসওয়ার্ড অবশ্যই সঠিক হতে হবে।',
-            'password.min' => 'পাসওয়ার্ড কমপক্ষে ৮ অক্ষরের হতে হবে।',
-            'password.max' => 'পাসওয়ার্ড সর্বোচ্চ ৫০ অক্ষরের হতে পারবে।',
         ]);
         // try {
             DB::beginTransaction();
@@ -645,7 +639,11 @@ class HomeController extends Controller
 
             $min_rat = Company::value('minimum_rating');
             $frotCustomer = Order::where('customerMobile', $request->customer_mobile)->where('status', 'a')->orderBy('AddTime','desc')->first();
-            $lastRatting = $frotCustomer->rating;
+            $lastRatting = 100;
+            if($frotCustomer && $frotCustomer->rating != null){
+                $lastRatting = $frotCustomer->rating;
+            }
+            
             $imagePath = null;
             if ($request->hasFile('payment_document')) {
                 $imageFile = $request->file('payment_document');

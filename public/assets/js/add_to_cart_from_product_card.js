@@ -41,7 +41,8 @@ function proceedProductSize(event) {
         card.querySelector(".data_container").dataset.thiscard,
     );
     card.querySelector(".product-size-overlay").classList.remove("show");
-    addToCart(product, size, 1);
+    // addToCart(product, size, 1);
+    byNow(product, size, 1);
 }
 
 function proceedProductNonSize(event) {
@@ -56,7 +57,8 @@ function proceedProductNonSize(event) {
     );
     card.querySelector(".product-size-overlay").classList.remove("show");
 
-    addToCart(product, size, 1);
+    // addToCart(product, size, 1);
+    byNow(product, size, 1);
 }
 
 function proceedProductSizeByNow(event) {

@@ -307,7 +307,6 @@
         }
         function byNow(product, size, qty = 1) {
             const data = {
-                
                 product_id: product.Product_SlNo,
                 size: size.size_id,
                 size_name: size.size_name,

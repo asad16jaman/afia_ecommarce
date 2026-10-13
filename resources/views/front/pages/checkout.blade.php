@@ -784,7 +784,9 @@
                                     </div>
                                 </div>
 
-                                @guest('customer')
+                                <input type="hidden" name="checkout_type" id="guest" value="guest" checked>
+
+                               {{--  @guest('customer')
                                     <div class="shipment-row">
                                         <div class="shipment-title">
                                             <div class="shipment-option">
@@ -812,7 +814,7 @@
                                         </div>
                                     </div>
 
-                                @endguest
+                                @endguest --}}
 
                                 <div class="order-total">
                                     <h5>Total</h5>
@@ -987,13 +989,7 @@
             $('#trandTotal').html("৳" + total.toFixed(2));
         });
 
-        $(document).on('change', 'input[name="checkout_type"]', function () {
-            if ($("input[name='checkout_type']:checked").val() == 'guest') {
-                $("#idField").hide()
-            } else {
-                $("#idField").show()
-            }
-        });
+       
 
         function previewPaymentImage(input) {
             const previewBox = document.getElementById('paymentImagePreview');
